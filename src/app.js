@@ -10,6 +10,9 @@ class SocialEngSimulator {
         this.supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
         this.user = null;
         this.improvementChart = null;
+        // Resolve asset URLs through the bundler so they work in dev and build
+        this.emailPreviewImgUrl = new URL('../public/email.png', import.meta.url).href;
+        this.smsPreviewImgUrl = new URL('../public/sms.jpg', import.meta.url).href;
     }
 
     async init() {
@@ -260,10 +263,10 @@ class SocialEngSimulator {
         let imgSrc = '';
         let alt = '';
         if (attack === 'phishing') {
-            imgSrc = '/public/email.png';
+            imgSrc = this.emailPreviewImgUrl;
             alt = 'Phishing Email Example';
         } else if (attack === 'smishing') {
-            imgSrc = '/public/sms.jpg';
+            imgSrc = this.smsPreviewImgUrl;
             alt = 'Smishing SMS Example';
         } else {
             container.innerHTML = '<div class="card" style="padding:32px;text-align:center;">No preview available.</div>';
