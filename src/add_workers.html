@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SocialGuard - Add Workers</title>
+    <link rel="icon" type="image/svg+xml" href="/public/socialguard.png">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        /* Additional styles for Add Workers page */
+        .workers-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-24);
+            margin-top: var(--space-24);
+        }
+
+        @media (max-width: 1024px) {
+            .workers-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .worker-card {
+            background-color: var(--color-surface);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-card-border);
+            box-shadow: var(--shadow-md);
+            padding: var(--space-24);
+            height: fit-content;
+        }
+
+        .worker-card h3 {
+            margin-top: 0;
+            margin-bottom: var(--space-16);
+            border-bottom: 1px solid var(--color-card-border-inner);
+            padding-bottom: var(--space-12);
+        }
+
+        .workers-list {
+            margin-top: var(--space-16);
+        }
+
+        .worker-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--space-16);
+            padding: var(--space-12);
+            border-bottom: 1px solid var(--color-card-border-inner);
+        }
+
+        .worker-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-8) var(--space-16);
+            flex: 1;
+        }
+
+        .worker-item:last-child {
+            border-bottom: none;
+        }
+
+        .worker-name {
+            font-weight: var(--font-weight-medium);
+            grid-column: 1;
+        }
+
+        .worker-email {
+            grid-column: 2;
+        }
+
+        .worker-department {
+            grid-column: 1;
+            color: var(--color-text-secondary);
+        }
+
+        .worker-id {
+            grid-column: 2;
+            color: var(--color-text-secondary);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-16);
+            margin-bottom: var(--space-16);
+        }
+
+        @media (max-width: 640px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .success-message, .error-message {
+            padding: var(--space-12);
+            border-radius: var(--radius-base);
+            margin-bottom: var(--space-16);
+            display: none;
+        }
+
+        .success-message {
+            background-color: rgba(var(--color-success-rgb), 0.1);
+            color: var(--color-success);
+            border: 1px solid rgba(var(--color-success-rgb), 0.2);
+        }
+
+        .error-message {
+            background-color: rgba(var(--color-error-rgb), 0.1);
+            color: var(--color-error);
+            border: 1px solid rgba(var(--color-error-rgb), 0.2);
+        }
+
+        .worker-count {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-16);
+        }
+
+        .worker-phone {
+            grid-column: 1/3;
+            color: var(--color-text-secondary);
+            font-size: var(--font-size-sm);
+        }
+
+        .no-workers {
+            color: var(--color-text-secondary);
+            text-align: center;
+            padding: var(--space-24);
+        }
+
+        .actions-column {
+            display: flex;
+            align-items: center;
+            gap: var(--space-8);
+            margin-left: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo" style="display: flex; align-items: center; gap: 10px;">
+                    <img src="/public/socialguard.png" alt="SocialGuard Logo" style="height: 40px; width: 40px;">
+                    <div>
+                        <h1 style="margin: 0;">SocialGuard</h1>
+                        <span class="subtitle">Social Engineering Attack Simulator</span>
+                    </div>
+                </div>
+                <nav class="main-nav">
+                    <button class="nav-btn" data-tab="dashboard">Home</button>
+                    <button class="nav-btn" data-tab="scenarios">Attack Library</button>
+                    <button class="nav-btn active" data-tab="add-workers">Add Workers</button>
+                    <button class="nav-btn" data-tab="builder">Simulation Builder</button>
+                    <button class="nav-btn" data-tab="training">Training</button>
+                    <button class="nav-btn" data-tab="analytics">Analytics</button>
+                    <button class="nav-btn" data-tab="reports">Reports</button>
+                    <button class="nav-btn" data-tab="logout">Logout</button>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <section id="add-workers" class="tab-content active">
+                <h2>Manage Workers</h2>
+                <p>Add and manage employees for simulation campaigns.</p>
+                
+                <div class="workers-container">
+                    <div class="worker-card">
+                        <h3>Add New Worker</h3>
+                        <div id="success-message" class="success-message">Worker added successfully!</div>
+                        <div id="error-message" class="error-message">Error adding worker. Please try again.</div>
+                        
+                        <form id="add-worker-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="name" class="form-label">Full Name</label>
+                                    <input type="text" id="name" class="form-control" placeholder="John Doe" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="employee-id" class="form-label">Employee ID</label>
+                                    <input type="text" id="employee-id" class="form-control" placeholder="EMP1234" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="email" class="form-label">Email Address</label>
+                                    <input type="email" id="email" class="form-control" placeholder="johndoe@example.com" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone" class="form-label">Phone Number</label>
+                                    <input type="tel" id="phone" class="form-control" placeholder="(123) 456-7890">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="department" class="form-label">Department</label>
+                                <select id="department" class="form-control" required>
+                                    <option value="">Select Department</option>
+                                    <option value="Finance">Finance</option>
+                                    <option value="IT">IT</option>
+                                    <option value="Marketing">Marketing</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn--primary" style="margin-top: var(--space-16);">Add Worker</button>
+                        </form>
+                    </div>
+                    
+                    <div class="worker-card">
+                        <h3>Workers List</h3>
+                        <div class="worker-count">Showing <span id="worker-count">0</span> workers</div>
+                        <div id="workers-list" class="workers-list">
+                            <div class="no-workers">No workers found. Add workers using the form.</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="deleteModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Delete Worker</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this worker? This action cannot be undone.</p>
+                <div class="modal-actions">
+                    <button class="btn btn--primary" id="confirm-delete">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Initialize Supabase client
+        const supabaseUrl = process.env.PARCEL_VITE_SUPABASE_URL;
+        const supabaseAnonKey = process.env.PARCEL_VITE_SUPABASE_ANON_KEY;
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+
+        // Keep track of current user's session
+        let currentUser = null;
+
+        // DOM elements
+        const addWorkerForm = document.getElementById('add-worker-form');
+        const successMessage = document.getElementById('success-message');
+        const errorMessage = document.getElementById('error-message');
+        const workersList = document.getElementById('workers-list');
+        const workerCountElement = document.getElementById('worker-count');
+        const deleteModal = document.getElementById('deleteModal');
+        const confirmDeleteBtn = document.getElementById('confirm-delete');
+        const modalCloseButtons = document.querySelectorAll('.modal-close');
+
+        // Check authentication on page load
+        async function checkAuth() {
+            const { data, error } = await supabase.auth.getSession();
+            
+            if (error || !data.session) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            currentUser = data.session.user;
+            fetchWorkers();
+        }
+
+        // Fetch workers from Supabase
+        async function fetchWorkers() {
+            const { data, error } = await supabase
+                .from('workers')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                console.error('Error fetching workers:', error);
+                return;
+            }
+
+            displayWorkers(data || []);
+        }
+
+        // Display workers in the list
+        function displayWorkers(workers) {
+            // Update worker count
+            workerCountElement.textContent = workers.length;
+            
+            // Clear previous content
+            workersList.innerHTML = '';
+
+            if (workers.length === 0) {
+                workersList.innerHTML = '<div class="no-workers">No workers found. Add workers using the form.</div>';
+                return;
+            }
+
+            // Add each worker to the list
+            workers.forEach(worker => {
+                const workerItem = document.createElement('div');
+                workerItem.className = 'worker-item';
+                workerItem.innerHTML = `
+                    <div class="worker-info">
+                        <div class="worker-name">${worker.name}</div>
+                        <div class="worker-email">${worker.email}</div>
+                        <div class="worker-department">Dept: ${worker.department}</div>
+                        <div class="worker-id">ID: ${worker.employee_id}</div>
+                        <div class="worker-phone">Phone: ${worker.phone || 'N/A'}</div>
+                    </div>
+                    <div class="actions-column">
+                        <button class="btn btn--outline btn-delete" data-id="${worker.id}">Delete</button>
+                    </div>
+                `;
+                
+                workersList.appendChild(workerItem);
+            });
+
+            // Attach delete event listeners
+            document.querySelectorAll('.btn-delete').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const workerId = e.target.getAttribute('data-id');
+                    confirmDelete(workerId);
+                });
+            });
+        }
+
+        // Add a new worker
+        async function addWorker(e) {
+            e.preventDefault();
+            
+            // Hide previous messages
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+            
+            // Get form values
+            const name = document.getElementById('name').value;
+            const employeeId = document.getElementById('employee-id').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const department = document.getElementById('department').value;
+            
+            // Insert worker into Supabase
+            const { data, error } = await supabase
+                .from('workers')
+                .insert([
+                    { 
+                        name, 
+                        employee_id: employeeId, 
+                        email, 
+                        phone, 
+                        department 
+                    }
+                ]);
+            
+            if (error) {
+                console.error('Error adding worker:', error);
+                errorMessage.textContent = error.message || 'Error adding worker. Please try again.';
+                errorMessage.style.display = 'block';
+                return;
+            }
+            
+            // Show success message
+            successMessage.style.display = 'block';
+            
+            // Reset form
+            addWorkerForm.reset();
+            
+            // Refresh workers list
+            fetchWorkers();
+        }
+
+        // Delete a worker
+        async function deleteWorker(workerId) {
+            const { error } = await supabase
+                .from('workers')
+                .delete()
+                .eq('id', workerId);
+
+            if (error) {
+                console.error('Error deleting worker:', error);
+                alert('Failed to delete worker. Please try again.');
+                return;
+            }
+
+            // Refresh workers list
+            fetchWorkers();
+        }
+
+        // Confirm delete action
+        function confirmDelete(workerId) {
+            deleteModal.classList.remove('hidden');
+
+            confirmDeleteBtn.onclick = () => {
+                deleteWorker(workerId);
+                deleteModal.classList.add('hidden');
+            };
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check auth on page load
+            checkAuth();
+            
+            // Form submission
+            addWorkerForm.addEventListener('submit', addWorker);
+            
+            // Modal close buttons
+            modalCloseButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    deleteModal.classList.add('hidden');
+                });
+            });
+            
+            // Close modal when clicking outside
+            deleteModal.addEventListener('click', (e) => {
+                if (e.target === deleteModal) {
+                    deleteModal.classList.add('hidden');
+                }
+            });
+            
+            // Tab navigation
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const tabName = btn.getAttribute('data-tab');
+
+                    if (tabName === 'logout') {
+                    handleLogout();
+                    } else if (tabName === 'add-workers') {
+                    // If the user clicks the button for the current page, do nothing.
+                    return; 
+                    } else if (tabName === 'dashboard') {
+                    window.location.href = 'index.html';        
+                    } else {
+                    // For all other tabs, navigate to index.html and let its script handle showing the correct tab.
+                    window.location.href = `index.html?tab=${tabName}`;
+                    }   
+                });
+            });
+        });
+
+        // Handle logout
+        async function handleLogout() {
+            const { error } = await supabase.auth.signOut();
+            if (error) {
+                console.error('Error logging out:', error.message);
+                return;
+            }
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>

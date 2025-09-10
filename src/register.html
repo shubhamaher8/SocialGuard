@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SocialGuard - Social Engineering Simulator</title>
+    <link rel="icon" type="image/svg+xml" href="/public/socialguard.png">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        /* Additional styles for login/register pages */
+        .auth-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 80px); /* Adjust for header height */
+            padding: var(--space-20);
+        }
+
+        .auth-card {
+            background-color: var(--color-surface);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-card-border);
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+            max-width: 420px;
+            overflow: hidden;
+        }
+
+        .auth-header {
+            padding: var(--space-24);
+            text-align: center;
+            border-bottom: 1px solid var(--color-card-border-inner);
+        }
+        
+        .auth-header h2 {
+            margin-bottom: var(--space-8);
+        }
+
+        .auth-header p {
+            color: var(--color-text-secondary);
+            margin: 0;
+            font-size: var(--font-size-base);
+        }
+
+        .auth-body {
+            padding: var(--space-24);
+        }
+
+        .auth-footer {
+            padding: var(--space-16);
+            background-color: var(--color-bg-1);
+            text-align: center;
+            font-size: var(--font-size-sm);
+        }
+        #message {
+            text-align: center;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+        .success {
+            color: var(--color-success);
+        }
+        .error {
+            color: var(--color-error);
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+         <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo" style="display: flex; align-items: center; gap: 10px;">
+                    <img src="/public/socialguard.png" alt="SocialGuard Logo" style="height: 40px; width: 40px;">
+                    <div>
+                        <h1 style="margin: 0;">SocialGuard</h1>
+                        <span class="subtitle">Social Engineering Attack Simulator</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="auth-container">
+                <div class="auth-card">
+                    <div class="auth-header">
+                        <h2>Create Your Account</h2>
+                        <p>Get started with your own simulations</p>
+                    </div>
+                    <div class="auth-body">
+                        <div id="message"></div>
+                        <form id="register-form">
+                            <div class="form-group">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" id="email" class="form-control" placeholder="you@example.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password" class="form-label">Password (6-digit PIN)</label>
+                                <input type="password" id="password" class="form-control" placeholder="Create a 6-digit PIN" required maxlength="6" pattern="\d{6}">
+                            </div>
+                             <div class="form-group">
+                                <label class="form-label" for="department">Department</label>
+                                <select id="department" class="form-control" required>
+                                    <option value="">Select your department</option>
+                                    <option value="Finance">Finance</option>
+                                    <option value="IT">IT</option>
+                                    <option value="Marketing">Marketing</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn--primary btn--full-width" style="margin-top: var(--space-8);">Create Account</button>
+                        </form>
+                    </div>
+                    <div class="auth-footer">
+                        <p>Already have an account? <a href="login.html">Log in</a></p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import { createClient } from '@supabase/supabase-js';
+
+        
+        const supabaseUrl = process.env.PARCEL_VITE_SUPABASE_URL;
+        const supabaseAnonKey = process.env.PARCEL_VITE_SUPABASE_ANON_KEY;
+
+        const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+        const registerForm = document.getElementById('register-form');
+        const messageDiv = document.getElementById('message');
+
+        registerForm.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Prevent default form submission
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const department = document.getElementById('department').value;
+            
+            messageDiv.textContent = '';
+            messageDiv.className = '';
+
+            // 1. Sign up the user with Supabase Auth
+            const { data: authData, error: authError } = await supabase.auth.signUp({
+                email: email,
+                password: password,
+            });
+
+            if (authError) {
+                console.error('Error signing up:', authError.message);
+                messageDiv.textContent = authError.message;
+                messageDiv.className = 'error';
+                return;
+            }
+
+            if (authData.user) {
+                // 2. Insert user details into the 'profiles' table
+                const { error: insertError } = await supabase
+                    .from('profiles')
+                    .insert([
+                        { id: authData.user.id, email: email, department: department }
+                    ]);
+
+                if (insertError) {
+                    console.error('Error inserting profile:', insertError.message);
+                    // Even if profile insert fails, the user is created. 
+                    // You might want to handle this case, e.g., by deleting the auth user or asking them to complete their profile later.
+                    messageDiv.textContent = 'Account created, but could not save department.';
+                    messageDiv.className = 'error';
+                    return;
+                }
+                
+                // If everything is successful
+                messageDiv.textContent = 'Registration successful! Please check your email to verify your account.';
+                messageDiv.className = 'success';
+                
+                // Optional: Redirect after a short delay
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 5000);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Identifying Social Engineering - SocialGuard</title>
+    <link rel="icon" type="image/svg+xml" href="/public/socialguard.png">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo" style="display: flex; align-items: center; gap: 10px;">
+                    <img src="/public/socialguard.png" alt="SocialGuard Logo" style="height: 40px; width: 40px;">
+                    <div>
+                        <h1 style="margin: 0;">SocialGuard</h1>
+                        <span class="subtitle">Social Engineering Attack Simulator</span>
+                    </div>
+                </div>
+                <nav class="main-nav">
+                    <button class="nav-btn" data-tab="dashboard">Home</button>
+                    <button class="nav-btn" data-tab="scenarios">Attack Library</button>
+                    <button class="nav-btn" data-tab="add-workers">Add Workers</button>
+                    <button class="nav-btn" data-tab="builder">Simulation Builder</button>
+                    <button class="nav-btn active" data-tab="training">Training</button>
+                    <button class="nav-btn" data-tab="analytics">Analytics</button>
+                    <button class="nav-btn" data-tab="reports">Reports</button>
+                    <button class="nav-btn" data-tab="logout">Logout</button>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <section class="training-article">
+                <div class="training-header">
+                    <h2>Identifying Social Engineering</h2>
+                    <p class="training-description">Learn to recognize common social engineering tactics and protect yourself and your organization from manipulation.</p>
+                    <div class="training-meta">
+                        <span class="training-level">Level: Beginner</span>
+                        <span class="training-time">Estimated time: 30 minutes</span>
+                    </div>
+                </div>
+
+                <div class="training-intro card">
+                    <div class="card__header">
+                        <h3>Introduction to Social Engineering</h3>
+                    </div>
+                    <div class="card__body">
+                        <p>Social engineering is the art of manipulating people into performing actions or divulging confidential information. Unlike technical hacking, social engineering exploits human psychology rather than software or system vulnerabilities.</p>
+                        <p>This training module will help you understand common social engineering tactics, recognize warning signs, and develop the skills needed to protect yourself and your organization from these manipulative attacks.</p>
+                    </div>
+                </div>
+
+                <div class="training-sections">
+                    <!-- Section 1: Common Social Engineering Tactics -->
+                    <div class="training-section card">
+                        <div class="card__header">
+                            <h3>1. Common Social Engineering Tactics</h3>
+                        </div>
+                        <div class="card__body">
+                            <p>Social engineers use a variety of psychological tactics to manipulate their targets. Understanding these tactics is the first step in recognizing potential attacks.</p>
+                            
+                            <div class="training-subsection">
+                                <h4>Pretexting</h4>
+                                <p>Creating a fabricated scenario to extract information or influence behavior.</p>
+                                <div class="example-box">
+                                    <strong>Example:</strong> An attacker calls claiming to be from IT support, saying they need your password to "fix a server issue."
+                                </div>
+                                <div class="key-indicators">
+                                    <h5>Warning Signs:</h5>
+                                    <ul>
+                                        <li>Requests for sensitive information</li>
+                                        <li>Creating artificial urgency</li>
+                                        <li>Inconsistencies in their story</li>
+                                        <li>Reluctance to provide verifiable contact information</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Phishing</h4>
+                                <p>Sending deceptive communications that appear to come from legitimate sources to steal data or deploy malware.</p>
+
+                                <div class="key-indicators">
+                                    <h5>Warning Signs:</h5>
+                                    <ul>
+                                        <li>Suspicious sender email addresses</li>
+                                        <li>Generic greetings ("Dear User")</li>
+                                        <li>Poor grammar or spelling</li>
+                                        <li>Requests for sensitive information</li>
+                                        <li>Suspicious links or attachments</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Baiting</h4>
+                                <p>Offering something enticing to pique curiosity and lure victims into a trap.</p>
+                                <div class="example-box">
+                                    <strong>Example:</strong> USB drives labeled "Confidential Salary Information" left in a company parking lot.
+                                </div>
+                                <div class="key-indicators">
+                                    <h5>Warning Signs:</h5>
+                                    <ul>
+                                        <li>Offers that seem too good to be true</li>
+                                        <li>Unsolicited free items requiring some action</li>
+                                        <li>Unusual physical media appearing in your workspace</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Quid Pro Quo</h4>
+                                <p>Offering a service or benefit in exchange for information or access.</p>
+                                <div class="example-box">
+                                    <strong>Example:</strong> An attacker offers free tech support but requires remote access to your computer.
+                                </div>
+                                <div class="key-indicators">
+                                    <h5>Warning Signs:</h5>
+                                    <ul>
+                                        <li>Unsolicited offers of assistance</li>
+                                        <li>Requests for access or credentials in exchange for help</li>
+                                        <li>Pressure to accept the offer quickly</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 2: Psychological Principles Exploited -->
+                    <div class="training-section card">
+                        <div class="card__header">
+                            <h3>2. Psychological Principles Exploited</h3>
+                        </div>
+                        <div class="card__body">
+                            <p>Social engineers exploit fundamental human psychological tendencies to manipulate their targets. Understanding these principles helps you recognize when they're being used against you.</p>
+
+                            <div class="training-subsection">
+                                <h4>Authority</h4>
+                                <p>People tend to comply with requests from authority figures.</p>
+                                <div class="example-box">
+                                    <strong>Example:</strong> An attacker impersonates a CEO or IT director to pressure employees into taking immediate action.
+                                </div>
+                                <div class="defense-tip">
+                                    <strong>Defense:</strong> Verify identities through official channels, especially for unusual requests.
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Urgency</h4>
+                                <p>Creating time pressure to force hasty decisions without proper verification.</p>
+
+                                <div class="defense-tip">
+                                    <strong>Defense:</strong> Take a moment to verify requests through official channels, even when they seem urgent.
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Social Proof</h4>
+                                <p>People tend to follow what others are doing, especially in uncertain situations.</p>
+                                <div class="example-box">
+                                    <strong>Example:</strong> "Everyone in accounting has already updated their passwords using this link."
+                                </div>
+                                <div class="defense-tip">
+                                    <strong>Defense:</strong> Verify claims independently rather than trusting that others have already complied.
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Scarcity</h4>
+                                <p>Limited availability creates pressure to act quickly without proper verification.</p>
+                                <div class="example-box">
+                                    <strong>Example:</strong> "This security update must be installed in the next 30 minutes or your account will be locked."
+                                </div>
+                                <div class="defense-tip">
+                                    <strong>Defense:</strong> Be skeptical of artificial limitations and deadlines, especially when pressured to act quickly.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 3: Red Flags and Warning Signs -->
+                    <div class="training-section card">
+                        <div class="card__header">
+                            <h3>3. Red Flags and Warning Signs</h3>
+                        </div>
+                        <div class="card__body">
+                            <p>Learning to identify the warning signs of social engineering attempts is critical for protecting yourself and your organization.</p>
+
+
+
+                            <div class="training-subsection">
+                                <h4>Communication Red Flags</h4>
+                                <ul class="warning-list">
+                                    <li><strong>Unsolicited contacts</strong> - Unexpected calls, emails, or messages requesting information or action</li>
+                                    <li><strong>Mismatched URLs</strong> - Links that don't match the legitimate organization's domain</li>
+                                    <li><strong>Generic greetings</strong> - "Dear User" instead of your name</li>
+                                    <li><strong>Grammar and spelling errors</strong> - Professional organizations typically proofread communications</li>
+                                    <li><strong>Suspicious attachments</strong> - Unexpected or oddly named files</li>
+                                </ul>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Behavioral Red Flags</h4>
+                                <ul class="warning-list">
+                                    <li><strong>Creating urgency</strong> - Pressure to act immediately without verification</li>
+                                    <li><strong>Requesting sensitive information</strong> - Legitimate organizations rarely ask for passwords or full credit card numbers</li>
+                                    <li><strong>Offering unexpected rewards</strong> - "You've won a prize" when you didn't enter a contest</li>
+                                    <li><strong>Inconsistent stories</strong> - Details that change during the interaction</li>
+                                    <li><strong>Unusual requests</strong> - Asking you to bypass normal security procedures</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 4: Defense Strategies -->
+                    <div class="training-section card">
+                        <div class="card__header">
+                            <h3>4. Defense Strategies</h3>
+                        </div>
+                        <div class="card__body">
+                            <p>Protecting yourself from social engineering requires developing specific habits and implementing concrete strategies.</p>
+
+                            <div class="training-subsection">
+                                <h4>Verify Identities</h4>
+                                <p>Always confirm the identity of individuals requesting information or actions, especially when the request is unexpected.</p>
+                                <div class="defense-steps">
+                                    <ol>
+                                        <li>Use official contact methods, not those provided in the suspicious communication</li>
+                                        <li>Call back using the official company number (from their website, not the call/email)</li>
+                                        <li>Verify unusual requests with supervisors or IT security</li>
+                                    </ol>
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Practice Healthy Skepticism</h4>
+                                <p>Cultivate a questioning mindset, especially when faced with unexpected communications.</p>
+
+                                <div class="question-list">
+                                    <p>Ask yourself:</p>
+                                    <ul>
+                                        <li>Was I expecting this communication?</li>
+                                        <li>Does this request make sense given my role/relationship with the requester?</li>
+                                        <li>Why would this information be needed right now?</li>
+                                        <li>Is there a way to verify this request through official channels?</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Follow Security Protocols</h4>
+                                <p>Adhere to established security procedures, even when under pressure.</p>
+                                <div class="defense-steps">
+                                    <ol>
+                                        <li>Never share passwords or sensitive information via email or phone</li>
+                                        <li>Use multi-factor authentication whenever possible</li>
+                                        <li>Report suspicious communications to IT security</li>
+                                        <li>Don't click on suspicious links or open unexpected attachments</li>
+                                    </ol>
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Stay Informed</h4>
+                                <p>Keep up-to-date on current social engineering tactics and threats.</p>
+                                <div class="defense-tip">
+                                    <strong>Tip:</strong> Follow security bulletins from your IT department and trusted security organizations.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 5: Real-World Examples -->
+                    <div class="training-section card">
+                        <div class="card__header">
+                            <h3>5. Real-World Examples</h3>
+                        </div>
+                        <div class="card__body">
+                            <p>Examining real social engineering incidents helps illustrate how these attacks work in practice and their potential consequences.</p>
+
+                            <div class="training-subsection">
+                                <h4>The Twitter VIP Hack (2020)</h4>
+                                <p>Attackers used phone calls to convince Twitter employees they were from the IT department, gaining access to internal systems and compromising high-profile accounts.</p>
+                                <div class="example-breakdown">
+                                    <p><strong>Tactics Used:</strong> Pretexting, authority impersonation</p>
+                                    <p><strong>What Went Wrong:</strong> Employees trusted the callers without proper verification</p>
+                                    <p><strong>Lessons Learned:</strong> Always verify identity through official channels, especially for access requests</p>
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>RSA Security Breach (2011)</h4>
+                                <p>Attackers sent targeted phishing emails with an Excel spreadsheet titled "2011 Recruitment Plan" to specific employees.</p>
+                                <div class="example-breakdown">
+                                    <p><strong>Tactics Used:</strong> Spear phishing, baiting with relevant content</p>
+                                    <p><strong>What Went Wrong:</strong> Employee opened the malicious attachment without verification</p>
+                                    <p><strong>Lessons Learned:</strong> Verify unexpected attachments, even when they appear work-related</p>
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>The CEO Fraud</h4>
+                                <p>Attackers impersonated a company CEO via email, requesting an urgent wire transfer from the finance department.</p>
+
+                                <div class="example-breakdown">
+                                    <p><strong>Tactics Used:</strong> Authority, urgency, email spoofing</p>
+                                    <p><strong>What Went Wrong:</strong> Employee acted on urgency without verbal confirmation</p>
+                                    <p><strong>Lessons Learned:</strong> Always verify unusual financial requests through a different communication channel</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="training-summary card">
+                    <div class="card__body">
+                        <h3>Key Takeaways</h3>
+                        <ul class="takeaway-list">
+                            <li>Social engineering attacks exploit human psychology rather than technical vulnerabilities</li>
+                            <li>Common tactics include pretexting, phishing, baiting, and quid pro quo</li>
+                            <li>Be alert to psychological triggers like authority, urgency, scarcity, and social proof</li>
+                            <li>Verify all unusual requests through official channels</li>
+                            <li>Follow security protocols even when under pressure</li>
+                            <li>Report suspicious activities to your security team</li>
+                        </ul>
+                        
+                        <!-- Removed Test Your Knowledge CTA -->
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+    <script type="module">
+        // Training-specific JavaScript
+        document.addEventListener('DOMContentLoaded', () => {
+            // Handle navigation
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const tabName = e.target.dataset.tab;
+                    if (tabName === 'dashboard') {
+                        window.location.href = 'index.html';
+                    } else if (tabName === 'training') {
+                        // Already on training page
+                    } else if (tabName === 'add-workers') {
+                        window.location.href = 'add_workers.html';
+                    } else if (tabName === 'logout') {
+                        // Handle logout - redirect to login page after signout
+                        async function handleLogout() {
+                            const supabaseUrl = process.env.PARCEL_VITE_SUPABASE_URL;
+                            const supabaseAnonKey = process.env.PARCEL_VITE_SUPABASE_ANON_KEY;
+                            const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+
+                            await supabase.auth.signOut();
+                            window.location.href = 'login.html';
+                        }
+                        handleLogout();
+                    } else {
+                        window.location.href = `index.html#${tabName}`;
+                    }
+                });
+            });
+
+            // Add smooth scrolling for training sections
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+    <style>
+        /* Training-specific styles */
+        .training-article {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: var(--space-16);
+        }
+
+        .training-header {
+            margin-bottom: var(--space-32);
+            text-align: center;
+        }
+
+        .training-description {
+            font-size: var(--font-size-lg);
+            color: var(--color-text-secondary);
+            max-width: 800px;
+            margin: var(--space-16) auto;
+        }
+
+        .training-meta {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-24);
+            margin-top: var(--space-16);
+        }
+
+        .training-level, .training-time {
+            background-color: var(--color-bg-1);
+            padding: var(--space-8) var(--space-16);
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .training-intro {
+            margin-bottom: var(--space-32);
+        }
+
+        .training-sections {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-32);
+            margin-bottom: var(--space-32);
+        }
+
+        .training-section {
+            transition: transform 0.2s var(--ease-standard);
+        }
+
+        .training-section:hover {
+            transform: translateY(-2px);
+        }
+
+        .training-subsection {
+            margin-bottom: var(--space-24);
+            padding-bottom: var(--space-16);
+            border-bottom: 1px solid var(--color-card-border);
+        }
+
+        .training-subsection:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .training-subsection h4 {
+            color: var(--color-primary);
+            margin-bottom: var(--space-12);
+        }
+
+        .example-box {
+            background-color: var(--color-bg-2);
+            padding: var(--space-16);
+            border-radius: var(--radius-base);
+            margin: var(--space-16) 0;
+        }
+
+        .key-indicators, .defense-tip {
+            background-color: var(--color-bg-3);
+            padding: var(--space-16);
+            border-radius: var(--radius-base);
+            margin: var(--space-16) 0;
+        }
+
+        .key-indicators h5, .defense-tip strong {
+            margin-top: 0;
+            margin-bottom: var(--space-8);
+        }
+
+        .warning-list li, .question-list li {
+            margin-bottom: var(--space-8);
+        }
+
+        .warning-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .warning-list li {
+            position: relative;
+            padding-left: var(--space-24);
+        }
+
+        .warning-list li:before {
+            content: "⚠️";
+            position: absolute;
+            left: 0;
+        }
+
+        .defense-steps ol {
+            padding-left: var(--space-24);
+        }
+
+        .defense-steps li {
+            margin-bottom: var(--space-8);
+        }
+
+        .example-breakdown {
+            background-color: var(--color-bg-5);
+            padding: var(--space-16);
+            border-radius: var(--radius-base);
+            margin: var(--space-16) 0;
+        }
+
+        .example-breakdown p {
+            margin: var(--space-8) 0;
+        }
+
+        .training-summary {
+            background-color: var(--color-bg-1);
+        }
+
+        .takeaway-list {
+            padding-left: var(--space-24);
+        }
+
+        .takeaway-list li {
+            margin-bottom: var(--space-12);
+        }
+
+        .training-cta {
+            text-align: center;
+            margin-top: var(--space-32);
+            padding-top: var(--space-24);
+            border-top: 1px solid var(--color-card-border-inner);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {            
+            .training-meta {
+                flex-direction: column;
+                gap: var(--space-8);
+                align-items: center;
+            }
+        }
+    </style>
+</body>
+</html>

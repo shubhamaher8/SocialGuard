@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incident Reporting - SocialGuard</title>
+    <link rel="icon" type="image/svg+xml" href="/public/socialguard.png">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo" style="display: flex; align-items: center; gap: 10px;">
+                    <img src="/public/socialguard.png" alt="SocialGuard Logo" style="height: 40px; width: 40px;">
+                    <div>
+                        <h1 style="margin: 0;">SocialGuard</h1>
+                        <span class="subtitle">Social Engineering Attack Simulator</span>
+                    </div>
+                </div>
+                <nav class="main-nav">
+                    <button class="nav-btn" data-tab="dashboard">Home</button>
+                    <button class="nav-btn" data-tab="scenarios">Attack Library</button>
+                    <button class="nav-btn" data-tab="add-workers">Add Workers</button>
+                    <button class="nav-btn" data-tab="builder">Simulation Builder</button>
+                    <button class="nav-btn active" data-tab="training">Training</button>
+                    <button class="nav-btn" data-tab="analytics">Analytics</button>
+                    <button class="nav-btn" data-tab="reports">Reports</button>
+                    <button class="nav-btn" data-tab="logout">Logout</button>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <section class="training-article">
+                <div class="training-header">
+                    <h2>Incident Reporting</h2>
+                    <p class="training-description">Learn proper procedures for reporting suspicious activity and security incidents to minimize damage and improve organizational security.</p>
+                    <div class="training-meta">
+                        <span class="training-level">Level: Intermediate</span>
+                        <span class="training-time">Estimated time: 35 minutes</span>
+                    </div>
+                </div>
+
+                <div class="training-intro card">
+                    <div class="card__header">
+                        <h3>Introduction to Incident Reporting</h3>
+                    </div>
+                    <div class="card__body">
+                        <p>Incident reporting is a critical component of any organization's security posture. Promptly reporting suspicious activities or security incidents can significantly reduce the impact and spread of an attack, as well as provide valuable intelligence to improve defenses.</p>
+                        <p>This training module will help you understand what constitutes a reportable incident, the proper procedures for reporting, and the role each employee plays in maintaining the security of the organization through effective incident reporting.</p>
+                    </div>
+                </div>
+
+                <div class="training-sections">
+                    <!-- Section 1: Why Incident Reporting Matters -->
+                    <div class="training-section card">
+                        <div class="card__header">
+                            <h3>1. Why Incident Reporting Matters</h3>
+                        </div>
+                        <div class="card__body">
+                            <p>Understanding the importance of incident reporting helps motivate proper action when suspicious activities are detected.</p>
+                            
+                            <div class="training-subsection">
+                                <h4>Reducing Time to Detection</h4>
+                                <p>The sooner an incident is reported, the faster the security team can respond and mitigate damage.</p>
+                                <div class="example-box">
+                                    <strong>Impact of Reporting Time:</strong> The average cost of a data breach with a detection and containment time under 200 days is $3.74 million, compared to $4.86 million for breaches with a longer lifecycle (IBM Cost of a Data Breach Report).
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Limiting Scope of Compromise</h4>
+                                <p>Quick reporting can prevent attackers from moving laterally through the network.</p>
+                                <div class="key-indicators">
+                                    <h5>Benefits of Early Detection:</h5>
+                                    <ul>
+                                        <li>Reduces the number of affected systems</li>
+                                        <li>Limits data exfiltration</li>
+                                        <li>Prevents escalation of privileges</li>
+                                        <li>Minimizes operational disruption</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Improving Organizational Defenses</h4>
+                                <p>Each reported incident provides valuable intelligence for strengthening security measures.</p>
+                                <div class="example-box">
+                                    <strong>Example:</strong> After multiple employees reported similar phishing attempts, the organization implemented additional email filtering rules that blocked a subsequent large-scale campaign.
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Fulfilling Compliance Requirements</h4>
+                                <p>Many regulatory frameworks require timely incident reporting and response.</p>
+                                <div class="key-indicators">
+                                    <h5>Key Regulations:</h5>
+                                    <ul>
+                                        <li>GDPR: 72-hour notification requirement for certain breaches</li>
+                                        <li>HIPAA: Requires reporting of breaches affecting 500+ individuals</li>
+                                        <li>PCI DSS: Mandates incident response procedures for cardholder data</li>
+                                        <li>Various state and industry-specific reporting requirements</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 2: What to Report -->
+                    <div class="training-section card">
+                        <div class="card__header">
+                            <h3>2. What to Report</h3>
+                        </div>
+                        <div class="card__body">
+                            <p>Understanding what constitutes a reportable incident is essential for effective security monitoring. When in doubt, it's better to report than ignore.</p>
+
+                            <div class="training-subsection">
+                                <h4>Suspicious Emails</h4>
+                                <p>Any email that seems questionable should be reported to your security team.</p>
+                                <div class="key-indicators">
+                                    <h5>Report Emails With:</h5>
+                                    <ul>
+                                        <li>Unexpected attachments or links</li>
+                                        <li>Requests for sensitive information</li>
+                                        <li>Unusual sender addresses or domains</li>
+                                        <li>Poor grammar or unusual formatting</li>
+                                        <li>Urgent or threatening language</li>
+                                        <li>Unexpected requests from colleagues or executives</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Unusual System Behavior</h4>
+                                <p>Any unexpected changes to your system could indicate a security problem.</p>
+                                <div class="example-box">
+                                    <strong>Reportable Behaviors:</strong>
+                                    <ul>
+                                        <li>Unexpected software installations</li>
+                                        <li>System crashes or performance issues</li>
+                                        <li>Strange pop-ups or browser redirects</li>
+                                        <li>Files or data missing or altered</li>
+                                        <li>Computer running unusually slowly</li>
+                                        <li>Unauthorized account access or login attempts</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Physical Security Concerns</h4>
+                                <p>Security incidents aren't just digital - physical security breaches should also be reported.</p>
+                                <div class="key-indicators">
+                                    <h5>Physical Security Issues:</h5>
+                                    <ul>
+                                        <li>Unauthorized individuals in restricted areas</li>
+                                        <li>Tailgating through secure entrances</li>
+                                        <li>Unattended visitors</li>
+                                        <li>Missing equipment or devices</li>
+                                        <li>Visible sensitive information (printed documents)</li>
+                                        <li>Unsecured access points or doors</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Social Engineering Attempts</h4>
+                                <p>Any suspicious contact that seems designed to manipulate you into providing information or access.</p>
+                                <div class="example-box">
+                                    <strong>Examples to Report:</strong>
+                                    <ul>
+                                        <li>Callers asking for sensitive information</li>
+                                        <li>Individuals requesting unauthorized physical access</li>
+                                        <li>Someone pressuring you to bypass security procedures</li>
+                                        <li>Requests for information about employees or organization structure</li>
+                                        <li>Unexpected text messages with links or requesting information</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 3: How to Report Incidents -->
+                    <div class="training-section card">
+                        <div class="card__header">
+                            <h3>3. How to Report Incidents</h3>
+                        </div>
+                        <div class="card__body">
+                            <p>Following proper reporting procedures ensures that incidents are handled efficiently and effectively.</p>
+
+                            <div class="training-subsection">
+                                <h4>Initial Response Steps</h4>
+                                <p>The immediate actions you should take when you detect a potential security incident.</p>
+                                <div class="defense-steps">
+                                    <ol>
+                                        <li>Remain calm and avoid panic reactions</li>
+                                        <li>If possible, capture evidence (screenshots, email headers, etc.)</li>
+                                        <li>Avoid clicking suspicious links or opening attachments</li>
+                                        <li>Do not delete suspicious emails or files (they contain valuable evidence)</li>
+                                        <li>Disconnect from the network if you suspect active compromise (pull the network cable or turn off Wi-Fi)</li>
+                                    </ol>
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Reporting Channels</h4>
+                                <p>Organizations typically provide multiple methods for reporting security incidents.</p>
+                                <div class="key-indicators">
+                                    <h5>Common Reporting Channels:</h5>
+                                    <ul>
+                                        <li><strong>Security Hotline:</strong> [Organization-specific phone number]</li>
+                                        <li><strong>Email:</strong> security@[organization].com</li>
+                                        <li><strong>IT Help Desk:</strong> [Help desk contact information]</li>
+                                        <li><strong>Incident Reporting Portal:</strong> [URL for internal reporting system]</li>
+                                        <li><strong>Security Team Chat Channel:</strong> #security-incidents</li>
+                                        <li><strong>In-person reporting:</strong> To security team or manager</li>
+                                    </ul>
+                                </div>
+                                <div class="defense-tip">
+                                    <strong>Important:</strong> For critical incidents requiring immediate attention, call the security team directly rather than relying on email, which might not be seen immediately.
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>What Information to Include</h4>
+                                <p>Providing detailed information helps the security team respond effectively.</p>
+                                <div class="example-box">
+                                    <strong>Essential Information:</strong>
+                                    <ul>
+                                        <li><strong>Who:</strong> Your name and contact information</li>
+                                        <li><strong>What:</strong> Description of the incident or suspicious activity</li>
+                                        <li><strong>When:</strong> Time and date when you noticed the issue</li>
+                                        <li><strong>Where:</strong> Systems, applications, or locations involved</li>
+                                        <li><strong>How:</strong> How you discovered the issue</li>
+                                        <li><strong>Impact:</strong> Any observed effects on systems or operations</li>
+                                        <li><strong>Actions taken:</strong> Steps you've already taken in response</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Follow-up Responsibilities</h4>
+                                <p>Your role doesn't end with the initial report.</p>
+                                <div class="defense-steps">
+                                    <ol>
+                                        <li>Be available to answer follow-up questions from the security team</li>
+                                        <li>Document any additional observations or developments</li>
+                                        <li>Maintain confidentiality about the incident</li>
+                                        <li>Follow instructions provided by the security team</li>
+                                        <li>Participate in post-incident reviews if requested</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 4: Incident Severity Levels -->
+                    <div class="training-section card">
+                        <div class="card__header">
+                            <h3>4. Incident Severity Levels</h3>
+                        </div>
+                        <div class="card__body">
+                            <p>Understanding incident severity helps prioritize response efforts and set appropriate expectations.</p>
+
+                            <div class="training-subsection">
+                                <h4>Critical Incidents</h4>
+                                <p>High-impact incidents requiring immediate response, often involving confirmed breaches or significant system outages.</p>
+                                <div class="example-box">
+                                    <strong>Examples:</strong>
+                                    <ul>
+                                        <li>Confirmed data breach or unauthorized access to sensitive data</li>
+                                        <li>Ransomware infection spreading across multiple systems</li>
+                                        <li>Website defacement or public-facing system compromise</li>
+                                        <li>Denial of service attack affecting critical services</li>
+                                        <li>Compromise of privileged accounts (administrator, executive)</li>
+                                    </ul>
+                                </div>
+                                <div class="defense-tip">
+                                    <strong>Response Expectation:</strong> Immediate engagement from the security team with potential 24/7 response until contained.
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>High Severity Incidents</h4>
+                                <p>Serious incidents with potential for significant impact if not addressed promptly.</p>
+                                <div class="example-box">
+                                    <strong>Examples:</strong>
+                                    <ul>
+                                        <li>Malware detection on multiple systems</li>
+                                        <li>Targeted phishing campaigns against executives</li>
+                                        <li>Unauthorized access to internal systems (not containing sensitive data)</li>
+                                        <li>Loss or theft of company devices containing corporate data</li>
+                                        <li>Successful social engineering attack</li>
+                                    </ul>
+                                </div>
+                                <div class="defense-tip">
+                                    <strong>Response Expectation:</strong> Response typically begins within 1-4 hours, with regular updates until resolution.
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Medium Severity Incidents</h4>
+                                <p>Incidents requiring investigation but not posing an immediate threat to critical systems or data.</p>
+                                <div class="example-box">
+                                    <strong>Examples:</strong>
+                                    <ul>
+                                        <li>Isolated malware detection that was successfully quarantined</li>
+                                        <li>Suspicious emails received by multiple employees</li>
+                                        <li>Unusual system behavior without confirmed malicious activity</li>
+                                        <li>Multiple failed login attempts to user accounts</li>
+                                        <li>Policy violations without immediate security impact</li>
+                                    </ul>
+                                </div>
+                                <div class="defense-tip">
+                                    <strong>Response Expectation:</strong> Investigation typically begins within 24 hours during normal business hours.
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Low Severity Incidents</h4>
+                                <p>Minor security events with minimal impact or standard security observations.</p>
+                                <div class="example-box">
+                                    <strong>Examples:</strong>
+                                    <ul>
+                                        <li>Single spam email that was identified and not acted upon</li>
+                                        <li>Brief system outage with no indication of malicious activity</li>
+                                        <li>Minor policy violations with very low security impact</li>
+                                        <li>Failed login attempts within normal thresholds</li>
+                                        <li>Security questions or improvement suggestions</li>
+                                    </ul>
+                                </div>
+                                <div class="defense-tip">
+                                    <strong>Response Expectation:</strong> Handled as part of normal security operations, typically within 2-3 business days.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 5: After Reporting - What Happens Next -->
+                    <div class="training-section card">
+                        <div class="card__header">
+                            <h3>5. After Reporting - What Happens Next</h3>
+                        </div>
+                        <div class="card__body">
+                            <p>Understanding the incident response process helps set expectations and highlights the importance of your report.</p>
+
+                            <div class="training-subsection">
+                                <h4>Incident Response Process</h4>
+                                <p>The typical workflow after an incident is reported.</p>
+                                <div class="defense-steps">
+                                    <ol>
+                                        <li><strong>Triage:</strong> Initial assessment and severity classification</li>
+                                        <li><strong>Containment:</strong> Limiting the spread and impact of the incident</li>
+                                        <li><strong>Investigation:</strong> Detailed analysis to understand the scope and cause</li>
+                                        <li><strong>Eradication:</strong> Removing the threat from the environment</li>
+                                        <li><strong>Recovery:</strong> Restoring affected systems to normal operation</li>
+                                        <li><strong>Lessons Learned:</strong> Post-incident analysis and improvement</li>
+                                    </ol>
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Communication Flow</h4>
+                                <p>What you can expect to hear after reporting an incident.</p>
+                                <div class="example-box">
+                                    <strong>Typical Communications:</strong>
+                                    <ul>
+                                        <li>Initial acknowledgment of your report</li>
+                                        <li>Case or ticket number for reference</li>
+                                        <li>Requests for additional information if needed</li>
+                                        <li>Instructions for immediate actions you should take</li>
+                                        <li>Status updates for significant incidents</li>
+                                        <li>Closure notification when the incident is resolved</li>
+                                    </ul>
+                                </div>
+                                <div class="defense-tip">
+                                    <strong>Note:</strong> For security reasons, you may not receive full details about the investigation or specific findings.
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Your Continued Role</h4>
+                                <p>How you might be involved during incident response.</p>
+                                <div class="key-indicators">
+                                    <h5>Possible Responsibilities:</h5>
+                                    <ul>
+                                        <li>Providing additional details or evidence</li>
+                                        <li>Allowing security team access to your system</li>
+                                        <li>Temporarily using alternative systems or processes</li>
+                                        <li>Maintaining confidentiality about the incident</li>
+                                        <li>Participating in lessons learned discussions</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Feedback and Recognition</h4>
+                                <p>The importance of a positive reporting culture.</p>
+                                <div class="defense-tip">
+                                    <strong>Key Point:</strong> Reporting security incidents is always valued, even if they turn out to be false alarms. Security teams prefer to investigate potential issues rather than miss real threats.
+                                </div>
+                                <div class="example-box">
+                                    <strong>How Organizations Support Reporting:</strong>
+                                    <ul>
+                                        <li>No-blame policies for security reporting</li>
+                                        <li>Recognition programs for valuable security reports</li>
+                                        <li>Regular updates on security improvements made</li>
+                                        <li>Transparent communication about security incidents</li>
+                                        <li>Feedback mechanisms to improve reporting processes</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="training-summary card">
+                    <div class="card__body">
+                        <h3>Key Takeaways</h3>
+                        <ul class="takeaway-list">
+                            <li>Timely incident reporting is critical for minimizing damage and preventing breaches</li>
+                            <li>Report any suspicious emails, system behavior, physical security concerns, or social engineering attempts</li>
+                            <li>Follow your organization's designated reporting channels and provide detailed information</li>
+                            <li>Understand incident severity levels and appropriate response expectations</li>
+                            <li>Maintain confidentiality and be available for follow-up questions after reporting</li>
+                            <li>There are no negative consequences for good-faith security reports, even if they turn out to be false alarms</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+    <script type="module">
+        // Training-specific JavaScript
+        document.addEventListener('DOMContentLoaded', () => {
+            // Handle navigation
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const tabName = e.target.dataset.tab;
+                    if (tabName === 'dashboard') {
+                        window.location.href = 'index.html';
+                    } else if (tabName === 'training') {
+                        // Already on training page
+                    } else if (tabName === 'add-workers') {
+                        window.location.href = 'add_workers.html';
+                    } else if (tabName === 'logout') {
+                        // Handle logout - redirect to login page after signout
+                        async function handleLogout() {
+                            const supabaseUrl = process.env.PARCEL_VITE_SUPABASE_URL;
+                            const supabaseAnonKey = process.env.PARCEL_VITE_SUPABASE_ANON_KEY;
+                            const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+
+                            await supabase.auth.signOut();
+                            window.location.href = 'login.html';
+                        }
+                        handleLogout();
+                    } else {
+                        window.location.href = `index.html#${tabName}`;
+                    }
+                });
+            });
+
+            // Add smooth scrolling for training sections
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+    <style>
+        /* Training-specific styles */
+        .training-article {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: var(--space-16);
+        }
+
+        .training-header {
+            margin-bottom: var(--space-32);
+            text-align: center;
+        }
+
+        .training-description {
+            font-size: var(--font-size-lg);
+            color: var(--color-text-secondary);
+            max-width: 800px;
+            margin: var(--space-16) auto;
+        }
+
+        .training-meta {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-24);
+            margin-top: var(--space-16);
+        }
+
+        .training-level, .training-time {
+            background-color: var(--color-bg-1);
+            padding: var(--space-8) var(--space-16);
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .training-intro {
+            margin-bottom: var(--space-32);
+        }
+
+        .training-sections {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-32);
+            margin-bottom: var(--space-32);
+        }
+
+        .training-section {
+            transition: transform 0.2s var(--ease-standard);
+        }
+
+        .training-section:hover {
+            transform: translateY(-2px);
+        }
+
+        .training-subsection {
+            margin-bottom: var(--space-24);
+            padding-bottom: var(--space-16);
+            border-bottom: 1px solid var(--color-card-border);
+        }
+
+        .training-subsection:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .training-subsection h4 {
+            color: var(--color-primary);
+            margin-bottom: var(--space-12);
+        }
+
+        .example-box {
+            background-color: var(--color-bg-2);
+            padding: var(--space-16);
+            border-radius: var(--radius-base);
+            margin: var(--space-16) 0;
+        }
+
+        .key-indicators, .defense-tip {
+            background-color: var(--color-bg-3);
+            padding: var(--space-16);
+            border-radius: var(--radius-base);
+            margin: var(--space-16) 0;
+        }
+
+        .key-indicators h5, .defense-tip strong {
+            margin-top: 0;
+            margin-bottom: var(--space-8);
+        }
+
+        .warning-list li, .question-list li {
+            margin-bottom: var(--space-8);
+        }
+
+        .warning-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .warning-list li {
+            position: relative;
+            padding-left: var(--space-24);
+        }
+
+        .warning-list li:before {
+            content: "⚠️";
+            position: absolute;
+            left: 0;
+        }
+
+        .defense-steps ol {
+            padding-left: var(--space-24);
+        }
+
+        .defense-steps li {
+            margin-bottom: var(--space-8);
+        }
+
+        .example-breakdown {
+            background-color: var(--color-bg-5);
+            padding: var(--space-16);
+            border-radius: var(--radius-base);
+            margin: var(--space-16) 0;
+        }
+
+        .example-breakdown p {
+            margin: var(--space-8) 0;
+        }
+
+        .training-summary {
+            background-color: var(--color-bg-1);
+        }
+
+        .takeaway-list {
+            padding-left: var(--space-24);
+        }
+
+        .takeaway-list li {
+            margin-bottom: var(--space-12);
+        }
+
+        .training-cta {
+            text-align: center;
+            margin-top: var(--space-32);
+            padding-top: var(--space-24);
+            border-top: 1px solid var(--color-card-border-inner);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {            
+            .training-meta {
+                flex-direction: column;
+                gap: var(--space-8);
+                align-items: center;
+            }
+        }
+    </style>
+</body>
+</html>

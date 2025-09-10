@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Security Best Practices - SocialGuard</title>
+    <link rel="icon" type="image/svg+xml" href="/public/socialguard.png">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo" style="display: flex; align-items: center; gap: 10px;">
+                    <img src="/public/socialguard.png" alt="SocialGuard Logo" style="height: 40px; width: 40px;">
+                    <div>
+                        <h1 style="margin: 0;">SocialGuard</h1>
+                        <span class="subtitle">Social Engineering Attack Simulator</span>
+                    </div>
+                </div>
+                <nav class="main-nav">
+                    <button class="nav-btn" data-tab="dashboard">Home</button>
+                    <button class="nav-btn" data-tab="scenarios">Attack Library</button>
+                    <button class="nav-btn" data-tab="add-workers">Add Workers</button>
+                    <button class="nav-btn" data-tab="builder">Simulation Builder</button>
+                    <button class="nav-btn active" data-tab="training">Training</button>
+                    <button class="nav-btn" data-tab="analytics">Analytics</button>
+                    <button class="nav-btn" data-tab="reports">Reports</button>
+                    <button class="nav-btn" data-tab="logout">Logout</button>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <section class="training-article">
+                <div class="training-header">
+                    <h2>Email Security Best Practices</h2>
+                    <p class="training-description">Master email security fundamentals and phishing detection to protect yourself and your organization from email-based threats.</p>
+                    <div class="training-meta">
+                        <span class="training-level">Level: Intermediate</span>
+                        <span class="training-time">Estimated time: 45 minutes</span>
+                    </div>
+                </div>
+
+                <div class="training-intro card">
+                    <div class="card__header">
+                        <h3>Introduction to Email Security</h3>
+                    </div>
+                    <div class="card__body">
+                        <p>Email remains the primary communication channel for most organizations and also one of the most vulnerable attack vectors. Understanding email security fundamentals is essential for protecting sensitive information and preventing unauthorized access to systems.</p>
+                        <p>This training module will help you identify and defend against common email-based threats, with a special focus on recognizing and responding to phishing attempts.</p>
+                    </div>
+                </div>
+
+                <div class="training-sections">
+                    <!-- Section 1: Common Email Threats -->
+                    <div class="training-section card">
+                        <div class="card__header">
+                            <h3>1. Common Email Threats</h3>
+                        </div>
+                        <div class="card__body">
+                            <p>Email-based attacks come in various forms, each with distinct characteristics and objectives. Understanding these threats is the first step in strengthening your defense.</p>
+                            
+                            <div class="training-subsection">
+                                <h4>Phishing</h4>
+                                <p>Deceptive emails designed to trick recipients into revealing sensitive information or installing malware.</p>
+                                <div class="example-box">
+                                    <strong>Example:</strong> An email appearing to be from your bank asking you to "verify your account information" by clicking on a link that leads to a fake website.
+                                </div>
+                                <div class="key-indicators">
+                                    <h5>Warning Signs:</h5>
+                                    <ul>
+                                        <li>Urgent requests for personal information</li>
+                                        <li>Suspicious sender addresses with slight misspellings</li>
+                                        <li>Poor grammar or formatting inconsistent with legitimate communications</li>
+                                        <li>Hovering over links reveals suspicious URLs</li>
+                                        <li>Generic greetings rather than personalized ones</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Spear Phishing</h4>
+                                <p>Targeted phishing attacks customized for specific individuals or organizations using personal information.</p>
+                                <div class="example-box">
+                                    <strong>Example:</strong> An email appearing to be from your CEO mentioning a recent company event and requesting an urgent wire transfer or purchase of gift cards.
+                                </div>
+                                <div class="key-indicators">
+                                    <h5>Warning Signs:</h5>
+                                    <ul>
+                                        <li>Unusually urgent requests from authority figures</li>
+                                        <li>Requests that bypass normal procedures</li>
+                                        <li>Emails containing accurate personal or company details</li>
+                                        <li>Slight inconsistencies in communication style</li>
+                                        <li>Requests for secrecy or confidentiality</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Malware Delivery</h4>
+                                <p>Emails containing malicious attachments or links designed to install harmful software.</p>
+                                <div class="example-box">
+                                    <strong>Example:</strong> An email with an attachment labeled "Invoice" or "Shipping Information" containing a macro-enabled document that installs ransomware.
+                                </div>
+                                <div class="key-indicators">
+                                    <h5>Warning Signs:</h5>
+                                    <ul>
+                                        <li>Unexpected attachments, especially executable files (.exe, .zip, .js)</li>
+                                        <li>Documents requesting to "Enable Macros"</li>
+                                        <li>Suspicious file extensions or double extensions (invoice.pdf.exe)</li>
+                                        <li>Links to unfamiliar websites or download pages</li>
+                                        <li>Emails claiming you need to download a file to view information</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Business Email Compromise (BEC)</h4>
+                                <p>Sophisticated attacks targeting businesses, often impersonating executives to authorize fraudulent transfers.</p>
+                                <div class="example-box">
+                                    <strong>Example:</strong> An attacker gains access to a CFO's email account and sends payment change instructions to the accounting department for an existing vendor.
+                                </div>
+                                <div class="key-indicators">
+                                    <h5>Warning Signs:</h5>
+                                    <ul>
+                                        <li>Requests to change payment information or wire instructions</li>
+                                        <li>Emails from executives with unusual timing or requests</li>
+                                        <li>Slight variations in email addresses (john.doe@company-inc.com vs. john.doe@company_inc.com)</li>
+                                        <li>Pressure to act quickly and maintain confidentiality</li>
+                                        <li>Emails sent outside normal business hours</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 2: Email Authentication Systems -->
+                    <div class="training-section card">
+                        <div class="card__header">
+                            <h3>2. Email Authentication Systems</h3>
+                        </div>
+                        <div class="card__body">
+                            <p>Understanding how email authentication works can help you better evaluate the legitimacy of incoming messages and protect your own communications.</p>
+
+                            <div class="training-subsection">
+                                <h4>SPF (Sender Policy Framework)</h4>
+                                <p>An email authentication method designed to detect forged sender addresses by verifying sending server authorization.</p>
+                                <div class="defense-tip">
+                                    <strong>Why It Matters:</strong> SPF helps prevent email spoofing by specifying which servers are authorized to send email from your domain.
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>DKIM (DomainKeys Identified Mail)</h4>
+                                <p>A digital signature system that allows organizations to take responsibility for transmitting a message by "signing" it in a way that can be verified by recipients.</p>
+                                <div class="defense-tip">
+                                    <strong>Why It Matters:</strong> DKIM ensures email content hasn't been tampered with during transmission and verifies the sender's domain.
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>DMARC (Domain-based Message Authentication, Reporting & Conformance)</h4>
+                                <p>A protocol that uses SPF and DKIM to determine if an email message is legitimate, with clear policies for handling failed messages.</p>
+                                <div class="defense-tip">
+                                    <strong>Why It Matters:</strong> DMARC allows domain owners to specify how email receivers should handle messages that don't pass authentication checks.
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Understanding Email Headers</h4>
+                                <p>Email headers contain metadata about the message's route and can reveal signs of spoofing or deception.</p>
+                                <div class="example-box">
+                                    <strong>Key Headers to Check:</strong> 
+                                    <ul>
+                                        <li><strong>From:</strong> The displayed sender name and address</li>
+                                        <li><strong>Return-Path:</strong> Where replies will be sent</li>
+                                        <li><strong>Received:</strong> The path email took to reach you</li>
+                                        <li><strong>Authentication-Results:</strong> Results of SPF, DKIM, and DMARC checks</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 3: Identifying Phishing Emails -->
+                    <div class="training-section card">
+                        <div class="card__header">
+                            <h3>3. Identifying Phishing Emails</h3>
+                        </div>
+                        <div class="card__body">
+                            <p>Developing a systematic approach to evaluating emails can significantly reduce your risk of falling victim to phishing attempts.</p>
+
+                            <div class="training-subsection">
+                                <h4>Check the Sender</h4>
+                                <p>Verify that the email address actually matches the purported sender.</p>
+                                <div class="example-box">
+                                    <strong>Red Flags:</strong>
+                                    <ul>
+                                        <li>Similar but not exact domain names (amazom.com vs. amazon.com)</li>
+                                        <li>Personal email addresses for business communications (amazon.support@gmail.com)</li>
+                                        <li>Extra words or characters in the domain (paypal-secure.com)</li>
+                                        <li>Mismatches between display name and email address</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Inspect Links Carefully</h4>
+                                <p>Always verify the actual destination of links before clicking.</p>
+                                <div class="defense-steps">
+                                    <ol>
+                                        <li>Hover over links to see the actual URL in the status bar</li>
+                                        <li>Check if the domain matches the legitimate organization</li>
+                                        <li>Be wary of URL shorteners that hide the true destination</li>
+                                        <li>Look for HTTPS and a valid certificate for sensitive websites</li>
+                                    </ol>
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Evaluate the Content</h4>
+                                <p>Assess the message content for signs of manipulation or deception.</p>
+                                <ul class="warning-list">
+                                    <li><strong>Urgency</strong> - Pressuring you to act immediately to prevent negative consequences</li>
+                                    <li><strong>Fear</strong> - Threats about account suspension or security breaches</li>
+                                    <li><strong>Curiosity</strong> - Enticing you to click on something interesting or unexpected</li>
+                                    <li><strong>Limited offers</strong> - Deals that are "too good to be true" or time-limited</li>
+                                    <li><strong>Unusual requests</strong> - Anything outside normal business processes or communication patterns</li>
+                                </ul>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Be Wary of Attachments</h4>
+                                <p>Exercise extreme caution with email attachments, especially unexpected ones.</p>
+                                <div class="defense-tip">
+                                    <strong>High-Risk Attachments:</strong> .exe, .js, .vbs, .hta, .scr, .ps1, .bat, macro-enabled Office documents (.docm, .xlsm)
+                                </div>
+                                <div class="defense-steps">
+                                    <ol>
+                                        <li>Never open attachments from unknown senders</li>
+                                        <li>Verify with the sender through another channel if unexpected</li>
+                                        <li>Scan attachments with updated antivirus software</li>
+                                        <li>Be suspicious of password-protected archives with passwords in the email</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 4: Secure Email Practices -->
+                    <div class="training-section card">
+                        <div class="card__header">
+                            <h3>4. Secure Email Practices</h3>
+                        </div>
+                        <div class="card__body">
+                            <p>Implementing these email security best practices will help protect your communications and reduce organizational risk.</p>
+
+                            <div class="training-subsection">
+                                <h4>Use Strong Authentication</h4>
+                                <p>Protect email accounts from unauthorized access.</p>
+                                <div class="defense-steps">
+                                    <ol>
+                                        <li>Enable Multi-Factor Authentication (MFA) for all email accounts</li>
+                                        <li>Use a unique, complex password for your email account</li>
+                                        <li>Never share email credentials with anyone</li>
+                                        <li>Be cautious of password reset emails you didn't request</li>
+                                    </ol>
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Be Mindful About Sharing Information</h4>
+                                <p>Consider what information should and shouldn't be sent via email.</p>
+                                <div class="example-box">
+                                    <strong>Never Send via Email:</strong>
+                                    <ul>
+                                        <li>Passwords or access credentials</li>
+                                        <li>Unencrypted sensitive documents</li>
+                                        <li>Financial account information</li>
+                                        <li>Social Security numbers/National IDs</li>
+                                        <li>Full credit card numbers</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Use Email Encryption When Necessary</h4>
+                                <p>Protect sensitive information with appropriate encryption.</p>
+                                <div class="defense-tip">
+                                    <strong>When to Encrypt:</strong> When sending confidential information, personal data, financial details, or anything that could cause harm if intercepted.
+                                </div>
+                                <div class="defense-steps">
+                                    <ol>
+                                        <li>Use your organization's approved encryption solution</li>
+                                        <li>Password-protect sensitive attachments (send password via different channel)</li>
+                                        <li>Consider secure file sharing alternatives for highly sensitive information</li>
+                                        <li>Verify recipients before sending encrypted information</li>
+                                    </ol>
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Manage Your Email Account</h4>
+                                <p>Regularly maintain your email account to minimize security risks.</p>
+                                <div class="defense-steps">
+                                    <ol>
+                                        <li>Regularly review account access and connected applications</li>
+                                        <li>Log out of email when using shared computers</li>
+                                        <li>Keep email clients and browsers updated</li>
+                                        <li>Use email filtering to reduce spam and phishing attempts</li>
+                                        <li>Report suspicious emails to your IT security team</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 5: Responding to Suspicious Emails -->
+                    <div class="training-section card">
+                        <div class="card__header">
+                            <h3>5. Responding to Suspicious Emails</h3>
+                        </div>
+                        <div class="card__body">
+                            <p>Knowing how to properly handle suspicious emails is crucial for protecting yourself and your organization.</p>
+
+                            <div class="training-subsection">
+                                <h4>Don't Engage</h4>
+                                <p>Avoid interacting with suspicious emails in any way.</p>
+                                <div class="defense-steps">
+                                    <ol>
+                                        <li>Don't click on links or open attachments</li>
+                                        <li>Don't reply to the sender</li>
+                                        <li>Don't forward the email except to your IT security team</li>
+                                        <li>Don't enter any information on websites linked from suspicious emails</li>
+                                    </ol>
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Verify Through Alternative Channels</h4>
+                                <p>If an email appears to come from someone you know but seems suspicious, verify through a different method.</p>
+                                <div class="example-box">
+                                    <strong>Example:</strong> If you receive an unusual request from your manager, call them directly or speak to them in person rather than replying to the email.
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Report Properly</h4>
+                                <p>Follow your organization's procedures for reporting suspicious emails.</p>
+                                <div class="defense-steps">
+                                    <ol>
+                                        <li>Use your email client's "Report Phishing" feature if available</li>
+                                        <li>Forward the suspicious email as an attachment to your IT security team</li>
+                                        <li>Include what made you suspicious in your report</li>
+                                        <li>If you've already clicked a link or entered information, report immediately to IT security</li>
+                                    </ol>
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Take Immediate Action if Compromised</h4>
+                                <p>If you believe you've fallen victim to a phishing attempt, acting quickly can minimize damage.</p>
+                                <div class="defense-steps">
+                                    <ol>
+                                        <li>Disconnect your device from the network</li>
+                                        <li>Change passwords for any potentially compromised accounts from a different device</li>
+                                        <li>Contact your IT security team immediately</li>
+                                        <li>Monitor accounts for unauthorized activity</li>
+                                        <li>Document what happened while details are fresh in your mind</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="training-summary card">
+                    <div class="card__body">
+                        <h3>Key Takeaways</h3>
+                        <ul class="takeaway-list">
+                            <li>Email remains one of the most common vectors for security breaches and data theft</li>
+                            <li>Phishing attacks are becoming increasingly sophisticated and targeted</li>
+                            <li>Always verify unexpected or suspicious emails through alternative channels</li>
+                            <li>Inspect sender addresses, links, and attachments carefully before taking any action</li>
+                            <li>Enable multi-factor authentication for all email accounts</li>
+                            <li>Report suspicious emails according to your organization's procedures</li>
+                            <li>Never send sensitive information via unencrypted email</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+    <script type="module">
+        // Training-specific JavaScript
+        document.addEventListener('DOMContentLoaded', () => {
+            // Handle navigation
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const tabName = e.target.dataset.tab;
+                    if (tabName === 'dashboard') {
+                        window.location.href = 'index.html';
+                    } else if (tabName === 'training') {
+                        // Already on training page
+                    } else if (tabName === 'add-workers') {
+                        window.location.href = 'add_workers.html';
+                    } else if (tabName === 'logout') {
+                        // Handle logout - redirect to login page after signout
+                        async function handleLogout() {
+                            const supabaseUrl = process.env.PARCEL_VITE_SUPABASE_URL;
+                            const supabaseAnonKey = process.env.PARCEL_VITE_SUPABASE_ANON_KEY;
+                            const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+
+                            await supabase.auth.signOut();
+                            window.location.href = 'login.html';
+                        }
+                        handleLogout();
+                    } else {
+                        window.location.href = `index.html#${tabName}`;
+                    }
+                });
+            });
+
+            // Add smooth scrolling for training sections
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+    <style>
+        /* Training-specific styles */
+        .training-article {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: var(--space-16);
+        }
+
+        .training-header {
+            margin-bottom: var(--space-32);
+            text-align: center;
+        }
+
+        .training-description {
+            font-size: var(--font-size-lg);
+            color: var(--color-text-secondary);
+            max-width: 800px;
+            margin: var(--space-16) auto;
+        }
+
+        .training-meta {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-24);
+            margin-top: var(--space-16);
+        }
+
+        .training-level, .training-time {
+            background-color: var(--color-bg-1);
+            padding: var(--space-8) var(--space-16);
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .training-intro {
+            margin-bottom: var(--space-32);
+        }
+
+        .training-sections {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-32);
+            margin-bottom: var(--space-32);
+        }
+
+        .training-section {
+            transition: transform 0.2s var(--ease-standard);
+        }
+
+        .training-section:hover {
+            transform: translateY(-2px);
+        }
+
+        .training-subsection {
+            margin-bottom: var(--space-24);
+            padding-bottom: var(--space-16);
+            border-bottom: 1px solid var(--color-card-border);
+        }
+
+        .training-subsection:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .training-subsection h4 {
+            color: var(--color-primary);
+            margin-bottom: var(--space-12);
+        }
+
+        .example-box {
+            background-color: var(--color-bg-2);
+            padding: var(--space-16);
+            border-radius: var(--radius-base);
+            margin: var(--space-16) 0;
+        }
+
+        .key-indicators, .defense-tip {
+            background-color: var(--color-bg-3);
+            padding: var(--space-16);
+            border-radius: var(--radius-base);
+            margin: var(--space-16) 0;
+        }
+
+        .key-indicators h5, .defense-tip strong {
+            margin-top: 0;
+            margin-bottom: var(--space-8);
+        }
+
+        .warning-list li, .question-list li {
+            margin-bottom: var(--space-8);
+        }
+
+        .warning-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .warning-list li {
+            position: relative;
+            padding-left: var(--space-24);
+        }
+
+        .warning-list li:before {
+            content: "⚠️";
+            position: absolute;
+            left: 0;
+        }
+
+        .defense-steps ol {
+            padding-left: var(--space-24);
+        }
+
+        .defense-steps li {
+            margin-bottom: var(--space-8);
+        }
+
+        .example-breakdown {
+            background-color: var(--color-bg-5);
+            padding: var(--space-16);
+            border-radius: var(--radius-base);
+            margin: var(--space-16) 0;
+        }
+
+        .example-breakdown p {
+            margin: var(--space-8) 0;
+        }
+
+        .training-summary {
+            background-color: var(--color-bg-1);
+        }
+
+        .takeaway-list {
+            padding-left: var(--space-24);
+        }
+
+        .takeaway-list li {
+            margin-bottom: var(--space-12);
+        }
+
+        .training-cta {
+            text-align: center;
+            margin-top: var(--space-32);
+            padding-top: var(--space-24);
+            border-top: 1px solid var(--color-card-border-inner);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {            
+            .training-meta {
+                flex-direction: column;
+                gap: var(--space-8);
+                align-items: center;
+            }
+        }
+    </style>
+</body>
+</html>

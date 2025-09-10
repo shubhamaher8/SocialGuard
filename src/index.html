@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SocialGuard - Social Engineering Simulator</title>
+    <link rel="icon" type="image/svg+xml" href="/public/socialguard.png">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo" style="display: flex; align-items: center; gap: 10px;">
+                    <img src="/public/socialguard.png" alt="SocialGuard Logo" style="height: 40px; width: 40px;">
+                    <div>
+                        <h1 style="margin: 0;">SocialGuard</h1>
+                        <span class="subtitle">Social Engineering Attack Simulator</span>
+                    </div>
+                </div>
+                <nav class="main-nav">
+                    <button class="nav-btn active" data-tab="dashboard">Home</button>
+                    <button class="nav-btn" data-tab="scenarios">Attack Library</button>
+                    <button class="nav-btn" data-tab="add-workers">Add Workers</button>
+                    <button class="nav-btn" data-tab="builder">Simulation Builder</button>
+                    <button class="nav-btn" data-tab="training">Training</button>
+                    <button class="nav-btn" data-tab="analytics">Analytics</button>
+                    <button class="nav-btn" data-tab="reports">Reports</button>
+                    <button class="nav-btn" data-tab="logout">Logout</button>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Tab -->
+            <section id="dashboard" class="tab-content active">
+                <div class="welcome-section">
+                    <h2>Welcome to Social Engineering Attack Simulator</h2>
+                    <p>Test and improve your organization's resilience against social engineering attacks through realistic simulations and comprehensive training programs.</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Global Failure Rate</h3>
+                        <div class="stat-value">20%</div>
+                        <div class="stat-desc">Industry average for social engineering attacks</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Target Failure Rate</h3>
+                        <div class="stat-value">5%</div>
+                        <div class="stat-desc">Your organization's target benchmark</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Reporting Improvement</h3>
+                        <div class="stat-value">60%</div>
+                        <div class="stat-desc">Average increase in threat reporting</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Training Time</h3>
+                        <div class="stat-value">45 min</div>
+                        <div class="stat-desc">Average time to complete training modules</div>
+                    </div>
+                </div>
+
+                <div class="charts-section">
+                    <div class="chart-container">
+                        <h3>Attack Types by Frequency</h3>
+                        <img src="https://ppl-ai-code-interpreter-files.s3.amazonaws.com/web/direct-files/3138b98ca4b097138b07dc751bc60f9f/7de49060-3615-4feb-bfdb-6a195357bada/14e11903.png" alt="Social Engineering Attack Types by Frequency" class="dashboard-chart">
+                    </div>
+                    <div class="chart-container">
+                        <h3>Training Effectiveness Over Time</h3>
+                        <img src="https://ppl-ai-code-interpreter-files.s3.amazonaws.com/web/direct-files/3138b98ca4b097138b07dc751bc60f9f/46444f04-3f92-4cdf-8602-20682f887995/1ae0f813.png" alt="Phishing Training Effectiveness Over Time" class="dashboard-chart">
+                    </div>
+                </div>
+
+                <div class="case-studies">
+                    <h3>Success Stories</h3>
+                    <div class="case-study-grid">
+                        <div class="case-study-card">
+                            <h4>Royal Bank of Scotland</h4>
+                            <p><strong>78% reduction</strong> in susceptibility</p>
+                            <span class="employees">80,000 employees trained</span>
+                        </div>
+                        <div class="case-study-card">
+                            <h4>Northeastern US College</h4>
+                            <p><strong>90% reduction</strong> in successful attacks</p>
+                            <span class="timeframe">Achieved in 12 months</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Attack Scenarios Tab -->
+            <section id="scenarios" class="tab-content">
+                <h2>Attack Scenario Library</h2>
+                <p>Explore different types of social engineering attacks and their characteristics.</p>
+                
+                <div class="scenarios-grid">
+                    <div class="scenario-card" data-attack="phishing">
+                        <div class="scenario-header">
+                            <h3>Phishing</h3>
+                            <span class="frequency">85% frequency</span>
+                        </div>
+                        <p>Email-based deception to steal credentials</p>
+                        <div class="scenario-details">
+                            <span class="templates">1 template</span>
+                            <span class="difficulty">Advanced</span>
+                        </div>
+                        <button class="btn btn--primary btn--sm view-templates-btn">View Template</button>
+                    </div>
+
+                    <div class="scenario-card" data-attack="smishing">
+                        <div class="scenario-header">
+                            <h3>Smishing</h3>
+                            <span class="frequency">30% frequency</span>
+                        </div>
+                        <p>SMS/text message based attacks</p>
+                        <div class="scenario-details">
+                            <span class="templates">1 template</span>
+                            <span class="difficulty">Basic</span>
+                        </div>
+                        <button class="btn btn--primary btn--sm view-templates-btn">View Template</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Simulation Builder Tab -->
+            <section id="builder" class="tab-content">
+                <h2>Simulation Builder</h2>
+                <p>Create and configure custom social engineering simulation campaigns.</p>
+                
+                <div class="builder-container">
+                    <form class="simulation-form">
+                        <div class="form-section">
+                            <h3>Campaign Details</h3>
+                            <div class="form-group">
+                                <label class="form-label" for="campaign-name">Campaign Name</label>
+                                <input type="text" id="campaign-name" class="form-control" placeholder="Enter campaign name">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="attack-type">Attack Type</label>
+                                <select id="attack-type" class="form-control">
+                                    <option value="">Select attack type</option>
+                                    <option value="phishing">Phishing</option>
+                                    <option value="smishing">Smishing</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="difficulty">Scenario Template</label>
+                                <select id="difficulty" class="form-control">
+                                    <option value="">Select scenario template</option>
+                                    <option value="amazon offer claim">Amazon Offer Claim</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3>Target Selection</h3>
+                            <div class="form-group">
+                                <label class="form-label">Target Departments</label>
+                                <div class="checkbox-group">
+                                    <label><input type="checkbox" value="Finance"> Finance</label>
+                                    <label><input type="checkbox" value="IT"> IT</label>
+                                    <label><input type="checkbox" value="Marketing"> Marketing</label>
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-actions">
+                            <button type="button" class="btn btn--primary launch-campaign-btn">Launch Campaign</button>
+                        </div>
+                    </form>
+
+                    <div class="preview-section">
+                        <h3>Campaign Preview</h3>
+                        <div class="preview-card">
+                            <div class="preview-placeholder">
+                                <p>Select attack type and difficulty to preview simulation content</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Training Tab -->
+            <section id="training" class="tab-content">
+                <h2>Training Modules</h2>
+                <p>Interactive training content to educate employees about social engineering threats.</p>
+                
+                <div class="training-modules">
+                    <div class="module-card">
+                        <h3>Identifying Social Engineering</h3>
+                        <p>Learn to recognize common social engineering tactics.</p>
+                        <button class="btn btn--primary btn--sm">Read Module</button>
+                    </div>
+
+                    <div class="module-card">
+                        <h3>Email Security Best Practices</h3>
+                        <p>Master email security fundamentals and phishing detection.</p>
+                        <button class="btn btn--primary btn--sm">Read Module</button>
+                    </div>
+
+                    <div class="module-card">
+                        <h3>Incident Reporting</h3>
+                        <p>Learn proper procedures for reporting suspicious activity.</p>
+                        <button class="btn btn--primary btn--sm">Read Module</button>
+                    </div>
+
+                    <div class="module-card">
+                        <h3>Case Studies & Examples</h3>
+                        <p>Review real-world social engineering attack examples.</p>
+                        <button class="btn btn--primary btn--sm">Read Module</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analytics Tab -->
+            <section id="analytics" class="tab-content">
+                <h2>Results Analytics</h2>
+                <p>Track performance metrics and analyze simulation results.</p>
+                
+                <div class="analytics-dashboard">
+                    <div class="metrics-row">
+                        <div class="metric-card">
+                            <h3>Overall Success Rate</h3>
+                            <div class="metric-value success">87%</div>
+                            <div class="metric-change positive">↑ 12% from last month</div>
+                        </div>
+                        <div class="metric-card">
+                            <h3>Risk Score</h3>
+                            <div class="metric-value warning">Medium</div>
+                            <div class="metric-change neutral">↔ No change</div>
+                        </div>
+                        <div class="metric-card">
+                            <h3>Employees Trained</h3>
+                            <div class="metric-value">2,847</div>
+                            <div class="metric-change positive">↑ 234 this month</div>
+                        </div>
+                    </div>
+
+                    <div class="chart-row">
+                        <div class="department-performance">
+                            <h3>Performance by Department</h3>
+                            <div class="department-list">
+                                <div class="department-item">
+                                    <span class="dept-name">IT</span>
+                                    <div class="performance-bar">
+                                        <div class="bar-fill" style="width: 95%"></div>
+                                    </div>
+                                    <span class="dept-score">95%</span>
+                                </div>
+                                <div class="department-item">
+                                    <span class="dept-name">Finance</span>
+                                    <div class="performance-bar">
+                                        <div class="bar-fill" style="width: 88%"></div>
+                                    </div>
+                                    <span class="dept-score">88%</span>
+                                </div>
+                                <div class="department-item">
+                                    <span class="dept-name">Marketing</span>
+                                    <div class="performance-bar">
+                                        <div class="bar-fill" style="width: 78%"></div>
+                                    </div>
+                                    <span class="dept-score">78%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="improvement-trends">
+                            <h3>Improvement Trends</h3>
+                            <div class="trend-chart" style="position: relative; height: 300px;">
+                                <canvas id="improvementChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Reports Tab -->
+            <section id="reports" class="tab-content">
+                <h2>Reporting System</h2>
+                <p>Generate comprehensive reports for management and compliance tracking.</p>
+                
+                <div class="reports-section">
+                    <div class="report-generator">
+                        <h3>Generate New Report</h3>
+                        <div class="report-options">
+                            <div class="form-group">
+                                <label class="form-label">Report Type</label>
+                                <select class="form-control">
+                                    <option value="executive">Detailed Summary</option>
+                                    <option value="detailed">Smishing Report</option>
+                                    <option value="compliance">Phishing Report</option>
+                                    <option value="training">Training Report</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Time Period</label>
+                                <select class="form-control">
+                                    <option value="last30">Last 30 Days</option>
+                                    <option value="last90">Last 3 Months</option>
+                                    <option value="last12">Last 12 Months</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Include Departments</label>
+                                <div class="checkbox-group">
+                                    <label><input type="checkbox" checked> All Departments</label>
+                                    <label><input type="checkbox"> Finance</label>
+                                    <label><input type="checkbox"> IT</label>
+                                    <label><input type="checkbox"> Marketing</label>
+                                </div>
+                            </div>
+                            <button class="btn btn--primary generate-report-btn">Generate Report</button>
+                        </div>
+                    </div>
+
+                    <div class="recent-reports">
+                        <h3>Recent Reports</h3>
+                        <div class="report-list">
+                            <div class="report-item">
+                                <div class="report-info">
+                                    <h4>Detailed Summary</h4>
+                                    <span class="report-date">Generated: Aug 5, 2025</span>
+                                    <span class="report-type">Detailed Summary</span>
+                                </div>
+                                <div class="report-actions">
+                                    <button class="btn btn--secondary btn--sm">View</button>
+                                    <button class="btn btn--outline btn--sm">Download PDF</button>
+                                </div>
+                            </div>
+                            <div class="report-item">
+                                <div class="report-info">
+                                    <h4>Monthly Training Report</h4>
+                                    <span class="report-date">Generated: Aug 1, 2025</span>
+                                    <span class="report-type">Training Report</span>
+                                </div>
+                                <div class="report-actions">
+                                    <button class="btn btn--secondary btn--sm">View</button>
+                                    <button class="btn btn--outline btn--sm">Download PDF</button>
+                                </div>
+                            </div>
+                            <div class="report-item">
+                                <div class="report-info">
+                                    <h4>Phishing Report</h4>
+                                    <span class="report-date">Generated: Jul 28, 2025</span>
+                                    <span class="report-type">Phishing Report</span>
+                                </div>
+                                <div class="report-actions">
+                                    <button class="btn btn--secondary btn--sm">View</button>
+                                    <button class="btn btn--outline btn--sm">Download PDF</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal for Attack Templates -->
+    <div id="templatesModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Attack Templates</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="modalContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Campaign Launched Successfully</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Your social engineering simulation campaign has Started Successfully.</p>
+                <div class="modal-actions">
+                    <button class="btn btn--primary modal-close">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>

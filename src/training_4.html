@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Studies & Examples - SocialGuard</title>
+    <link rel="icon" type="image/svg+xml" href="/public/socialguard.png">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo" style="display: flex; align-items: center; gap: 10px;">
+                    <img src="/public/socialguard.png" alt="SocialGuard Logo" style="height: 40px; width: 40px;">
+                    <div>
+                        <h1 style="margin: 0;">SocialGuard</h1>
+                        <span class="subtitle">Social Engineering Attack Simulator</span>
+                    </div>
+                </div>
+                <nav class="main-nav">
+                    <button class="nav-btn" data-tab="dashboard">Home</button>
+                    <button class="nav-btn" data-tab="scenarios">Attack Library</button>
+                    <button class="nav-btn" data-tab="add-workers">Add Workers</button>
+                    <button class="nav-btn" data-tab="builder">Simulation Builder</button>
+                    <button class="nav-btn active" data-tab="training">Training</button>
+                    <button class="nav-btn" data-tab="analytics">Analytics</button>
+                    <button class="nav-btn" data-tab="reports">Reports</button>
+                    <button class="nav-btn" data-tab="logout">Logout</button>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <section class="training-article">
+                <div class="training-header">
+                    <h2>Case Studies & Examples</h2>
+                    <p class="training-description">Review real-world social engineering attack examples to understand attack vectors, tactics, and effective countermeasures.</p>
+                    <div class="training-meta">
+                        <span class="training-level">Level: Advanced</span>
+                        <span class="training-time">Estimated time: 40 minutes</span>
+                    </div>
+                </div>
+
+                <div class="training-intro card">
+                    <div class="card__header">
+                        <h3>Introduction to Social Engineering Case Studies</h3>
+                    </div>
+                    <div class="card__body">
+                        <p>Learning from real-world incidents is one of the most effective ways to understand social engineering threats. By analyzing past attacks, we can identify common patterns, techniques, and vulnerabilities that social engineers exploit.</p>
+                        <p>This training module examines notable social engineering attacks across various industries, breaking down the methods used, the human vulnerabilities exploited, and the lessons organizations learned from these incidents.</p>
+                    </div>
+                </div>
+
+                <div class="training-sections">
+                    <!-- Section 1: High-Profile Corporate Breaches -->
+                    <div class="training-section card">
+                        <div class="card__header">
+                            <h3>1. High-Profile Corporate Breaches</h3>
+                        </div>
+                        <div class="card__body">
+                            <p>Large organizations are prime targets for social engineering attacks due to their valuable data and the challenge of maintaining security awareness across thousands of employees.</p>
+                            
+                            <div class="training-subsection">
+                                <h4>The 2020 Twitter VIP Account Hack</h4>
+                                <p>In July 2020, attackers gained access to Twitter's internal systems and took control of high-profile accounts including those of Barack Obama, Elon Musk, Bill Gates, and many others.</p>
+                                <div class="example-box">
+                                    <strong>Attack Method:</strong> Phone spear-phishing targeting employees working from home during COVID-19. Attackers posed as IT staff from Twitter's internal support team and directed employees to a fake VPN login page.
+                                </div>
+                                <div class="example-breakdown">
+                                    <h5>Key Aspects of the Attack:</h5>
+                                    <ul>
+                                        <li><strong>Social Context Exploitation:</strong> Attackers leveraged the disruption of remote work during the pandemic</li>
+                                        <li><strong>Targeted Research:</strong> Attackers researched specific employees with access to account management tools</li>
+                                        <li><strong>Convincing Pretexts:</strong> Attackers used Twitter terminology and claimed to be from specific internal teams</li>
+                                        <li><strong>Credential Harvesting:</strong> Captured login information through a convincing fake VPN page</li>
+                                        <li><strong>Rapid Exploitation:</strong> Used gained access to target high-value accounts for a cryptocurrency scam</li>
+                                    </ul>
+                                </div>
+                                <div class="defense-tip">
+                                    <strong>Key Lessons:</strong> Implement robust MFA for administrative tools, limit internal access privileges, improve employee verification processes, and develop specific security protocols for remote work scenarios.
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>RSA Security Breach (2011)</h4>
+                                <p>Ironically, a company specializing in cybersecurity products fell victim to a sophisticated social engineering attack that compromised its SecurID authentication system.</p>
+                                <div class="example-box">
+                                    <strong>Attack Method:</strong> Targeted phishing emails containing malware hidden in an Excel spreadsheet titled "2011 Recruitment Plan.xls" sent to specific employees.
+                                </div>
+                                <div class="example-breakdown">
+                                    <h5>Key Aspects of the Attack:</h5>
+                                    <ul>
+                                        <li><strong>Low Volume, High Quality:</strong> Attackers sent only a few carefully crafted emails rather than mass phishing</li>
+                                        <li><strong>Target Selection:</strong> Focused on employees who wouldn't typically be targeted for cyberattacks</li>
+                                        <li><strong>Relevant Subject Matter:</strong> Used HR topics to entice victims to open attachments</li>
+                                        <li><strong>Zero-Day Exploit:</strong> Utilized an unknown Adobe Flash vulnerability embedded in the Excel file</li>
+                                        <li><strong>Advanced Persistent Threat:</strong> Attackers maintained access to gradually extract sensitive information</li>
+                                    </ul>
+                                </div>
+                                <div class="defense-tip">
+                                    <strong>Key Lessons:</strong> Segment networks to limit lateral movement, enhance monitoring for unusual data transfers, implement stricter email attachment policies, and conduct security awareness training for all employees regardless of role.
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Ubiquiti Networks BEC Attack (2015)</h4>
+                                <p>This networking equipment manufacturer lost $46.7 million through a business email compromise (BEC) attack targeting their finance department.</p>
+                                <div class="example-box">
+                                    <strong>Attack Method:</strong> Attackers impersonated executives and outside legal counsel to direct finance staff to transfer funds for an alleged confidential acquisition.
+                                </div>
+                                <div class="example-breakdown">
+                                    <h5>Key Aspects of the Attack:</h5>
+                                    <ul>
+                                        <li><strong>Domain Spoofing:</strong> Created lookalike email domains that appeared legitimate at quick glance</li>
+                                        <li><strong>Authority Exploitation:</strong> Impersonated C-level executives to create pressure for compliance</li>
+                                        <li><strong>Urgency Creation:</strong> Emphasized the time-sensitive and confidential nature of the transactions</li>
+                                        <li><strong>Process Disruption:</strong> Requested deviations from standard financial procedures</li>
+                                        <li><strong>Multi-stage Approach:</strong> Started with small requests, gradually escalating to larger transfers</li>
+                                    </ul>
+                                </div>
+                                <div class="defense-tip">
+                                    <strong>Key Lessons:</strong> Implement strict verification protocols for wire transfers, require multiple approvals for large transactions, establish out-of-band verification for financial requests, and train finance staff to recognize BEC red flags.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 2: Advanced Persistent Threats (APT) -->
+                    <div class="training-section card">
+                        <div class="card__header">
+                            <h3>2. Advanced Persistent Threats (APT)</h3>
+                        </div>
+                        <div class="card__body">
+                            <p>Nation-state actors and sophisticated hacking groups often use social engineering as the initial entry point for long-term espionage campaigns.</p>
+
+                            <div class="training-subsection">
+                                <h4>Operation Aurora (2009-2010)</h4>
+                                <p>This sophisticated cyber espionage campaign targeted Google and dozens of other major companies, primarily to access source code repositories.</p>
+                                <div class="example-box">
+                                    <strong>Attack Method:</strong> Spear-phishing emails containing links to malicious websites that exploited a zero-day vulnerability in Internet Explorer.
+                                </div>
+                                <div class="example-breakdown">
+                                    <h5>Key Aspects of the Attack:</h5>
+                                    <ul>
+                                        <li><strong>Highly Targeted:</strong> Emails were customized for specific employees with access to valuable intellectual property</li>
+                                        <li><strong>Social Network Research:</strong> Used information from LinkedIn and other platforms to craft convincing messages</li>
+                                        <li><strong>Trusted Connections:</strong> Emails appeared to come from trusted business partners or colleagues</li>
+                                        <li><strong>Technical Sophistication:</strong> Combined social engineering with advanced technical exploits</li>
+                                        <li><strong>Persistent Access:</strong> Maintained long-term unauthorized access to steal intellectual property</li>
+                                    </ul>
+                                </div>
+                                <div class="defense-tip">
+                                    <strong>Key Lessons:</strong> Implement defense-in-depth strategies, segment networks containing critical intellectual property, maintain rigorous patch management, and develop targeted security awareness for employees with access to sensitive systems.
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Ukrainian Power Grid Attack (2015)</h4>
+                                <p>The first confirmed case of a successful cyberattack against critical infrastructure that caused a power outage affecting approximately 230,000 people.</p>
+                                <div class="example-box">
+                                    <strong>Attack Method:</strong> Spear-phishing emails with malicious Microsoft Office attachments sent to employees at Ukrainian energy companies, followed by credential theft and network infiltration.
+                                </div>
+                                <div class="example-breakdown">
+                                    <h5>Key Aspects of the Attack:</h5>
+                                    <ul>
+                                        <li><strong>Long-term Reconnaissance:</strong> Months spent studying the industrial control systems before the attack</li>
+                                        <li><strong>Legitimate-looking Documents:</strong> Malicious attachments disguised as relevant business documents</li>
+                                        <li><strong>Credential Harvesting:</strong> Used stolen VPN credentials to access industrial control networks</li>
+                                        <li><strong>Telephone Denial-of-Service:</strong> Blocked customer service lines to prevent outage reports</li>
+                                        <li><strong>Firmware Corruption:</strong> Rendered serial-to-Ethernet converters inoperable to prolong the outage</li>
+                                    </ul>
+                                </div>
+                                <div class="defense-tip">
+                                    <strong>Key Lessons:</strong> Maintain air-gapped backups for critical systems, implement network segmentation between IT and OT networks, require multi-factor authentication for remote access, and develop manual override capabilities for critical infrastructure.
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>SolarWinds Supply Chain Attack (2020)</h4>
+                                <p>One of the most sophisticated supply chain attacks ever executed, affecting thousands of organizations including multiple U.S. government agencies.</p>
+                                <div class="example-box">
+                                    <strong>Attack Method:</strong> While primarily a technical supply chain attack, social engineering was used in the initial compromise of SolarWinds' build systems.
+                                </div>
+                                <div class="example-breakdown">
+                                    <h5>Key Aspects of the Attack:</h5>
+                                    <ul>
+                                        <li><strong>Employee Targeting:</strong> Initial access likely gained through targeted phishing of SolarWinds employees</li>
+                                        <li><strong>Credential Access:</strong> Obtained developer credentials to access build systems</li>
+                                        <li><strong>Extreme Patience:</strong> Attackers spent months inside systems before activating the backdoor</li>
+                                        <li><strong>Code Signing Abuse:</strong> Malicious code was signed with legitimate certificates to appear trustworthy</li>
+                                        <li><strong>Trust Exploitation:</strong> Leveraged trusted vendor relationships to compromise thousands of organizations</li>
+                                    </ul>
+                                </div>
+                                <div class="defense-tip">
+                                    <strong>Key Lessons:</strong> Implement rigorous security around build environments, monitor for unusual access to code repositories, establish a vendor security assessment program, implement zero-trust architectures, and develop better detection for living-off-the-land techniques.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 3: Small and Medium Business Attacks -->
+                    <div class="training-section card">
+                        <div class="card__header">
+                            <h3>3. Small and Medium Business Attacks</h3>
+                        </div>
+                        <div class="card__body">
+                            <p>Smaller organizations are often targeted due to less robust security measures and training programs, making them vulnerable to various social engineering attacks.</p>
+
+                            <div class="training-subsection">
+                                <h4>Law Firm Wire Fraud Case</h4>
+                                <p>A medium-sized law firm handling real estate transactions lost $1.9 million in a targeted social engineering attack.</p>
+                                <div class="example-box">
+                                    <strong>Attack Method:</strong> Attackers compromised a real estate agent's email, monitored communications about an upcoming property closing, then impersonated the seller to provide fraudulent wire transfer instructions to the law firm.
+                                </div>
+                                <div class="example-breakdown">
+                                    <h5>Key Aspects of the Attack:</h5>
+                                    <ul>
+                                        <li><strong>Email Account Compromise:</strong> Gained access to legitimate email to monitor transaction details</li>
+                                        <li><strong>Timing Precision:</strong> Intervened at the critical moment when wire instructions were expected</li>
+                                        <li><strong>Contextual Knowledge:</strong> Used specific details from monitored emails to appear legitimate</li>
+                                        <li><strong>Plausible Explanation:</strong> Provided convincing reason for the change in payment instructions</li>
+                                        <li><strong>Urgency Creation:</strong> Emphasized the time-sensitive nature of the transaction</li>
+                                    </ul>
+                                </div>
+                                <div class="defense-tip">
+                                    <strong>Key Lessons:</strong> Implement verbal verification protocols for all wire instructions, establish out-of-band confirmation procedures, educate clients about wire fraud risks, and use secure communication channels for sharing financial information.
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Manufacturing Company Ransomware Incident</h4>
+                                <p>A 200-employee manufacturing company suffered a devastating ransomware attack that halted production for nearly two weeks.</p>
+                                <div class="example-box">
+                                    <strong>Attack Method:</strong> Help desk impersonation call to an employee, claiming to be IT support needing to install an "urgent security update," which was actually remote access malware.
+                                </div>
+                                <div class="example-breakdown">
+                                    <h5>Key Aspects of the Attack:</h5>
+                                    <ul>
+                                        <li><strong>Company Research:</strong> Attacker knew the company's IT vendor name and basic terminology</li>
+                                        <li><strong>Manufactured Urgency:</strong> Created a false security incident requiring immediate action</li>
+                                        <li><strong>Technical Jargon:</strong> Used IT terminology to sound legitimate and create confusion</li>
+                                        <li><strong>Helpfulness Appeal:</strong> Framed the request as helping to protect the company</li>
+                                        <li><strong>Remote Access Tool:</strong> Convinced the employee to install legitimate-looking remote access software</li>
+                                    </ul>
+                                </div>
+                                <div class="defense-tip">
+                                    <strong>Key Lessons:</strong> Establish clear IT support protocols and authentication procedures, require IT approval for software installation, implement application whitelisting, segment operational technology networks, and conduct regular phishing simulations including voice phishing scenarios.
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Healthcare Provider Data Breach</h4>
+                                <p>A regional healthcare provider exposed 58,000 patient records after falling victim to a sophisticated social engineering attack.</p>
+                                <div class="example-box">
+                                    <strong>Attack Method:</strong> A physical social engineering attack where the perpetrator gained building access by impersonating an IT auditor from a recognized compliance organization.
+                                </div>
+                                <div class="example-breakdown">
+                                    <h5>Key Aspects of the Attack:</h5>
+                                    <ul>
+                                        <li><strong>Convincing Credentials:</strong> Created fake but professional-looking ID badges and documentation</li>
+                                        <li><strong>Industry Knowledge:</strong> Demonstrated familiarity with healthcare compliance requirements</li>
+                                        <li><strong>Authority Presence:</strong> Dressed professionally and projected confidence and authority</li>
+                                        <li><strong>Tailgating:</strong> Used authorized personnel to gain access to restricted areas</li>
+                                        <li><strong>USB Drop:</strong> Left malware-infected devices connected to unattended workstations</li>
+                                    </ul>
+                                </div>
+                                <div class="defense-tip">
+                                    <strong>Key Lessons:</strong> Implement strict visitor verification procedures, require escort for all visitors, train employees on physical security protocols, disable autorun functionality on workstations, and conduct regular physical penetration testing.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 4: Individual-Targeted Attacks -->
+                    <div class="training-section card">
+                        <div class="card__header">
+                            <h3>4. Individual-Targeted Attacks</h3>
+                        </div>
+                        <div class="card__body">
+                            <p>Individual-targeted attacks often focus on high-value targets such as executives, celebrities, or individuals with access to sensitive information or financial resources.</p>
+
+                            <div class="training-subsection">
+                                <h4>Tech CEO SIM Swapping Attack</h4>
+                                <p>A high-profile technology CEO lost control of his social media accounts and had personal information compromised through a SIM swapping attack.</p>
+                                <div class="example-box">
+                                    <strong>Attack Method:</strong> Attackers used gathered personal information to convince a mobile carrier customer service representative to transfer the CEO's phone number to a new SIM card under the attacker's control.
+                                </div>
+                                <div class="example-breakdown">
+                                    <h5>Key Aspects of the Attack:</h5>
+                                    <ul>
+                                        <li><strong>Open-Source Intelligence:</strong> Gathered personal details from social media and public records</li>
+                                        <li><strong>Customer Service Exploitation:</strong> Manipulated helpful support staff by creating a convincing emergency</li>
+                                        <li><strong>Identity Verification Bypass:</strong> Successfully answered security questions using researched information</li>
+                                        <li><strong>Two-Factor Authentication Compromise:</strong> Intercepted SMS verification codes for account resets</li>
+                                        <li><strong>Rapid Account Takeover:</strong> Quickly changed passwords on multiple services once phone control was gained</li>
+                                    </ul>
+                                </div>
+                                <div class="defense-tip">
+                                    <strong>Key Lessons:</strong> Use authentication apps instead of SMS for two-factor authentication, implement a PIN or passphrase for carrier account changes, limit personal information shared online, use different security question answers for different services, and monitor accounts for unauthorized access attempts.
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Executive Whaling Attack</h4>
+                                <p>A C-level executive at a financial services firm was specifically targeted in a sophisticated whaling campaign that sought wire transfers to fraudulent accounts.</p>
+                                <div class="example-box">
+                                    <strong>Attack Method:</strong> Attackers compromised the executive's personal email, studied communication patterns, then crafted highly convincing emails to the finance team from the executive's compromised personal account.
+                                </div>
+                                <div class="example-breakdown">
+                                    <h5>Key Aspects of the Attack:</h5>
+                                    <ul>
+                                        <li><strong>Thorough Reconnaissance:</strong> Studied writing style, vocabulary, and timing patterns of the executive</li>
+                                        <li><strong>Personal/Professional Boundary Exploitation:</strong> Used personal email for a supposedly urgent business matter</li>
+                                        <li><strong>Relationship Leverage:</strong> Referenced existing relationships with finance team members</li>
+                                        <li><strong>Plausible Scenario:</strong> Created a convincing confidential acquisition scenario requiring funds</li>
+                                        <li><strong>Confidentiality Emphasis:</strong> Requested secrecy to prevent others from questioning the transaction</li>
+                                    </ul>
+                                </div>
+                                <div class="defense-tip">
+                                    <strong>Key Lessons:</strong> Establish clear policies against using personal email for business transactions, implement dual-authorization for large transfers, create pre-arranged verification words or phrases for unusual requests, and conduct specialized security training for executives and finance personnel.
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Political Campaign Targeted Attack</h4>
+                                <p>A high-ranking campaign staff member for a political candidate was compromised, leading to the leak of sensitive campaign strategy documents.</p>
+                                <div class="example-box">
+                                    <strong>Attack Method:</strong> Attackers created a convincing Google Docs phishing page that looked identical to the real login page, delivered via a targeted email claiming to be from a fellow campaign worker.
+                                </div>
+                                <div class="example-breakdown">
+                                    <h5>Key Aspects of the Attack:</h5>
+                                    <ul>
+                                        <li><strong>Current Events Context:</strong> Referenced ongoing campaign activities and pressing deadlines</li>
+                                        <li><strong>Colleague Impersonation:</strong> Email appeared to come from a trusted team member</li>
+                                        <li><strong>Convincing Document Name:</strong> Used a document title related to campaign strategy</li>
+                                        <li><strong>Authentic-Looking Login Page:</strong> Created a pixel-perfect replica of the Google login screen</li>
+                                        <li><strong>Credential Capture and Replay:</strong> Harvested credentials and used them to access actual accounts</li>
+                                    </ul>
+                                </div>
+                                <div class="defense-tip">
+                                    <strong>Key Lessons:</strong> Implement phishing-resistant security keys for authentication, verify unexpected document shares through a separate channel, check URL authenticity before entering credentials, enable advanced threat protection features, and establish an incident response plan for potential data leaks.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 5: Lessons and Prevention Strategies -->
+                    <div class="training-section card">
+                        <div class="card__header">
+                            <h3>5. Lessons and Prevention Strategies</h3>
+                        </div>
+                        <div class="card__body">
+                            <p>Analyzing these case studies reveals common patterns and effective countermeasures that organizations can implement to reduce social engineering risks.</p>
+
+                            <div class="training-subsection">
+                                <h4>Common Attack Patterns</h4>
+                                <p>Across diverse social engineering attacks, several consistent patterns emerge that organizations should be aware of.</p>
+                                <div class="key-indicators">
+                                    <h5>Recurring Elements in Successful Attacks:</h5>
+                                    <ul>
+                                        <li><strong>Thorough Reconnaissance:</strong> Attackers invest significant time researching targets and organizations</li>
+                                        <li><strong>Exploitation of Trust:</strong> Using trusted relationships, brands, or communication channels</li>
+                                        <li><strong>Creating Urgency:</strong> Forcing quick decisions that bypass normal verification procedures</li>
+                                        <li><strong>Authority Exploitation:</strong> Impersonating leaders or authority figures to gain compliance</li>
+                                        <li><strong>Technical + Social Combination:</strong> Blending technical exploits with social manipulation</li>
+                                        <li><strong>Contextual Relevance:</strong> Attacks aligned with business activities, current events, or personal interests</li>
+                                        <li><strong>Process Circumvention:</strong> Finding ways to bypass established security procedures</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Technological Countermeasures</h4>
+                                <p>While technology alone can't prevent social engineering, these controls can significantly reduce risk.</p>
+                                <div class="defense-steps">
+                                    <h5>Essential Technical Controls:</h5>
+                                    <ul>
+                                        <li><strong>Multi-Factor Authentication:</strong> Implement phishing-resistant MFA (security keys preferred over SMS)</li>
+                                        <li><strong>Email Security Gateway:</strong> Deploy advanced filtering with attachment scanning and link protection</li>
+                                        <li><strong>Endpoint Protection:</strong> Use next-generation antivirus with behavior-based detection</li>
+                                        <li><strong>Network Segmentation:</strong> Limit lateral movement if initial compromise occurs</li>
+                                        <li><strong>Privileged Access Management:</strong> Restrict and monitor administrative account usage</li>
+                                        <li><strong>Data Loss Prevention:</strong> Monitor and control sensitive data movement</li>
+                                        <li><strong>Security Monitoring:</strong> Implement comprehensive logging and anomaly detection</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Human-Centered Defenses</h4>
+                                <p>The human element remains critical in defending against social engineering attacks.</p>
+                                <div class="defense-tip">
+                                    <h5>Building Human Resilience:</h5>
+                                    <ul>
+                                        <li><strong>Security Awareness Training:</strong> Regular, scenario-based training with simulations</li>
+                                        <li><strong>Verification Procedures:</strong> Establish out-of-band verification for sensitive requests</li>
+                                        <li><strong>Clear Communication Channels:</strong> Define how legitimate requests will be made</li>
+                                        <li><strong>Reporting Mechanisms:</strong> Make it easy to report suspicious activities</li>
+                                        <li><strong>Security Culture:</strong> Foster an environment where security questions are encouraged</li>
+                                        <li><strong>Positive Reinforcement:</strong> Recognize and reward security-conscious behaviors</li>
+                                        <li><strong>Just-in-Time Training:</strong> Provide contextual security guidance during risky activities</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="training-subsection">
+                                <h4>Organizational Procedures</h4>
+                                <p>Formal processes and procedures can create structural resistance to social engineering attacks.</p>
+                                <div class="example-box">
+                                    <h5>Critical Procedural Controls:</h5>
+                                    <ul>
+                                        <li><strong>Dual Control Procedures:</strong> Require two individuals to authorize critical transactions</li>
+                                        <li><strong>Defined Escalation Paths:</strong> Establish clear protocols for handling unusual requests</li>
+                                        <li><strong>Incident Response Plan:</strong> Develop and practice response to social engineering incidents</li>
+                                        <li><strong>Vendor Management:</strong> Implement verification procedures for third-party interactions</li>
+                                        <li><strong>Regular Testing:</strong> Conduct social engineering penetration tests to identify weaknesses</li>
+                                        <li><strong>Secure Development:</strong> Include social engineering scenarios in threat modeling</li>
+                                        <li><strong>Post-Incident Analysis:</strong> Learn from security incidents and near-misses</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="training-summary card">
+                    <div class="card__body">
+                        <h3>Key Takeaways</h3>
+                        <ul class="takeaway-list">
+                            <li>Social engineering attacks continue to evolve in sophistication, combining technical exploits with psychological manipulation</li>
+                            <li>Organizations of all sizes and across all industries are vulnerable to social engineering attacks</li>
+                            <li>Successful attacks typically involve thorough reconnaissance and exploitation of trust relationships</li>
+                            <li>Creating urgency and bypassing normal procedures are common tactics in social engineering</li>
+                            <li>Effective defense requires a combination of technical controls, human awareness, and organizational procedures</li>
+                            <li>Verification protocols for sensitive actions are essential, especially for financial transactions and data access</li>
+                            <li>Building a security culture where questioning unusual requests is encouraged can significantly reduce risk</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+    <script type="module">
+        // Training-specific JavaScript
+        document.addEventListener('DOMContentLoaded', () => {
+            // Handle navigation
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const tabName = e.target.dataset.tab;
+                    if (tabName === 'dashboard') {
+                        window.location.href = 'index.html';
+                    } else if (tabName === 'training') {
+                        // Already on training page
+                    } else if (tabName === 'add-workers') {
+                        window.location.href = 'add_workers.html';
+                    } else if (tabName === 'logout') {
+                        // Handle logout - redirect to login page after signout
+                        async function handleLogout() {
+                            const supabaseUrl = process.env.PARCEL_VITE_SUPABASE_URL;
+                            const supabaseAnonKey = process.env.PARCEL_VITE_SUPABASE_ANON_KEY;
+                            const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+
+                            await supabase.auth.signOut();
+                            window.location.href = 'login.html';
+                        }
+                        handleLogout();
+                    } else {
+                        window.location.href = `index.html#${tabName}`;
+                    }
+                });
+            });
+
+            // Add smooth scrolling for training sections
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+    <style>
+        /* Training-specific styles */
+        .training-article {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: var(--space-16);
+        }
+
+        .training-header {
+            margin-bottom: var(--space-32);
+            text-align: center;
+        }
+
+        .training-description {
+            font-size: var(--font-size-lg);
+            color: var(--color-text-secondary);
+            max-width: 800px;
+            margin: var(--space-16) auto;
+        }
+
+        .training-meta {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-24);
+            margin-top: var(--space-16);
+        }
+
+        .training-level, .training-time {
+            background-color: var(--color-bg-1);
+            padding: var(--space-8) var(--space-16);
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .training-intro {
+            margin-bottom: var(--space-32);
+        }
+
+        .training-sections {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-32);
+            margin-bottom: var(--space-32);
+        }
+
+        .training-section {
+            transition: transform 0.2s var(--ease-standard);
+        }
+
+        .training-section:hover {
+            transform: translateY(-2px);
+        }
+
+        .training-subsection {
+            margin-bottom: var(--space-24);
+            padding-bottom: var(--space-16);
+            border-bottom: 1px solid var(--color-card-border);
+        }
+
+        .training-subsection:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .training-subsection h4 {
+            color: var(--color-primary);
+            margin-bottom: var(--space-12);
+        }
+
+        .example-box {
+            background-color: var(--color-bg-2);
+            padding: var(--space-16);
+            border-radius: var(--radius-base);
+            margin: var(--space-16) 0;
+        }
+
+        .key-indicators, .defense-tip {
+            background-color: var(--color-bg-3);
+            padding: var(--space-16);
+            border-radius: var(--radius-base);
+            margin: var(--space-16) 0;
+        }
+
+        .key-indicators h5, .defense-tip strong {
+            margin-top: 0;
+            margin-bottom: var(--space-8);
+        }
+
+        .warning-list li, .question-list li {
+            margin-bottom: var(--space-8);
+        }
+
+        .warning-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .warning-list li {
+            position: relative;
+            padding-left: var(--space-24);
+        }
+
+        .warning-list li:before {
+            content: "⚠️";
+            position: absolute;
+            left: 0;
+        }
+
+        .defense-steps ol {
+            padding-left: var(--space-24);
+        }
+
+        .defense-steps li {
+            margin-bottom: var(--space-8);
+        }
+
+        .example-breakdown {
+            background-color: var(--color-bg-5);
+            padding: var(--space-16);
+            border-radius: var(--radius-base);
+            margin: var(--space-16) 0;
+        }
+
+        .example-breakdown p {
+            margin: var(--space-8) 0;
+        }
+
+        .training-summary {
+            background-color: var(--color-bg-1);
+        }
+
+        .takeaway-list {
+            padding-left: var(--space-24);
+        }
+
+        .takeaway-list li {
+            margin-bottom: var(--space-12);
+        }
+
+        .training-cta {
+            text-align: center;
+            margin-top: var(--space-32);
+            padding-top: var(--space-24);
+            border-top: 1px solid var(--color-card-border-inner);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {            
+            .training-meta {
+                flex-direction: column;
+                gap: var(--space-8);
+                align-items: center;
+            }
+        }
+    </style>
+</body>
+</html>

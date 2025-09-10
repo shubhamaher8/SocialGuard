@@ -1,0 +1,19 @@
+# .gitignore for Parcel web app
+
+# Node modules
+node_modules/
+
+# Parcel cache
+.cache/
+
+# Build output
+dist/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Env files
+.env
+.env.*
