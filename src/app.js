@@ -196,6 +196,38 @@ class SocialEngSimulator {
         }
     }
 
+    generateTemplateContent(attackData) {
+        let html = `<div class="template-info">
+            <p><strong>Description:</strong> ${attackData.description}</p>
+            <ul class="template-list">`;
+
+        attackData.templates.forEach((template, idx) => {
+            html += `
+                <li class="template-item">
+                    <span class="template-name">${template}</span>
+                    <button class="btn btn--outline btn--sm template-preview-btn" data-template="${template}" data-attack="${attackData.name.toLowerCase()}">Preview</button>
+                </li>`;
+        });
+
+        html += `</ul></div>`;
+
+        html += `<style>
+            .template-info { padding: var(--space-16) 0; }
+            .template-list { list-style: none; padding: 0; margin: var(--space-16) 0; }
+            .template-item { 
+                display: flex; 
+                justify-content: space-between; 
+                align-items: center; 
+                padding: var(--space-12); 
+                border-bottom: 1px solid var(--color-border); 
+            }
+            .template-item:last-child { border-bottom: none; }
+            .template-name { font-weight: var(--font-weight-medium); }
+        </style>`;
+
+        return html;
+    }
+
     showTemplatesModal(attackType) {
         const modal = document.getElementById('templatesModal');
         const title = document.getElementById('modalTitle');
@@ -204,12 +236,66 @@ class SocialEngSimulator {
         if (!modal || !title || !content) return;
 
         const attackData = this.getAttackData(attackType);
-        
+
         title.textContent = `${attackData.name} Template`;
         content.innerHTML = this.generateTemplateContent(attackData);
 
+        // Add event listeners for preview buttons
+        setTimeout(() => {
+            content.querySelectorAll('.template-preview-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const template = btn.getAttribute('data-template');
+                    const attack = btn.getAttribute('data-attack');
+                    this.showTemplatePreview(attack, template, content);
+                });
+            });
+        }, 0);
+
         modal.classList.remove('hidden');
         modal.style.display = 'flex';
+    }
+
+    showTemplatePreview(attack, template, container) {
+        // Simple image preview with link, no template info
+        let imgSrc = '';
+        let alt = '';
+        if (attack === 'phishing') {
+            imgSrc = '/public/email.png';
+            alt = 'Phishing Email Example';
+        } else if (attack === 'smishing') {
+            imgSrc = '/public/sms.jpg';
+            alt = 'Smishing SMS Example';
+        } else {
+            container.innerHTML = '<div class="card" style="padding:32px;text-align:center;">No preview available.</div>';
+            return;
+        }
+
+        container.innerHTML = `
+            <div class="card template-preview-card" style="max-width:480px;margin:32px auto;">
+                <div class="card__body" style="padding:0;text-align:center;">
+                    <a href="${imgSrc}" target="_blank" rel="noopener">
+                        <img src="${imgSrc}" alt="${alt}" style="width:100%;border-radius:var(--radius-lg);box-shadow:var(--shadow-md);margin-bottom:var(--space-16);" />
+                    </a>
+                </div>
+                <div class="card__footer" style="text-align:center;">
+                    <button class="btn btn--outline btn--sm" style="margin-top:var(--space-16);" id="backToTemplatesBtn">Back</button>
+                </div>
+            </div>
+        `;
+
+        // Back button to return to template list
+        container.querySelector('#backToTemplatesBtn').onclick = () => {
+            container.innerHTML = this.generateTemplateContent(this.getAttackData(attack));
+            setTimeout(() => {
+                container.querySelectorAll('.template-preview-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const template = btn.getAttribute('data-template');
+                        const attack = btn.getAttribute('data-attack');
+                        this.showTemplatePreview(attack, template, container);
+                    });
+                });
+            }, 0);
+        };
     }
 
     closeModal(modal) {
@@ -238,38 +324,6 @@ class SocialEngSimulator {
         };
 
         return attacks[attackType] || { name: 'Unknown', description: '', templates: [] };
-    }
-
-    generateTemplateContent(attackData) {
-        let html = `<div class="template-info">
-            <p><strong>Description:</strong> ${attackData.description}</p>
-            <ul class="template-list">`;
-
-        attackData.templates.forEach(template => {
-            html += `
-                <li class="template-item">
-                    <span class="template-name">${template}</span>
-                    <button class="btn btn--outline btn--sm">Preview</button>
-                </li>`;
-        });
-
-        html += `</ul></div>`;
-
-        html += `<style>
-            .template-info { padding: var(--space-16) 0; }
-            .template-list { list-style: none; padding: 0; margin: var(--space-16) 0; }
-            .template-item { 
-                display: flex; 
-                justify-content: space-between; 
-                align-items: center; 
-                padding: var(--space-12); 
-                border-bottom: 1px solid var(--color-border); 
-            }
-            .template-item:last-child { border-bottom: none; }
-            .template-name { font-weight: var(--font-weight-medium); }
-        </style>`;
-
-        return html;
     }
 
     updatePreview() {
