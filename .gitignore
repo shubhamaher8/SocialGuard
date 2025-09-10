@@ -1,10 +1,8 @@
-# .gitignore for Parcel web app
-
 # Node modules
 node_modules/
 
 # Parcel cache
-.cache/
+.parcel-cache/
 
 # Build output
 dist/
