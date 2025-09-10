@@ -1421,23 +1421,23 @@ select.form-control {
 }
 
 .modal-close {
-  background: none;
-  border: none;
-  font-size: var(--font-size-2xl);
-  cursor: pointer;
-  color: var(--color-text-secondary);
-  padding: 0;
-  width: 32px;
-  height: 32px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--radius-base);
-  transition: background-color var(--duration-fast) var(--ease-standard);
+  padding: var(--space-4) var(--space-12); /* Matches .btn--sm */
+  border-radius: var(--radius-sm); /* Matches .btn--sm */
+  font-size: var(--font-size-sm); /* Matches .btn--sm */
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid var(--color-border); /* Matches .btn--outline */
+  color: var(--color-text);
+  transition: all var(--duration-fast) var(--ease-standard);
 }
 
 .modal-close:hover {
-  background: var(--color-secondary);
+  background: var(--color-secondary); /* Matches .btn--outline:hover */
+  color: var(--color-text);
 }
 
 .modal-body {
