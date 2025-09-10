@@ -727,6 +727,8 @@ select.form-control {
 }
 
 /* Dark mode specifics */
+/* Dark mode styles are handled by CSS variables */
+
 [data-color-scheme="dark"] .btn--outline {
   border: 1px solid var(--color-border-secondary);
 }
@@ -1076,19 +1078,61 @@ select.form-control {
 
 .preview-card {
   background: var(--color-bg-5);
-  padding: var(--space-20);
+  padding: var(--space-24);
   border-radius: var(--radius-md);
   min-height: 200px;
+  box-shadow: var(--shadow-md);
+  transition: transform var(--duration-normal) var(--ease-standard),
+              box-shadow var(--duration-normal) var(--ease-standard);
+  border: 1px solid var(--color-card-border);
+}
+
+.preview-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
 }
 
 .preview-placeholder {
   text-align: center;
   color: var(--color-text-secondary);
-  font-style: italic;
+  font-style: normal;
+  padding: var(--space-32) 0;
+  font-size: var(--font-size-24px);
 }
 
-.preview-content h4 {
-  margin-bottom: var(--space-12);
+.preview-card h4 {
+  margin-bottom: var(--space-16);
+  color: var(--color-text);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-tight);
+}
+
+.preview-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+
+.preview-detail {
+  display: flex;
+  padding: var(--space-8) 0;
+  border-bottom: 1px solid var(--color-card-border-inner);
+}
+
+.preview-detail:last-child {
+  border-bottom: none;
+}
+
+.detail-label {
+  width: 140px;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+}
+
+.detail-value {
+  flex: 1;
+  font-weight: var(--font-weight-medium);
   color: var(--color-text);
 }
 
@@ -1480,4 +1524,9 @@ select.form-control {
 * {
   scrollbar-width: none;  /* Firefox */
   -ms-overflow-style: none;  /* IE and Edge */
+}
+
+/* Add spacing above the preview card in the preview section */
+.preview-section > .preview-card {
+    margin-top: var(--space-20);
 }

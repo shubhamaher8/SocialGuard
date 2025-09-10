@@ -114,9 +114,16 @@ class SocialEngSimulator {
         }
 
         // Form preview updates
+        const campaignNameInput = document.getElementById('campaign-name');
         const attackTypeSelect = document.getElementById('attack-type');
         const difficultySelect = document.getElementById('difficulty');
         
+        if (campaignNameInput) {
+            campaignNameInput.addEventListener('input', () => {
+                this.updatePreview();
+            });
+        }
+
         if (attackTypeSelect) {
             attackTypeSelect.addEventListener('change', () => {
                 this.updatePreview();
@@ -266,6 +273,7 @@ class SocialEngSimulator {
     }
 
     updatePreview() {
+        const campaignName = document.getElementById('campaign-name')?.value || 'Unnamed Campaign';
         const attackType = document.getElementById('attack-type')?.value;
         const difficulty = document.getElementById('difficulty')?.value;
         const preview = document.querySelector('.preview-card');
@@ -279,8 +287,12 @@ class SocialEngSimulator {
             };
             
             preview.innerHTML = `
-                <h4>${attackType.charAt(0).toUpperCase() + attackType.slice(1)} Campaign</h4>
+                <h4>${campaignName}</h4>
                 <div class="preview-details">
+                    <div class="preview-detail">
+                        <span class="detail-label">Campaign Name:</span>
+                        <span class="detail-value">${campaignName}</span>
+                    </div>
                     <div class="preview-detail">
                         <span class="detail-label">Type:</span>
                         <span class="detail-value">${attackType.charAt(0).toUpperCase() + attackType.slice(1)}</span>
