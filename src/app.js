@@ -260,10 +260,14 @@ class SocialEngSimulator {
         let imgSrc = '';
         let alt = '';
         if (attack === 'phishing') {
-            imgSrc = '/public/email.png';
+            // Get the processed image URL from the hidden element
+            const emailImg = document.getElementById('emailTemplateImage');
+            imgSrc = emailImg ? emailImg.src : '/public/email.png';
             alt = 'Phishing Email Example';
         } else if (attack === 'smishing') {
-            imgSrc = '/public/sms.jpg';
+            // Get the processed image URL from the hidden element
+            const smsImg = document.getElementById('smsTemplateImage');
+            imgSrc = smsImg ? smsImg.src : '/public/sms.jpg';
             alt = 'Smishing SMS Example';
         } else {
             container.innerHTML = '<div class="card" style="padding:32px;text-align:center;">No preview available.</div>';
