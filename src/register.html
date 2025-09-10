@@ -141,7 +141,7 @@
             messageDiv.textContent = '';
             messageDiv.className = '';
 
-            // 1. Sign up the user with Supabase Auth
+            // Sign up the user with Supabase Auth
             const { data: authData, error: authError } = await supabase.auth.signUp({
                 email: email,
                 password: password,
@@ -155,23 +155,7 @@
             }
 
             if (authData.user) {
-                // 2. Insert user details into the 'profiles' table
-                const { error: insertError } = await supabase
-                    .from('profiles')
-                    .insert([
-                        { id: authData.user.id, email: email, department: department }
-                    ]);
-
-                if (insertError) {
-                    console.error('Error inserting profile:', insertError.message);
-                    // Even if profile insert fails, the user is created. 
-                    // You might want to handle this case, e.g., by deleting the auth user or asking them to complete their profile later.
-                    messageDiv.textContent = 'Account created, but could not save department.';
-                    messageDiv.className = 'error';
-                    return;
-                }
-                
-                // If everything is successful
+                // If registration is successful
                 messageDiv.textContent = 'Registration successful! Please check your email to verify your account.';
                 messageDiv.className = 'success';
                 
