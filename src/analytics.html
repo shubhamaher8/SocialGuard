@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Phishing & Smishing Analytics</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f8f9fa; }
+  header { background: #1f2937; color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+  .logo { display: flex; align-items: center; gap: 10px; }
+  .logo img { height: 40px; width: 40px; }
+  .logo h1 { margin: 0; font-size: 1.4rem; }
+  .subtitle { font-size: 0.8rem; color: #d1d5db; }
+  nav { display: flex; gap: 0.8rem; }
+  .nav-btn { background: transparent; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; transition: background 0.2s; }
+  .nav-btn:hover { background: #374151; }
+  .nav-btn.active { background: #2563eb; }
+  .container { max-width: 1200px; margin: auto; padding: 2rem; }
+  .filters { display: flex; gap: 1rem; margin-bottom: 1rem; align-items: center; }
+  select, button { padding: 0.5rem; border-radius: 6px; border: 1px solid #ccc; cursor: pointer; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+  .stat { background: white; padding: 1.5rem; border-radius: 12px; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.08); transition: transform 0.2s ease; }
+  .stat:hover { transform: translateY(-4px); }
+  .stat h3 { margin: 0; font-size: 2rem; color: #1f2937; }
+  .charts, .reports, .campaigns { background: white; padding: 2rem; margin-bottom: 2rem; border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+  .charts canvas { width: 100% !important; height: 400px !important; }
+  table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+  table th, table td { padding: 0.75rem; border: 1px solid #e5e7eb; text-align: left; }
+  table th { background: #f1f5f9; }
+  .btn { display: inline-block; padding: 0.6rem 1.2rem; border-radius: 6px; background: #1f2937; color: white; border: none; cursor: pointer; font-size: 0.95rem; }
+  .btn:hover { background: #374151; }
+  .report-item { padding: 1rem; border: 1px solid #ddd; margin-top: 1rem; border-radius: 6px; background: #f9fafb; }
+  .alert { color: red; font-weight: bold; }
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">
+    <img src="/public/socialguard.png" alt="SocialGuard Logo">
+    <div>
+      <h1>SocialGuard</h1>
+      <span class="subtitle">Social Engineering Attack Simulator</span>
+    </div>
+  </div>
+  <nav>
+    <button class="nav-btn" onclick="location.href='index.html'">Home</button>
+    <button class="nav-btn">Attack Library</button>
+    <button class="nav-btn">Add Workers</button>
+    <button class="nav-btn">Simulation Builder</button>
+    <button class="nav-btn">Training</button>
+    <button class="nav-btn active">Analytics</button>
+    <button class="nav-btn">Reports</button>
+    <button class="nav-btn">Logout</button>
+  </nav>
+</header>
+
+<div class="container">
+  <!-- Mode Toggle -->
+  <div style="margin-bottom: 1rem;">
+    <button class="btn" id="modeHistorical">Historical Analytics</button>
+    <button class="btn" id="modeRealtime">Realtime Monitoring</button>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters" id="filterSection">
+    <label>Campaign:
+      <select id="campaignFilter"><option>Loading...</option></select>
+    </label>
+    <label>Time:
+      <select id="timeFilter">
+        <option value="7">Last 7 days</option>
+        <option value="30">Last 30 days</option>
+        <option value="all" selected>All Time</option>
+      </select>
+    </label>
+    <button class="btn" onclick="simulator.updateDashboardMetrics()">Apply Filters</button>
+  </div>
+
+  <!-- Historical Section -->
+  <div id="historicalSection">
+    <section class="stats">
+      <div class="stat"><h3 id="stat-sent">0</h3><p>Total Sent</p></div>
+      <div class="stat"><h3 id="stat-opened">0</h3><p>Opened</p></div>
+      <div class="stat"><h3 id="stat-clicked">0</h3><p>Clicked</p></div>
+      <div class="stat"><h3 id="stat-creds">0</h3><p>Credentials Submitted</p></div>
+      <div class="stat"><h3 id="stat-reported">0</h3><p>Reported</p></div>
+    </section>
+
+    <section class="charts">
+      <h2>Engagement Trends</h2>
+      <canvas id="improvementChart"></canvas>
+      
+      <h2>Conversion Funnel</h2>
+      <canvas id="funnelChart"></canvas>
+
+      <h2>Engagement Heatmap (by Hour)</h2>
+      <canvas id="heatmapChart"></canvas>
+
+      <h2>Department Analytics</h2>
+      <canvas id="departmentChart"></canvas>
+
+      <h2>Device Distribution</h2>
+      <canvas id="deviceChart"></canvas>
+
+      <h2>Comparative Metrics</h2>
+      <canvas id="comparativeChart"></canvas>
+    </section>
+
+    <section class="campaigns">
+      <h2>Top Campaigns by Click Rate</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Click %</th>
+            <th>Alert</th>
+          </tr>
+        </thead>
+        <tbody id="campaigns-body"></tbody>
+      </table>
+    </section>
+
+    <section class="reports">
+      <h2>Reports</h2>
+      <select id="reportType">
+        <option value="executive">Executive</option>
+        <option value="detailed">Detailed</option>
+      </select>
+      <button class="btn" onclick="simulator.generatePDF()">Generate & Download PDF</button>
+      <div id="reportList"></div>
+    </section>
+  </div>
+
+  <!-- Realtime Section -->
+  <div id="realtimeSection" style="display:none;">
+    <section class="stats">
+      <div class="stat"><h3 id="rt-stat-sent">0</h3><p>Total Sent</p></div>
+      <div class="stat"><h3 id="rt-stat-opened">0</h3><p>Opened</p></div>
+      <div class="stat"><h3 id="rt-stat-clicked">0</h3><p>Clicked</p></div>
+      <div class="stat"><h3 id="rt-stat-reported">0</h3><p>Reported</p></div>
+    </section>
+
+    <section class="charts">
+      <h2>Realtime Engagement</h2>
+      <canvas id="realtimeChart"></canvas>
+    </section>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = "https://xzgzgrhtgjhwiomclxqe.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh6Z3pncmh0Z2pod2lvbWNseHFlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcxNzY4MjYsImV4cCI6MjA3Mjc1MjgyNn0.JdSCuhMfD3R3xL_Y7Dl647g9IWc5FqvZaIMXW6DwNAc"; // replace with your key
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+function groupByMonth(deliveries) {
+  const grouped = {};
+  deliveries.forEach(d => {
+    const date = new Date(d.sent_at);
+    const month = date.toLocaleString('default', { month: 'short' });
+    if (!grouped[month]) grouped[month] = { opened: 0, clicked: 0, reported: 0 };
+    if (d.opened) grouped[month].opened++;
+    if (d.clicked) grouped[month].clicked++;
+    if (d.reported) grouped[month].reported++;
+  });
+  return grouped;
+}
+
+function animateValue(id, start, end, duration) {
+  let range = end - start, current = start, increment = range / (duration/20);
+  const obj = document.getElementById(id);
+  const timer = setInterval(()=>{
+    current += increment;
+    if ((increment>0 && current>=end) || (increment<0 && current<=end)) { current=end; clearInterval(timer);}
+    obj.textContent = Math.floor(current);
+  },20);
+}
+
+class SocialEngSimulator {
+  constructor() {
+    this.improvementChart=null; this.departmentChart=null; this.deviceChart=null;
+    this.funnelChart=null; this.heatmapChart=null; this.comparativeChart=null;
+    this.init();
+  }
+
+  async init() { await this.populateCampaignFilter(); await this.updateDashboardMetrics(); }
+
+  async populateCampaignFilter() {
+    const { data: campaigns } = await supabase.from('campaigns').select('*').order('created_at',{ascending:false});
+    const filter = document.getElementById('campaignFilter');
+    filter.innerHTML = `<option value="all">All Campaigns</option>`;
+    campaigns.forEach(c => filter.innerHTML += `<option value="${c.id}">${c.name}</option>`);
+  }
+
+  async fetchStats() {
+    const { data: campaigns } = await supabase.from('campaigns').select('*').order('created_at',{ascending:false});
+    const { data: deliveries } = await supabase.from('deliveries').select('*');
+    return { campaigns: campaigns||[], deliveries: deliveries||[] };
+  }
+
+  applyFilters(deliveries) {
+    const campaignId = document.getElementById('campaignFilter').value;
+    const timeVal = document.getElementById('timeFilter').value;
+    const now = new Date();
+    let filtered = deliveries;
+    if(campaignId!=='all') filtered = filtered.filter(d=>d.campaign_id===campaignId);
+    if(timeVal!=='all') filtered = filtered.filter(d=>new Date(d.sent_at)>=new Date(now-timeVal*24*60*60*1000));
+    return filtered;
+  }
+
+  async updateDashboardMetrics() {
+    const { campaigns, deliveries } = await this.fetchStats();
+    const filteredDeliveries = this.applyFilters(deliveries);
+
+    document.getElementById("stat-sent").textContent = filteredDeliveries.length;
+    document.getElementById("stat-opened").textContent = filteredDeliveries.filter(d=>d.opened).length;
+    document.getElementById("stat-clicked").textContent = filteredDeliveries.filter(d=>d.clicked).length;
+    document.getElementById("stat-creds").textContent = filteredDeliveries.filter(d=>d.credential_submitted).length;
+    document.getElementById("stat-reported").textContent = filteredDeliveries.filter(d=>d.reported).length;
+
+    const tbody = document.getElementById("campaigns-body"); tbody.innerHTML='';
+    const campaignStats = campaigns.map(c=>{
+      const cDel = filteredDeliveries.filter(d=>d.campaign_id===c.id);
+      const clickedPct = cDel.length?Math.round(cDel.filter(d=>d.clicked).length/cDel.length*100):0;
+      const reportedPct = cDel.length?Math.round(cDel.filter(d=>d.reported).length/cDel.length*100):0;
+      return {...c, clickedPct, alert: clickedPct>20 && reportedPct<5};
+    }).sort((a,b)=>b.clickedPct-a.clickedPct);
+
+    campaignStats.forEach(c=>{
+      tbody.innerHTML+=`<tr>
+        <td>${c.name}</td><td>${c.type}</td>
+        <td>${new Date(c.start_at).toLocaleDateString()}</td>
+        <td>${new Date(c.end_at).toLocaleDateString()}</td>
+        <td>${c.clickedPct}%</td>
+        <td>${c.alert?'<span class="alert">⚠ High Risk</span>':''}</td>
+      </tr>`;
+    });
+
+    await this.setupCharts(filteredDeliveries);
+  }
+
+  async setupCharts(filteredDeliveries) {
+    // Monthly Trends
+    const monthly = groupByMonth(filteredDeliveries);
+    const labels = Object.keys(monthly);
+    const opened = labels.map(m=>monthly[m].opened);
+    const clicked = labels.map(m=>monthly[m].clicked);
+    const reported = labels.map(m=>monthly[m].reported);
+    const ctx1 = document.getElementById('improvementChart').getContext('2d');
+    if(this.improvementChart)this.improvementChart.destroy();
+    this.improvementChart=new Chart(ctx1,{
+      type:'line',
+      data:{ labels, datasets:[
+        {label:'Opened', data:opened, borderColor:'#1FB8CD', fill:false, tension:0.3},
+        {label:'Clicked', data:clicked, borderColor:'#FFC185', fill:false, tension:0.3},
+        {label:'Reported', data:reported, borderColor:'#FF6B6B', fill:false, tension:0.3}
+      ]},
+      options:{responsive:true, maintainAspectRatio:false, plugins:{title:{display:true,text:'Monthly Engagement Trends'}}}
+    });
+
+    // Conversion Funnel
+    const funnelData=[
+      filteredDeliveries.length,
+      filteredDeliveries.filter(d=>d.opened).length,
+      filteredDeliveries.filter(d=>d.clicked).length,
+      filteredDeliveries.filter(d=>d.credential_submitted).length,
+      filteredDeliveries.filter(d=>d.reported).length
+    ];
+    const ctxFunnel=document.getElementById('funnelChart').getContext('2d');
+    if(this.funnelChart)this.funnelChart.destroy();
+    this.funnelChart=new Chart(ctxFunnel,{
+      type:'bar', data:{ labels:['Sent','Opened','Clicked','Creds Submitted','Reported'], datasets:[{data:funnelData, backgroundColor:['#1FB8CD','#FFC185','#FF6B6B','#9F7AEA','#34D399']}]},
+      options:{indexAxis:'y', responsive:true, maintainAspectRatio:false, plugins:{title:{display:true,text:'Conversion Funnel'}}, scales:{x:{beginAtZero:true}}}
+    });
+
+    // Heatmap by hour
+    const heatmapHours=Array(24).fill(0);
+    filteredDeliveries.forEach(d=>{
+      const hour = new Date(d.sent_at).getHours();
+      if(d.clicked) heatmapHours[hour]++;
+    });
+    const ctxHeat=document.getElementById('heatmapChart').getContext('2d');
+    if(this.heatmapChart)this.heatmapChart.destroy();
+    this.heatmapChart=new Chart(ctxHeat,{
+      type:'bar',
+      data:{ labels:[...Array(24).keys()].map(h=>`${h}:00`), datasets:[{label:'Clicks', data:heatmapHours, backgroundColor:'#FF6B6B'}]},
+      options:{responsive:true, maintainAspectRatio:false, plugins:{title:{display:true,text:'Click Engagement by Hour'}}, scales:{y:{beginAtZero:true}}}
+    });
+
+    // Department Analytics
+    const deptData={}; filteredDeliveries.forEach(d=>{
+      if(!deptData[d.department])deptData[d.department]={opened:0,clicked:0,reported:0};
+      if(d.opened)deptData[d.department].opened++;
+      if(d.clicked)deptData[d.department].clicked++;
+      if(d.reported)deptData[d.department].reported++;
+    });
+    const deptLabels=Object.keys(deptData);
+    const deptOpened=deptLabels.map(l=>deptData[l].opened);
+    const deptClicked=deptLabels.map(l=>deptData[l].clicked);
+    const deptReported=deptLabels.map(l=>deptData[l].reported);
+    const ctxDept=document.getElementById('departmentChart').getContext('2d');
+    if(this.departmentChart)this.departmentChart.destroy();
+    this.departmentChart=new Chart(ctxDept,{
+      type:'bar',
+      data:{ labels:deptLabels, datasets:[
+        {label:'Opened', data:deptOpened, backgroundColor:'#1FB8CD'},
+        {label:'Clicked', data:deptClicked, backgroundColor:'#FFC185'},
+        {label:'Reported', data:deptReported, backgroundColor:'#FF6B6B'}
+      ]},
+      options:{responsive:true, maintainAspectRatio:false, plugins:{title:{display:true,text:'Department Analytics'}}, scales:{y:{beginAtZero:true}}}
+    });
+
+    // Device Distribution
+    const deviceCounts={mobile:0,desktop:0};
+    filteredDeliveries.forEach(d=>deviceCounts[d.meta.device]++);
+    const ctxDev=document.getElementById('deviceChart').getContext('2d');
+    if(this.deviceChart)this.deviceChart.destroy();
+    this.deviceChart=new Chart(ctxDev,{
+      type:'pie',
+      data:{ labels:['Mobile','Desktop'], datasets:[{data:[deviceCounts.mobile,deviceCounts.desktop], backgroundColor:['#1FB8CD','#FFC185']}]},
+      options:{plugins:{title:{display:true,text:'Device Distribution'}}}
+    });
+
+    // Comparative Radar
+    const ctxComp=document.getElementById('comparativeChart').getContext('2d');
+    if(this.comparativeChart)this.comparativeChart.destroy();
+    this.comparativeChart=new Chart(ctxComp,{
+      type:'radar',
+      data:{
+        labels:deptLabels,
+        datasets:[
+          {label:'Opened', data:deptOpened, backgroundColor:'rgba(31,184,205,0.2)', borderColor:'#1FB8CD', fill:true},
+          {label:'Clicked', data:deptClicked, backgroundColor:'rgba(255,193,133,0.2)', borderColor:'#FFC185', fill:true},
+          {label:'Reported', data:deptReported, backgroundColor:'rgba(255,107,107,0.2)', borderColor:'#FF6B6B', fill:true}
+        ]
+      },
+      options:{responsive:true, maintainAspectRatio:false, plugins:{title:{display:true,text:'Comparative Department Metrics'}}}
+    });
+  }
+
+  async generatePDF() {
+    // Ensure all data & charts are up-to-date
+    await this.updateDashboardMetrics();
+
+    // Select the section to capture
+    const element = document.getElementById('historicalSection');
+
+    // Use html2canvas to capture the element as image
+    const canvas = await html2canvas(element, { scale: 2 });
+    const imgData = canvas.toDataURL('image/png');
+
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = pdf.internal.pageSize.getHeight();
+
+    // Header & footer height
+    const headerHeight = 15; // mm
+    const footerHeight = 10; // mm
+
+    // Calculate image height to maintain aspect ratio
+    const imgProps = canvas.width / canvas.height;
+    const pdfImgHeight = pdfWidth / imgProps;
+
+    let heightLeft = pdfImgHeight;
+    let position = headerHeight;
+
+    const totalPages = Math.ceil((pdfImgHeight + headerHeight + footerHeight) / pdfHeight);
+    let pageNum = 1;
+
+    while (heightLeft > 0) {
+        // Add header
+        pdf.setFontSize(12);
+        pdf.setTextColor(40);
+        pdf.text("SocialGuard Analytics Report", 10, 10);
+        pdf.setFontSize(9);
+        const dateStr = new Date().toLocaleString();
+        pdf.text(`Generated on: ${dateStr}`, pdfWidth - 60, 10);
+
+        // Add image
+        const drawHeight = Math.min(heightLeft, pdfHeight - headerHeight - footerHeight);
+        pdf.addImage(
+            imgData,
+            'PNG',
+            0,
+            position,
+            pdfWidth,
+            drawHeight
+        );
+
+        // Footer with page number
+        pdf.setFontSize(8);
+        pdf.text(`Page ${pageNum} of ${totalPages}`, pdfWidth - 30, pdfHeight - 5);
+
+        heightLeft -= pdfHeight - headerHeight - footerHeight;
+        position = headerHeight - heightLeft;
+
+        if (heightLeft > 0) {
+            pdf.addPage();
+            pageNum++;
+            position = headerHeight;
+        }
+    }
+
+    pdf.save(`SocialGuard_Analytics_${new Date().toISOString().split('T')[0]}.pdf`);
+}
+}
+
+const simulator = new SocialEngSimulator();
+
+// Mode Toggle
+document.getElementById('modeHistorical').onclick = ()=>{
+  document.getElementById('historicalSection').style.display='block';
+  document.getElementById('realtimeSection').style.display='none';
+};
+document.getElementById('modeRealtime').onclick = ()=>{
+  document.getElementById('historicalSection').style.display='none';
+  document.getElementById('realtimeSection').style.display='block';
+};
+
+
+  
+</script>
+</body>
+</html>
+  
