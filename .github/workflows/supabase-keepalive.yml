@@ -13,24 +13,24 @@ jobs:
     steps:
       - name: Validate secrets
         env:
-          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          SUPABASE_URL: ${{ secrets.PARCEL_VITE_SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.PARCEL_VITE_SUPABASE_ANON_KEY }}
         run: |
           set -euo pipefail
           if [ -z "${SUPABASE_URL:-}" ]; then
-            echo "Missing NEXT_PUBLIC_SUPABASE_URL in repo secrets."
+            echo "Missing PARCEL_VITE_SUPABASE_URL in repo secrets."
             exit 1
           fi
           if [ -z "${SUPABASE_ANON_KEY:-}" ]; then
-            echo "Missing NEXT_PUBLIC_SUPABASE_ANON_KEY in repo secrets."
+            echo "Missing PARCEL_VITE_SUPABASE_ANON_KEY in repo secrets."
             exit 1
           fi
           echo "Secrets are present."
 
       - name: Ping Supabase RPC (with simple retries)
         env:
-          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          SUPABASE_URL: ${{ secrets.PARCEL_VITE_SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.PARCEL_VITE_SUPABASE_ANON_KEY }}
         run: |
           set -euo pipefail
           URL="${SUPABASE_URL}/rest/v1/rpc/ping"
