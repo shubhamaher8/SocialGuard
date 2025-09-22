@@ -1390,6 +1390,64 @@ select.form-control {
   z-index: 1000;
 }
 
+/* Responsive improvements for Add Workers page and header on small screens */
+@media (max-width: 768px) {
+  /* Tighter header spacing and button sizing */
+  .header-content {
+    padding: var(--space-16) var(--space-16);
+  }
+  .nav-btn {
+    padding: var(--space-6) var(--space-12);
+    font-size: var(--font-size-sm);
+  }
+  .logo h1 {
+    font-size: var(--font-size-xl);
+  }
+}
+
+@media (max-width: 640px) {
+  /* Ensure workers list fits viewport width */
+  #workers-list {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  /* Allow worker rows to wrap and avoid overflow */
+  .worker-item {
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  /* Make info block single column and allow long text to break */
+  .worker-info {
+    grid-template-columns: 1fr;
+    min-width: 0;
+    word-break: normal;
+    overflow-wrap: break-word;
+  }
+
+  /* Make email wrap at natural points instead of splitting characters */
+  .worker-info .worker-email {
+    word-break: normal;
+    overflow-wrap: break-word;
+    white-space: normal;
+  }
+
+  /* Reset grid placement of fields when single column */
+  .worker-phone,
+  .worker-email,
+  .worker-id,
+  .worker-department {
+    grid-column: 1 !important;
+  }
+
+  /* Place actions on a new row, aligned right */
+  .actions-column {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
 .modal.hidden {
   display: none !important;
 }

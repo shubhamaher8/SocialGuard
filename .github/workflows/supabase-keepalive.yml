@@ -1,0 +1,58 @@
+name: Keep Supabase Awake
+
+on:
+  schedule:
+    # Runs every 6 hours at minute 17
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+
+jobs:
+  ping-supabase:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Validate secrets
+        env:
+          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+        run: |
+          set -euo pipefail
+          if [ -z "${SUPABASE_URL:-}" ]; then
+            echo "Missing NEXT_PUBLIC_SUPABASE_URL in repo secrets."
+            exit 1
+          fi
+          if [ -z "${SUPABASE_ANON_KEY:-}" ]; then
+            echo "Missing NEXT_PUBLIC_SUPABASE_ANON_KEY in repo secrets."
+            exit 1
+          fi
+          echo "Secrets are present."
+
+      - name: Ping Supabase RPC (with simple retries)
+        env:
+          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+        run: |
+          set -euo pipefail
+          URL="${SUPABASE_URL}/rest/v1/rpc/ping"
+
+          attempt() {
+            curl -s -o /dev/null -w "%{http_code}" \
+              -X POST "$URL" \
+              -H "apikey: ${SUPABASE_ANON_KEY}" \
+              -H "Authorization: Bearer ${SUPABASE_ANON_KEY}" \
+              -H "Content-Type: application/json" \
+              -d '{}'
+          }
+
+          for i in 1 2 3; do
+            STATUS=$(attempt)
+            echo "Attempt $i - HTTP status: $STATUS"
+            if [ "$STATUS" -ge 200 ] && [ "$STATUS" -lt 300 ]; then
+              echo "Ping succeeded"
+              exit 0
+            fi
+            sleep 10
+          done
+
+          echo "Ping failed after 3 attempts"
+          exit 1
