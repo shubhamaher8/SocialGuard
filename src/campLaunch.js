@@ -1,6 +1,6 @@
  // 🔑 Replace with your own Supabase URL + Anon key
-    const SUPABASE_URL = "https://xzgzgrhtgjhwiomclxqe.supabase.co";
-    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh6Z3pncmh0Z2pod2lvbWNseHFlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcxNzY4MjYsImV4cCI6MjA3Mjc1MjgyNn0.JdSCuhMfD3R3xL_Y7Dl647g9IWc5FqvZaIMXW6DwNAc";
+   const SUPABASE_URL = process.env.PARCEL_VITE_SUPABASE_URL;
+const SUPABASE_KEY = process.env.PARCEL_VITE_SUPABASE_ANON_KEY;
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     // Toast helper
