@@ -1,161 +1,342 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Phishing & Smishing Analytics</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<style>
-  body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f8f9fa; }
-  header { background: #1f2937; color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
-  .logo { display: flex; align-items: center; gap: 10px; }
-  .logo img { height: 40px; width: 40px; }
-  .logo h1 { margin: 0; font-size: 1.4rem; }
-  .subtitle { font-size: 0.8rem; color: #d1d5db; }
-  nav { display: flex; gap: 0.8rem; }
-  .nav-btn { background: transparent; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; transition: background 0.2s; }
-  .nav-btn:hover { background: #374151; }
+  <meta charset="UTF-8">
+  <title>Phishing & Smishing Analytics</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+  /* General Layout */
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f3f4f6;
+    color: #111827;
+  }
+
+  header {
+    background: linear-gradient(90deg, #1f2937, #111827);
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .logo img { height: 42px; width: 42px; }
+  .logo h1 { margin: 0; font-size: 1.5rem; }
+  .subtitle { font-size: 0.8rem; color: #9ca3af; }
+
+  /* Navigation */
+  nav {
+    display: flex;
+    gap: 0.5rem;
+  }
+  .nav-btn {
+    background: transparent;
+    color: white;
+    border: none;
+    padding: 0.6rem 1rem;
+    border-radius: 9999px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+    font-weight: 500;
+  }
+  .nav-btn:hover { background: rgba(255,255,255,0.15); transform: translateY(-1px); }
   .nav-btn.active { background: #2563eb; }
-  .container { max-width: 1200px; margin: auto; padding: 2rem; }
-  .filters { display: flex; gap: 1rem; margin-bottom: 1rem; align-items: center; }
-  select, button { padding: 0.5rem; border-radius: 6px; border: 1px solid #ccc; cursor: pointer; }
-  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
-  .stat { background: white; padding: 1.5rem; border-radius: 12px; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.08); transition: transform 0.2s ease; }
-  .stat:hover { transform: translateY(-4px); }
-  .stat h3 { margin: 0; font-size: 2rem; color: #1f2937; }
-  .charts, .reports, .campaigns { background: white; padding: 2rem; margin-bottom: 2rem; border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
-  .charts canvas { width: 100% !important; height: 400px !important; }
-  table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
-  table th, table td { padding: 0.75rem; border: 1px solid #e5e7eb; text-align: left; }
-  table th { background: #f1f5f9; }
-  .btn { display: inline-block; padding: 0.6rem 1.2rem; border-radius: 6px; background: #1f2937; color: white; border: none; cursor: pointer; font-size: 0.95rem; }
-  .btn:hover { background: #374151; }
-  .report-item { padding: 1rem; border: 1px solid #ddd; margin-top: 1rem; border-radius: 6px; background: #f9fafb; }
-  .alert { color: red; font-weight: bold; }
+
+  .container {
+    max-width: 1400px;
+    margin: auto;
+    padding: 2rem 1rem;
+  }
+
+  /* Buttons */
+  .btn {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    border-radius: 9999px;
+    background: linear-gradient(90deg, #2563eb, #1fb8cd);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+  .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+  /* Filters */
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    align-items: center;
+    padding: 1rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  select {
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    font-size: 0.95rem;
+    background: #f9fafb;
+  }
+
+  /* Stats Cards */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .stat {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s;
+  }
+  .stat:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+  }
+  .stat h3 {
+    margin: 0;
+    font-size: 2rem;
+    color: #111827;
+  }
+  .stat p {
+    margin-top: 0.4rem;
+    font-size: 0.9rem;
+    color: #6b7280;
+  }
+
+  /* Chart Grid */
+  .charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    gap: 2rem;
+  }
+  .chart-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  }
+  .chart-card h2 {
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    border-left: 4px solid #2563eb;
+    padding-left: 0.5rem;
+    color: #111827;
+  }
+  .chart-card canvas {
+    width: 100% !important;
+    height: 300px !important;
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    font-size: 0.95rem;
+  }
+  table th, table td {
+    padding: 0.9rem;
+    border: 1px solid #e5e7eb;
+    text-align: left;
+  }
+  table th {
+    background: #f9fafb;
+    font-weight: 600;
+  }
+  table tr:hover td {
+    background: #f3f4f6;
+  }
+  .alert { color: #dc2626; font-weight: bold; }
+
+  /* Report items */
+  .report-item {
+    padding: 1rem;
+    border: 1px solid #e5e7eb;
+    margin-top: 1rem;
+    border-radius: 8px;
+    background: #f9fafb;
+  }
 </style>
 </head>
 <body>
-<header>
-  <div class="logo">
-    <img src="/public/socialguard.png" alt="SocialGuard Logo">
-    <div>
-      <h1>SocialGuard</h1>
-      <span class="subtitle">Social Engineering Attack Simulator</span>
+  <header>
+    <div class="logo">
+      <img src="/public/socialguard.png" alt="SocialGuard Logo">
+      <div>
+        <h1>SocialGuard</h1>
+        <span class="subtitle">Social Engineering Attack Simulator</span>
+      </div>
+    </div>
+    <nav>
+      <button class="nav-btn" onclick="location.href='index.html'">Home</button>
+      <button class="nav-btn">Attack Library</button>
+      <button class="nav-btn">Add Workers</button>
+      <button class="nav-btn">Simulation Builder</button>
+      <button class="nav-btn">Training</button>
+      <button class="nav-btn active">Analytics</button>
+      <button class="nav-btn">Reports</button>
+      <button class="nav-btn">Logout</button>
+    </nav>
+  </header>
+
+  <div class="container">
+    <!-- Mode Toggle -->
+    <div style="margin-bottom: 1rem;">
+      <button class="btn" id="modeHistorical">Historical Analytics</button>
+      <button class="btn" id="modeRealtime">Realtime Monitoring</button>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters" id="filterSection">
+      <label>Campaign:
+        <select id="campaignFilter"><option>Loading...</option></select>
+      </label>
+      <label>Time:
+        <select id="timeFilter">
+          <option value="7">Last 7 days</option>
+          <option value="30">Last 30 days</option>
+          <option value="all" selected>All Time</option>
+        </select>
+      </label>
+      <button class="btn" onclick="simulator.updateDashboardMetrics()">Apply Filters</button>
+    </div>
+
+    <!-- Chart Selector -->
+    <div class="filters">
+      <strong>Show Charts:</strong>
+      <label><input type="checkbox" checked data-chart="improvementChart"> Engagement Trends</label>
+      <label><input type="checkbox" checked data-chart="funnelChart"> Conversion Funnel</label>
+      <label><input type="checkbox" checked data-chart="heatmapChart"> Engagement Heatmap</label>
+      <label><input type="checkbox" checked data-chart="departmentChart"> Department Analytics</label>
+      <label><input type="checkbox" checked data-chart="comparativeChart"> Comparative Metrics</label>
+      <label><input type="checkbox" checked data-chart="visitorTrendChart"> Visitor Trends</label>
+      <label><input type="checkbox" checked data-chart="visitorCountryChart"> Visitors by Country</label>
+      <label><input type="checkbox" checked data-chart="visitorDeviceChart"> Device/Browser Breakdown</label>
+
+      <!-- Layout Switch -->
+      <label>Layout:
+        <select id="layoutSwitch">
+          <option value="2">2 per row</option>
+          <option value="3">3 per row</option>
+        </select>
+      </label>
+    </div>
+
+    <!-- Historical Section -->
+    <div id="historicalSection">
+      <section class="stats">
+        <div class="stat"><h3 id="stat-sent">0</h3><p>Total Sent</p></div>
+        <div class="stat"><h3 id="stat-opened">0</h3><p>Opened</p></div>
+        <div class="stat"><h3 id="stat-clicked">0</h3><p>Clicked</p></div>
+        <div class="stat"><h3 id="stat-creds">0</h3><p>Credentials Submitted</p></div>
+        <div class="stat"><h3 id="stat-reported">0</h3><p>Reported</p></div>
+        <div class="stat"><h3 id="stat-visitors">0</h3><p>Total Visitors</p></div>
+        <div class="stat"><h3 id="stat-ips">0</h3><p>Unique IPs</p></div>
+        <div class="stat"><h3 id="stat-browser">N/A</h3><p>Top Browser</p></div>
+      </section>
+
+      <section class="charts-grid" id="chartsGrid">
+        <div class="chart-card"><h2>Engagement Trends</h2><canvas id="improvementChart"></canvas></div>
+        <div class="chart-card"><h2>Conversion Funnel</h2><canvas id="funnelChart"></canvas></div>
+        <div class="chart-card"><h2>Engagement Heatmap (by Hour)</h2><canvas id="heatmapChart"></canvas></div>
+        <div class="chart-card"><h2>Department Analytics</h2><canvas id="departmentChart"></canvas></div>
+        <div class="chart-card"><h2>Comparative Metrics</h2><canvas id="comparativeChart"></canvas></div>
+        <div class="chart-card"><h2>Visitor Trends</h2><canvas id="visitorTrendChart"></canvas></div>
+        <div class="chart-card"><h2>Visitors by Country</h2><canvas id="visitorCountryChart"></canvas></div>
+        <div class="chart-card"><h2>Device/Browser Breakdown</h2><canvas id="visitorDeviceChart"></canvas></div>
+      </section>
+
+      <section class="campaigns">
+        <h2>Top Campaigns by Click Rate</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Start</th>
+              <th>End</th>
+              <th>Click %</th>
+              <th>Alert</th>
+            </tr>
+          </thead>
+          <tbody id="campaigns-body"></tbody>
+        </table>
+      </section>
+
+      <section class="reports">
+        <h2>Reports</h2>
+        <select id="reportType">
+          <option value="executive">Executive</option>
+          <option value="detailed">Detailed</option>
+        </select>
+        <button class="btn" onclick="simulator.generatePDF()">Generate & Download PDF</button>
+        <div id="reportList"></div>
+      </section>
+    </div>
+
+    <!-- Realtime Section -->
+    <div id="realtimeSection" style="display:none;">
+      <section class="stats">
+        <div class="stat"><h3 id="rt-stat-sent">0</h3><p>Total Sent</p></div>
+        <div class="stat"><h3 id="rt-stat-opened">0</h3><p>Opened</p></div>
+        <div class="stat"><h3 id="rt-stat-clicked">0</h3><p>Clicked</p></div>
+        <div class="stat"><h3 id="rt-stat-reported">0</h3><p>Reported</p></div>
+      </section>
+
+      <section class="charts">
+        <h2>Realtime Engagement</h2>
+        <canvas id="realtimeChart"></canvas>
+      </section>
     </div>
   </div>
-  <nav>
-    <button class="nav-btn" onclick="location.href='index.html'">Home</button>
-    <button class="nav-btn">Attack Library</button>
-    <button class="nav-btn">Add Workers</button>
-    <button class="nav-btn">Simulation Builder</button>
-    <button class="nav-btn">Training</button>
-    <button class="nav-btn active">Analytics</button>
-    <button class="nav-btn">Reports</button>
-    <button class="nav-btn">Logout</button>
-  </nav>
-</header>
 
-<div class="container">
-  <!-- Mode Toggle -->
-  <div style="margin-bottom: 1rem;">
-    <button class="btn" id="modeHistorical">Historical Analytics</button>
-    <button class="btn" id="modeRealtime">Realtime Monitoring</button>
-  </div>
+  <script>
+    // Toggle chart visibility
+    document.querySelectorAll('.filters input[type="checkbox"]').forEach(cb => {
+      cb.addEventListener('change', (e) => {
+        const chartId = e.target.getAttribute('data-chart');
+        const chartCard = document.getElementById(chartId).closest('.chart-card');
+        chartCard.style.display = e.target.checked ? 'block' : 'none';
+      });
+    });
 
-  <!-- Filters -->
-  <div class="filters" id="filterSection">
-    <label>Campaign:
-      <select id="campaignFilter"><option>Loading...</option></select>
-    </label>
-    <label>Time:
-      <select id="timeFilter">
-        <option value="7">Last 7 days</option>
-        <option value="30">Last 30 days</option>
-        <option value="all" selected>All Time</option>
-      </select>
-    </label>
-    <button class="btn" onclick="simulator.updateDashboardMetrics()">Apply Filters</button>
-  </div>
+    // Switch layout
+    document.getElementById('layoutSwitch').addEventListener('change', (e) => {
+      const val = e.target.value;
+      const grid = document.getElementById('chartsGrid');
+      if (val === "2") {
+        grid.style.gridTemplateColumns = "repeat(auto-fit, minmax(450px, 1fr))";
+      } else if (val === "3") {
+        grid.style.gridTemplateColumns = "repeat(auto-fit, minmax(300px, 1fr))";
+      }
+    });
+  </script>
 
-  <!-- Historical Section -->
-  <div id="historicalSection">
-    <section class="stats">
-      <div class="stat"><h3 id="stat-sent">0</h3><p>Total Sent</p></div>
-      <div class="stat"><h3 id="stat-opened">0</h3><p>Opened</p></div>
-      <div class="stat"><h3 id="stat-clicked">0</h3><p>Clicked</p></div>
-      <div class="stat"><h3 id="stat-creds">0</h3><p>Credentials Submitted</p></div>
-      <div class="stat"><h3 id="stat-reported">0</h3><p>Reported</p></div>
-    </section>
-
-    <section class="charts">
-      <h2>Engagement Trends</h2>
-      <canvas id="improvementChart"></canvas>
-      
-      <h2>Conversion Funnel</h2>
-      <canvas id="funnelChart"></canvas>
-
-      <h2>Engagement Heatmap (by Hour)</h2>
-      <canvas id="heatmapChart"></canvas>
-
-      <h2>Department Analytics</h2>
-      <canvas id="departmentChart"></canvas>
-
-      <h2>Device Distribution</h2>
-      <canvas id="deviceChart"></canvas>
-
-      <h2>Comparative Metrics</h2>
-      <canvas id="comparativeChart"></canvas>
-    </section>
-
-    <section class="campaigns">
-      <h2>Top Campaigns by Click Rate</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Type</th>
-            <th>Start</th>
-            <th>End</th>
-            <th>Click %</th>
-            <th>Alert</th>
-          </tr>
-        </thead>
-        <tbody id="campaigns-body"></tbody>
-      </table>
-    </section>
-
-    <section class="reports">
-      <h2>Reports</h2>
-      <select id="reportType">
-        <option value="executive">Executive</option>
-        <option value="detailed">Detailed</option>
-      </select>
-      <button class="btn" onclick="simulator.generatePDF()">Generate & Download PDF</button>
-      <div id="reportList"></div>
-    </section>
-  </div>
-
-  <!-- Realtime Section -->
-  <div id="realtimeSection" style="display:none;">
-    <section class="stats">
-      <div class="stat"><h3 id="rt-stat-sent">0</h3><p>Total Sent</p></div>
-      <div class="stat"><h3 id="rt-stat-opened">0</h3><p>Opened</p></div>
-      <div class="stat"><h3 id="rt-stat-clicked">0</h3><p>Clicked</p></div>
-      <div class="stat"><h3 id="rt-stat-reported">0</h3><p>Reported</p></div>
-    </section>
-
-    <section class="charts">
-      <h2>Realtime Engagement</h2>
-      <canvas id="realtimeChart"></canvas>
-    </section>
-  </div>
-</div>
-
-<script type="module" src="./dash.js"></script>
-  
-
+  <script type="module" src="./dash.js"></script>
 </body>
 </html>
-  

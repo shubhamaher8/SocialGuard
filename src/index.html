@@ -10,6 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script type="module" src="app.js"></script>
     <script type="module" src="request.js"></script>
+     <script type="module" src="campLaunch.js"></script>
 </head>
 <body>
     <div class="app-container">
@@ -146,8 +147,8 @@
                                 <label class="form-label" for="attack-type">Attack Type</label>
                                 <select id="attack-type" class="form-control">
                                     <option value="">Select attack type</option>
-                                    <option value="phishing">Phishing</option>
-                                    <option value="smishing">Smishing</option>
+                                    <option value="email">Phishing</option>
+                                    <option value="sms">Smishing</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -246,7 +247,7 @@
                 </div>
             </section>
 
-            <!-- Reports Tab -->
+            <!-- Reports Tab
             <section id="reports" class="tab-content">
                 <h2>Reporting System</h2>
                 <p>Generate comprehensive reports for management and compliance tracking.</p>
@@ -317,7 +318,7 @@
                 </div>
             </section>
         </main>
-    </div>
+    </div> -->
 
     <!-- Modal for Attack Templates -->
     <div id="templatesModal" class="modal hidden">
