@@ -11,30 +11,13 @@
     <script type="module" src="app.js"></script>
     <script type="module" src="request.js"></script>
      <script type="module" src="campLaunch.js"></script>
+     <script type="module" src="./navbar.js"></script>
+
 </head>
 <body>
     <div class="app-container">
         <!-- Header -->
-        <header class="app-header">
-            <div class="header-content">
-                <div class="logo" style="display: flex; align-items: center; gap: 10px;">
-                    <img src="/public/socialguard.png" alt="SocialGuard Logo" style="height: 40px; width: 40px;">
-                    <div>
-                        <h1 style="margin: 0;">SocialGuard</h1>
-                        <span class="subtitle">Social Engineering Attack Simulator</span>
-                    </div>
-                </div>
-                <nav class="main-nav">
-                    <button class="nav-btn active" data-tab="dashboard">Home</button>
-                    <button class="nav-btn" data-tab="scenarios">Attack Library</button>
-                    <button class="nav-btn" data-tab="add-workers">Add Workers</button>
-                    <button class="nav-btn" data-tab="builder">Simulation Builder</button>
-                    <button class="nav-btn" data-tab="training">Training</button>
-                    <button class="nav-btn"><a href="analytics.html">Analytics</a></li></button> 
-                    <button class="nav-btn" data-tab="logout">Logout</button>
-                </nav>
-            </div>
-        </header>
+        <div id="navbar"></div>
 
         <!-- Main Content -->
         <main class="main-content">

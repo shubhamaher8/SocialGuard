@@ -18,7 +18,7 @@
   }
 
   header {
-    background: linear-gradient(90deg, #1f2937, #111827);
+    background: linear-gradient(90deg, #111827, #111827);
     color: white;
     padding: 1rem 2rem;
     display: flex;
@@ -38,6 +38,7 @@
   .logo img { height: 42px; width: 42px; }
   .logo h1 { margin: 0; font-size: 1.5rem; }
   .subtitle { font-size: 0.8rem; color: #9ca3af; }
+  
 
   /* Navigation */
   nav {
@@ -184,26 +185,9 @@
 </style>
 </head>
 <body>
-  <header>
-    <div class="logo">
-      <img src="/public/socialguard.png" alt="SocialGuard Logo">
-      <div>
-        <h1>SocialGuard</h1>
-        <span class="subtitle">Social Engineering Attack Simulator</span>
-      </div>
-    </div>
-    <nav>
-      <button class="nav-btn" onclick="location.href='index.html'">Home</button>
-      <button class="nav-btn">Attack Library</button>
-      <button class="nav-btn">Add Workers</button>
-      <button class="nav-btn">Simulation Builder</button>
-      <button class="nav-btn">Training</button>
-      <button class="nav-btn active">Analytics</button>
-      <button class="nav-btn">Reports</button>
-      <button class="nav-btn">Logout</button>
-    </nav>
-  </header>
-
+  
+<div id="navbar"></div>
+  
   <div class="container">
     <!-- Mode Toggle -->
     <div style="margin-bottom: 1rem;">
@@ -335,7 +319,30 @@
         grid.style.gridTemplateColumns = "repeat(auto-fit, minmax(300px, 1fr))";
       }
     });
+
+    
   </script>
+<script>
+  // Load navbar.html into #navbar
+  fetch("navbar.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("navbar").innerHTML = html;
+
+      // highlight active page
+      const currentPage = location.pathname.split("/").pop();
+      document.querySelectorAll(".nav-btn").forEach(btn => {
+        if (btn.dataset.page === currentPage) {
+          btn.classList.add("active");
+        }
+        btn.addEventListener("click", () => {
+          location.href = btn.dataset.page;
+        });
+      });
+    });
+</script>
+
+
 
   <script type="module" src="./dash.js"></script>
 </body>

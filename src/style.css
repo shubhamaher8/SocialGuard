@@ -468,6 +468,52 @@ pre code {
   opacity: 0.5;
   cursor: not-allowed;
 }
+.app-header {
+  background: linear-gradient(90deg, #1f2937, #111827);
+  color: white;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.logo img {
+  height: 42px;
+  width: 42px;
+}
+
+.subtitle {
+  font-size: 0.8rem;
+  color: #9ca3af;
+}
+
+.main-nav {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.nav-btn {
+  background: transparent;
+  color: white;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  font-weight: 500;
+}
+.nav-btn:hover {
+  background: rgba(255,255,255,0.15);
+  transform: translateY(-1px);
+}
+.nav-btn.active {
+  background: #2563eb;
+}
+
 
 /* Form elements */
 .form-control {
