@@ -393,8 +393,46 @@
 
     <script type="module" src="app.js"></script>
     <script type="module">
+        // Initialize Supabase client
+        const supabaseUrl = process.env.PARCEL_VITE_SUPABASE_URL;
+        const supabaseAnonKey = process.env.PARCEL_VITE_SUPABASE_ANON_KEY;
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+
+        // Check authentication on page load
+        async function checkAuth() {
+            const { data, error } = await supabase.auth.getSession();
+            
+            if (error || !data.session) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            const currentUser = data.session.user;
+            const isAdmin = currentUser.email === 'admin@gmail.com';
+            
+            // Update navigation based on user role
+            updateNavigation(isAdmin);
+        }
+
+        // Update navigation based on user role
+        function updateNavigation(isAdmin) {
+            const regularUserTabs = ['dashboard', 'training', 'logout'];
+            
+            if (!isAdmin) {
+                // Hide admin-only navigation buttons for regular users
+                document.querySelectorAll('.nav-btn').forEach(btn => {
+                    const tabName = btn.getAttribute('data-tab');
+                    if (tabName && !regularUserTabs.includes(tabName)) {
+                        btn.style.display = 'none';
+                    }
+                });
+            }
+        }
+
         // Training-specific JavaScript
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Check authentication first
+            await checkAuth();
             // Handle navigation
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {

@@ -268,7 +268,34 @@
             }
             
             currentUser = data.session.user;
+            
+            // Check if user is admin
+            const isAdmin = currentUser.email === 'admin@gmail.com';
+            if (!isAdmin) {
+                // Redirect non-admin users to dashboard
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // Update navigation for admin users
+            updateNavigation();
             fetchWorkers();
+        }
+
+        // Update navigation based on user role
+        function updateNavigation() {
+            const isAdmin = currentUser.email === 'admin@gmail.com';
+            const regularUserTabs = ['dashboard', 'training', 'logout'];
+            
+            if (!isAdmin) {
+                // Hide admin-only navigation buttons for regular users
+                document.querySelectorAll('.nav-btn').forEach(btn => {
+                    const tabName = btn.getAttribute('data-tab');
+                    if (tabName && !regularUserTabs.includes(tabName)) {
+                        btn.style.display = 'none';
+                    }
+                });
+            }
         }
 
         // Fetch workers from Supabase
