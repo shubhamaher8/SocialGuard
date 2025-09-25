@@ -5,3 +5,4 @@ requests
 supabase
 brevo-python
 twilio
+gunicorn
