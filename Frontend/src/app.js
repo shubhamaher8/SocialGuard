@@ -360,12 +360,30 @@ class SocialEngSimulator {
 
         if (!preview) return;
 
-        if (attackType && difficulty) {
-            // Update preview with selected options
-            const difficultyLabels = {
-                'amazon offer claim': 'Amazon Offer Claim',
-            };
-            
+        // Determine preview image and description
+        let imgSrc = '';
+        let alt = '';
+        let scenarioLabel = '';
+
+        if (attackType === 'phishing' && difficulty === 'amazon offer claim') {
+            imgSrc = this.emailPreviewImgUrl;
+            alt = 'Phishing Email Example';
+            scenarioLabel = 'Amazon Offer Claim';
+        } else if (attackType === 'phishing' && difficulty === 'college placement registration') {
+            imgSrc = this.collegePreviewImgUrl;
+            alt = 'College Placement Registration Example';
+            scenarioLabel = 'College Placement Registration';
+        } else if (attackType === 'smishing' && difficulty === 'amazon offer claim') {
+            imgSrc = this.smsPreviewImgUrl;
+            alt = 'Smishing SMS Example';
+            scenarioLabel = 'Amazon Offer Claim';
+        } else if (attackType === 'smishing' && difficulty === 'credit card verification') {
+            imgSrc = this.bankPreviewImgUrl;
+            alt = 'Bank SMS Example';
+            scenarioLabel = 'Credit Card Verification';
+        }
+
+        if (attackType && difficulty && imgSrc) {
             preview.innerHTML = `
                 <h4>${campaignName}</h4>
                 <div class="preview-details">
@@ -379,8 +397,11 @@ class SocialEngSimulator {
                     </div>
                     <div class="preview-detail">
                         <span class="detail-label">Scenario:</span>
-                        <span class="detail-value">${difficultyLabels[difficulty] || difficulty}</span>
+                        <span class="detail-value">${scenarioLabel}</span>
                     </div>
+                </div>
+                <div class="preview-image" style="margin-top:16px;text-align:center;">
+                    <img src="${imgSrc}" alt="${alt}" style="max-width:100%;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08);" />
                 </div>
             `;
         } else {
