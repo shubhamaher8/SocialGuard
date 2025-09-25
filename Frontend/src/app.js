@@ -13,6 +13,8 @@ class SocialEngSimulator {
         // Resolve asset URLs through the bundler so they work in dev and build
         this.emailPreviewImgUrl = new URL('../public/email.png', import.meta.url).href;
         this.smsPreviewImgUrl = new URL('../public/sms.jpg', import.meta.url).href;
+        this.collegePreviewImgUrl = new URL('../public/college.png', import.meta.url).href;
+        this.bankPreviewImgUrl = new URL('../public/bank.jpg', import.meta.url).href;
     }
 
     async init() {
@@ -120,15 +122,28 @@ class SocialEngSimulator {
         const campaignNameInput = document.getElementById('campaign-name');
         const attackTypeSelect = document.getElementById('attack-type');
         const difficultySelect = document.getElementById('difficulty');
-        
+
         if (campaignNameInput) {
             campaignNameInput.addEventListener('input', () => {
                 this.updatePreview();
             });
         }
 
-        if (attackTypeSelect) {
+        if (attackTypeSelect && difficultySelect) {
             attackTypeSelect.addEventListener('change', () => {
+                // Get selected attack type
+                const attackType = attackTypeSelect.value;
+                // Get templates for this attack type
+                const attackData = this.getAttackData(attackType);
+                // Clear existing options
+                difficultySelect.innerHTML = '<option value="">Select scenario template</option>';
+                // Add new options
+                attackData.templates.forEach(template => {
+                    const opt = document.createElement('option');
+                    opt.value = template.toLowerCase();
+                    opt.textContent = template;
+                    difficultySelect.appendChild(opt);
+                });
                 this.updatePreview();
             });
         }
@@ -262,12 +277,18 @@ class SocialEngSimulator {
         // Simple image preview with link, no template info
         let imgSrc = '';
         let alt = '';
-        if (attack === 'phishing') {
+        if (attack === 'phishing' && template === 'Amazon Offer Claim') {
             imgSrc = this.emailPreviewImgUrl;
             alt = 'Phishing Email Example';
-        } else if (attack === 'smishing') {
+        } else if (attack === 'smishing' && template === 'Amazon Offer Claim') {
             imgSrc = this.smsPreviewImgUrl;
             alt = 'Smishing SMS Example';
+        } else if (attack === 'phishing' && template === 'College Placement Registration') {
+            imgSrc = this.collegePreviewImgUrl;
+            alt = 'College Placement Registration Example';
+        } else if (attack === 'smishing' && template === 'Credit Card Verification') {
+            imgSrc = this.bankPreviewImgUrl;
+            alt = 'Bank SMS Example';
         } else {
             container.innerHTML = '<div class="card" style="padding:32px;text-align:center;">No preview available.</div>';
             return;
@@ -314,14 +335,16 @@ class SocialEngSimulator {
                 name: 'Phishing',
                 description: 'Email-based deception to steal credentials',
                 templates: [
-                    'Amazon Offer Claim'
+                    'Amazon Offer Claim',
+                    'College Placement Registration'
                 ]
             },
             'smishing': {
                 name: 'Smishing',
                 description: 'SMS/text message based attacks',
                 templates: [
-                    'Amazon Offer Claim'
+                    'Amazon Offer Claim',
+                    'Credit Card Verification'
                 ]
             },
         };
