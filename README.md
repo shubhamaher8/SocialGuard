@@ -1,7 +1,7 @@
 # 🛡️ SocialGuard
 
 <div align="center">
-  <img src="public/socialguard.png" alt="SocialGuard Logo" width="200"/>
+  <img src="Frontend/public/socialguard.png" alt="SocialGuard Logo" width="200"/>
   <h3>Social Engineering Attack Simulator</h3>
   <p>Test and improve your organization's resilience against social engineering attacks</p>
 </div>
