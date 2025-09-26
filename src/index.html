@@ -12,6 +12,55 @@
     <script type="module" src="request.js"></script>
      <script type="module" src="campLaunch.js"></script>
      <script type="module" src="./navbar.js"></script>
+     <!-- in <head> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+     <style>
+    /* ✅ Analytics Section Styles */
+    .container {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 0 20px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: rgb(189, 182, 182);
+      padding: 16px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .card h2 {
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+    }
+    .card p {
+      font-size: 1rem;
+      margin: 0;
+    }
+    canvas {
+      max-width: 100%;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 0.9rem;
+    }
+    table th, table td {
+      padding: 8px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+    table th {
+      background: #abafb6;
+    }
+  </style>
+
 
 </head>
 <body>
@@ -191,117 +240,95 @@
                 </div>
             </section>
 
-            <!-- Analytics Tab -->
-            <section id="analytics" class="tab-content">
-                <h2>Results Analytics</h2>
-                <p>Track performance metrics and analyze simulation results.</p>
-                
-                <div class="analytics-dashboard">
-                    <div class="metrics-row">
-                        <div class="metric-card">
-                            <h3>Overall Success Rate</h3>
-                            <div class="metric-value success">87%</div>
-                            <div class="metric-change positive">↑ 12% from last month</div>
-                        </div>
-                        <div class="metric-card">
-                            <h3>Risk Score</h3>
-                            <div class="metric-value warning">Medium</div>
-                            <div class="metric-change neutral">↔ No change</div>
-                        </div>
-                        <div class="metric-card">
-                            <h3>Employees Trained</h3>
-                            <div class="metric-value">2,847</div>
-                            <div class="metric-change positive">↑ 234 this month</div>
-                        </div>
-                    </div>
+            
+           <!-- Analytics Tab -->
+ <section id="analytics" class="tab-content">
+        <h2>Results Analytics</h2>
+        <p>Track visitor stats, behavior, and simulation metrics.</p>
+<div style="text-align:right; margin: 12px 0;">
+  <button id="downloadReport" class="btn" style="padding:8px 12px; border-radius:8px; background:#2563eb; color:white; border:none; cursor:pointer;">
+    📄 Download Report
+  </button>
+</div>
 
-                    <div class="chart-row">
-                        <div class="department-performance">
-                            <h3>Performance</h3>
-                        </div>
+        <div class="container">
+          <!-- Stats -->
+          <div class="grid">
+            <div class="card">
+              <h2>Total Visitors</h2>
+              <p id="totalVisitors">0</p>
+            </div>
+            <div class="card">
+              <h2>Unique IPs</h2>
+              <p id="uniqueIps">0</p>
+            </div>
+            <div class="card">
+              <h2>Top City</h2>
+              <p id="topCity">-</p>
+            </div>
+            <div class="card">
+              <h2>Top ISP</h2>
+              <p id="topIsp">-</p>
+            </div>
+            <div class="card">
+              <h2>Top Browser</h2>
+              <p id="topBrowser">-</p>
+            </div>
+          </div>
 
-                        <div class="improvement-trends">
-                            <h3>Improvement Trends</h3>
-                            <div class="trend-chart" style="position: relative; height: 300px;">
-                                <canvas id="improvementChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+          <!-- Charts -->
+          <div class="grid" style="margin-top:20px;">
+            <div class="card">
+              <h2>Visitor Trends</h2>
+              <canvas id="trendChart"></canvas>
+            </div>
+            <div class="card">
+              <h2>Visitors by City</h2>
+              <canvas id="cityChart"></canvas>
+            </div>
+            <div class="card">
+              <h2>Browsers</h2>
+              <canvas id="browserChart"></canvas>
+            </div>
+          </div>
 
-            <!-- Reports Tab
-            <section id="reports" class="tab-content">
-                <h2>Reporting System</h2>
-                <p>Generate comprehensive reports for management and compliance tracking.</p>
-                
-                <div class="reports-section">
-                    <div class="report-generator">
-                        <h3>Generate New Report</h3>
-                        <div class="report-options">
-                            <div class="form-group">
-                                <label class="form-label">Report Type</label>
-                                <select class="form-control">
-                                    <option value="executive">Detailed Summary</option>
-                                    <option value="detailed">Smishing Report</option>
-                                    <option value="compliance">Phishing Report</option>
-                                    <option value="training">Training Report</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Time Period</label>
-                                <select class="form-control">
-                                    <option value="last30">Last 30 Days</option>
-                                    <option value="last90">Last 3 Months</option>
-                                    <option value="last12">Last 12 Months</option>
-                                </select>
-                            </div>
-                            <button class="btn btn--primary generate-report-btn">Generate Report</button>
-                        </div>
-                    </div>
+          <!-- Extra Charts -->
+          <div class="grid" style="margin-top:20px;">
+            <div class="card">
+              <h2>Visits by Hour</h2>
+              <canvas id="hourChart"></canvas>
+            </div>
+            <div class="card">
+              <h2>New vs Returning</h2>
+              <canvas id="returningChart"></canvas>
+            </div>
+            <div class="card">
+              <h2>Suspicious IPs</h2>
+              <ul id="suspiciousIps"><li>Loading...</li></ul>
+            </div>
+          </div>
 
-                    <div class="recent-reports">
-                        <h3>Recent Reports</h3>
-                        <div class="report-list">
-                            <div class="report-item">
-                                <div class="report-info">
-                                    <h4>Detailed Summary</h4>
-                                    <span class="report-date">Generated: Aug 5, 2025</span>
-                                    <span class="report-type">Detailed Summary</span>
-                                </div>
-                                <div class="report-actions">
-                                    <button class="btn btn--secondary btn--sm">View</button>
-                                    <button class="btn btn--outline btn--sm">Download PDF</button>
-                                </div>
-                            </div>
-                            <div class="report-item">
-                                <div class="report-info">
-                                    <h4>Monthly Training Report</h4>
-                                    <span class="report-date">Generated: Aug 1, 2025</span>
-                                    <span class="report-type">Training Report</span>
-                                </div>
-                                <div class="report-actions">
-                                    <button class="btn btn--secondary btn--sm">View</button>
-                                    <button class="btn btn--outline btn--sm">Download PDF</button>
-                                </div>
-                            </div>
-                            <div class="report-item">
-                                <div class="report-info">
-                                    <h4>Phishing Report</h4>
-                                    <span class="report-date">Generated: Jul 28, 2025</span>
-                                    <span class="report-type">Phishing Report</span>
-                                </div>
-                                <div class="report-actions">
-                                    <button class="btn btn--secondary btn--sm">View</button>
-                                    <button class="btn btn--outline btn--sm">Download PDF</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </main>
-    </div> -->
+          <!-- Logs Table -->
+          <div class="card" style="margin-top:20px;">
+            <h2>Visitor Logs</h2>
+            <table id="logsTable">
+              <thead>
+                <tr>
+                  <th>IP</th>
+                  <th>City</th>
+                  <th>ISP</th>
+                  <th>Browser</th>
+                  <th>Timestamp</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td colspan="5">Loading...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
 
     <!-- Modal for Attack Templates -->
     <div id="templatesModal" class="modal hidden">
@@ -331,5 +358,8 @@
             </div>
         </div>
     </div>
+
+    <script type="module" src="./dash.js"></script>
+
 </body>
 </html>
