@@ -497,13 +497,35 @@ class SocialEngSimulator {
         }
     }
 
-    launchCampaign() {
+    async launchCampaign() {
         const campaignName = document.getElementById('campaign-name')?.value;
         const attackType = document.getElementById('attack-type')?.value;
         const difficulty = document.getElementById('difficulty')?.value;
 
         if (!campaignName || !attackType || !difficulty) {
             alert('Please fill in all required fields');
+            return;
+        }
+
+        // Save only the required fields to Supabase
+        try {
+            const { error } = await this.supabase
+                .from('campaign')
+                .insert([
+                    {
+                        name: campaignName,
+                        attack_type: attackType,
+                        scenario_template: difficulty,
+                        created_at: new Date().toISOString()
+                    }
+                ]);
+
+            if (error) {
+                alert('Failed to save campaign: ' + error.message);
+                return;
+            }
+        } catch (err) {
+            alert('Unexpected error: ' + err.message);
             return;
         }
 
