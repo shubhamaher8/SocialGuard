@@ -387,6 +387,150 @@
                         </ul>
                     </div>
                 </div>
+
+                <!-- Quiz Section -->
+                <div class="training-quiz card">
+                    <div class="card__header">
+                        <h3>Knowledge Check: Email Security</h3>
+                        <p class="quiz-description">Test your understanding of email security best practices and phishing detection.</p>
+                    </div>
+                    <div class="card__body">
+                        <div class="quiz-container">
+                            <div class="question-container active" data-question="1">
+                                <h4 class="question-title">Question 1 of 5</h4>
+                                <p class="question-text">What is the most reliable way to verify the legitimacy of a suspicious email from your bank?</p>
+                                <div class="quiz-options">
+                                    <label class="quiz-option">
+                                        <input type="radio" name="q1" value="a">
+                                        <span class="option-text">Click the link in the email to check</span>
+                                    </label>
+                                    <label class="quiz-option">
+                                        <input type="radio" name="q1" value="b">
+                                        <span class="option-text">Reply to the email asking for confirmation</span>
+                                    </label>
+                                    <label class="quiz-option">
+                                        <input type="radio" name="q1" value="c">
+                                        <span class="option-text">Contact the bank directly using official contact information</span>
+                                    </label>
+                                    <label class="quiz-option">
+                                        <input type="radio" name="q1" value="d">
+                                        <span class="option-text">Forward the email to friends for their opinion</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="question-container" data-question="2">
+                                <h4 class="question-title">Question 2 of 5</h4>
+                                <p class="question-text">Which of these email characteristics is a strong indicator of a phishing attempt?</p>
+                                <div class="quiz-options">
+                                    <label class="quiz-option">
+                                        <input type="radio" name="q2" value="a">
+                                        <span class="option-text">Perfect grammar and spelling</span>
+                                    </label>
+                                    <label class="quiz-option">
+                                        <input type="radio" name="q2" value="b">
+                                        <span class="option-text">Generic greeting like "Dear Customer"</span>
+                                    </label>
+                                    <label class="quiz-option">
+                                        <input type="radio" name="q2" value="c">
+                                        <span class="option-text">Company logo and branding</span>
+                                    </label>
+                                    <label class="quiz-option">
+                                        <input type="radio" name="q2" value="d">
+                                        <span class="option-text">Proper email signature</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="question-container" data-question="3">
+                                <h4 class="question-title">Question 3 of 5</h4>
+                                <p class="question-text">What should you do with an unexpected email attachment from an unknown sender?</p>
+                                <div class="quiz-options">
+                                    <label class="quiz-option">
+                                        <input type="radio" name="q3" value="a">
+                                        <span class="option-text">Open it immediately to see what it contains</span>
+                                    </label>
+                                    <label class="quiz-option">
+                                        <input type="radio" name="q3" value="b">
+                                        <span class="option-text">Scan it with antivirus software first</span>
+                                    </label>
+                                    <label class="quiz-option">
+                                        <input type="radio" name="q3" value="c">
+                                        <span class="option-text">Delete the email without opening the attachment</span>
+                                    </label>
+                                    <label class="quiz-option">
+                                        <input type="radio" name="q3" value="d">
+                                        <span class="option-text">Forward it to colleagues to get their opinion</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="question-container" data-question="4">
+                                <h4 class="question-title">Question 4 of 5</h4>
+                                <p class="question-text">Which email header field is often spoofed in phishing attempts?</p>
+                                <div class="quiz-options">
+                                    <label class="quiz-option">
+                                        <input type="radio" name="q4" value="a">
+                                        <span class="option-text">From field (sender address)</span>
+                                    </label>
+                                    <label class="quiz-option">
+                                        <input type="radio" name="q4" value="b">
+                                        <span class="option-text">Date field</span>
+                                    </label>
+                                    <label class="quiz-option">
+                                        <input type="radio" name="q4" value="c">
+                                        <span class="option-text">Message ID</span>
+                                    </label>
+                                    <label class="quiz-option">
+                                        <input type="radio" name="q4" value="d">
+                                        <span class="option-text">Content-Type</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="question-container" data-question="5">
+                                <h4 class="question-title">Question 5 of 5</h4>
+                                <p class="question-text">What is the primary purpose of SPF, DKIM, and DMARC email authentication protocols?</p>
+                                <div class="quiz-options">
+                                    <label class="quiz-option">
+                                        <input type="radio" name="q5" value="a">
+                                        <span class="option-text">To encrypt email content</span>
+                                    </label>
+                                    <label class="quiz-option">
+                                        <input type="radio" name="q5" value="b">
+                                        <span class="option-text">To verify sender authenticity and prevent spoofing</span>
+                                    </label>
+                                    <label class="quiz-option">
+                                        <input type="radio" name="q5" value="c">
+                                        <span class="option-text">To compress email attachments</span>
+                                    </label>
+                                    <label class="quiz-option">
+                                        <input type="radio" name="q5" value="d">
+                                        <span class="option-text">To automatically sort emails into folders</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="quiz-navigation">
+                                <button class="quiz-btn quiz-prev" disabled>Previous</button>
+                                <span class="question-indicator">
+                                    <span class="current-question">1</span> of <span class="total-questions">5</span>
+                                </span>
+                                <button class="quiz-btn quiz-next">Next</button>
+                                <button class="quiz-btn quiz-submit" style="display: none;">Submit Quiz</button>
+                            </div>
+
+                            <div class="quiz-results" style="display: none;">
+                                <h4>Quiz Complete!</h4>
+                                <div class="results-summary">
+                                    <p>You scored <span class="score-display"></span> out of 5 questions correctly!</p>
+                                    <div class="score-feedback"></div>
+                                </div>
+                                <button class="quiz-btn quiz-retry">Retake Quiz</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </section>
         </main>
     </div>

@@ -65,7 +65,7 @@ class SocialEngSimulator {
         }
         
         this.user = data.session.user;
-        console.log('User authenticated:', this.user.email);
+        //console.log('User authenticated:', this.user.email);
         
         // Set user role based on email
         this.isAdmin = this.user.email === 'admin@gmail.com';
@@ -730,4 +730,198 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
     });
+
+    // Initialize quiz functionality if quiz container exists
+    const quizContainer = document.querySelector('.quiz-container');
+    if (quizContainer) {
+        new QuizManager(quizContainer);
+    }
 });
+
+// Quiz Management Class
+class QuizManager {
+    constructor(container) {
+        this.container = container;
+        this.currentQuestion = 1;
+        this.totalQuestions = 5;
+        this.answers = {};
+        this.correctAnswers = this.getCorrectAnswers();
+        
+        this.init();
+    }
+    
+    init() {
+        this.setupEventListeners();
+        this.updateNavigationState();
+    }
+    
+    getCorrectAnswers() {
+        // Define correct answers based on the current page
+        const pageTitle = document.title;
+        
+        if (pageTitle.includes('Identifying Social Engineering')) {
+            return { q1: 'b', q2: 'b', q3: 'a', q4: 'c', q5: 'd' };
+        } else if (pageTitle.includes('Email Security')) {
+            return { q1: 'c', q2: 'b', q3: 'c', q4: 'a', q5: 'b' };
+        } else if (pageTitle.includes('Incident Reporting')) {
+            return { q1: 'b', q2: 'c', q3: 'b', q4: 'b', q5: 'c' };
+        } else if (pageTitle.includes('Case Studies')) {
+            return { q1: 'b', q2: 'b', q3: 'b', q4: 'b', q5: 'b' };
+        }
+        
+        return {}; // Default empty object
+    }
+    
+    setupEventListeners() {
+        // Navigation buttons
+        const prevBtn = this.container.querySelector('.quiz-prev');
+        const nextBtn = this.container.querySelector('.quiz-next');
+        const submitBtn = this.container.querySelector('.quiz-submit');
+        const retryBtn = this.container.querySelector('.quiz-retry');
+        
+        prevBtn?.addEventListener('click', () => this.previousQuestion());
+        nextBtn?.addEventListener('click', () => this.nextQuestion());
+        submitBtn?.addEventListener('click', () => this.submitQuiz());
+        retryBtn?.addEventListener('click', () => this.retryQuiz());
+        
+        // Radio button changes
+        this.container.addEventListener('change', (e) => {
+            if (e.target.type === 'radio') {
+                this.saveAnswer(e.target.name, e.target.value);
+                this.updateNavigationState();
+            }
+        });
+    }
+    
+    saveAnswer(question, answer) {
+        this.answers[question] = answer;
+    }
+    
+    showQuestion(questionNumber) {
+        // Hide all questions
+        const questions = this.container.querySelectorAll('.question-container');
+        questions.forEach(q => q.classList.remove('active'));
+        
+        // Show current question
+        const currentQuestionEl = this.container.querySelector(`[data-question="${questionNumber}"]`);
+        if (currentQuestionEl) {
+            currentQuestionEl.classList.add('active');
+        }
+        
+        // Update question indicator
+        const currentQuestionSpan = this.container.querySelector('.current-question');
+        if (currentQuestionSpan) {
+            currentQuestionSpan.textContent = questionNumber;
+        }
+        
+        this.updateNavigationState();
+    }
+    
+    updateNavigationState() {
+        const prevBtn = this.container.querySelector('.quiz-prev');
+        const nextBtn = this.container.querySelector('.quiz-next');
+        const submitBtn = this.container.querySelector('.quiz-submit');
+        
+        // Update previous button
+        if (prevBtn) {
+            prevBtn.disabled = this.currentQuestion === 1;
+        }
+        
+        // Update next/submit buttons
+        const hasCurrentAnswer = this.answers[`q${this.currentQuestion}`];
+        
+        if (this.currentQuestion === this.totalQuestions) {
+            // Last question - show submit button
+            if (nextBtn) nextBtn.style.display = 'none';
+            if (submitBtn) {
+                submitBtn.style.display = 'block';
+                submitBtn.disabled = !hasCurrentAnswer;
+            }
+        } else {
+            // Not last question - show next button
+            if (nextBtn) {
+                nextBtn.style.display = 'block';
+                nextBtn.disabled = !hasCurrentAnswer;
+            }
+            if (submitBtn) submitBtn.style.display = 'none';
+        }
+    }
+    
+    previousQuestion() {
+        if (this.currentQuestion > 1) {
+            this.currentQuestion--;
+            this.showQuestion(this.currentQuestion);
+        }
+    }
+    
+    nextQuestion() {
+        if (this.currentQuestion < this.totalQuestions) {
+            this.currentQuestion++;
+            this.showQuestion(this.currentQuestion);
+        }
+    }
+    
+    submitQuiz() {
+        const score = this.calculateScore();
+        this.showResults(score);
+    }
+    
+    calculateScore() {
+        let correct = 0;
+        for (const [question, userAnswer] of Object.entries(this.answers)) {
+            if (userAnswer === this.correctAnswers[question]) {
+                correct++;
+            }
+        }
+        return correct;
+    }
+    
+    showResults(score) {
+        // Hide quiz questions and navigation
+        this.container.querySelectorAll('.question-container').forEach(q => {
+            q.style.display = 'none';
+        });
+        this.container.querySelector('.quiz-navigation').style.display = 'none';
+        
+        // Show results
+        const resultsEl = this.container.querySelector('.quiz-results');
+        const scoreDisplay = resultsEl.querySelector('.score-display');
+        const feedback = resultsEl.querySelector('.score-feedback');
+        
+        scoreDisplay.textContent = score;
+        
+        // Generate feedback based on score
+        let feedbackText = '';
+        const percentage = (score / this.totalQuestions) * 100;
+        
+        if (percentage >= 90) {
+            feedbackText = 'Excellent! You have a strong understanding of the material.';
+        } else if (percentage >= 70) {
+            feedbackText = 'Good job! You understand most of the key concepts.';
+        } else if (percentage >= 50) {
+            feedbackText = 'Not bad, but consider reviewing the training material again.';
+        } else {
+            feedbackText = 'Please review the training material and try again.';
+        }
+        
+        feedback.textContent = feedbackText;
+        resultsEl.style.display = 'block';
+    }
+    
+    retryQuiz() {
+        // Reset quiz state
+        this.currentQuestion = 1;
+        this.answers = {};
+        
+        // Clear all radio buttons
+        this.container.querySelectorAll('input[type="radio"]').forEach(input => {
+            input.checked = false;
+        });
+        
+        // Hide results and show first question
+        this.container.querySelector('.quiz-results').style.display = 'none';
+        this.container.querySelector('.quiz-navigation').style.display = 'flex';
+        
+        this.showQuestion(1);
+    }
+}

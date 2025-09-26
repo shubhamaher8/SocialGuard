@@ -1588,3 +1588,190 @@ select.form-control {
 .preview-section > .preview-card {
     margin-top: var(--space-20);
 }
+
+/* Quiz Styles */
+.training-quiz {
+    margin-top: var(--space-32);
+    background: var(--color-bg-1);
+    border: 1px solid var(--color-card-border);
+}
+
+.quiz-description {
+    color: var(--color-text-secondary);
+    margin-top: var(--space-8);
+    font-size: var(--font-size-base);
+}
+
+.quiz-container {
+    margin-top: var(--space-24);
+}
+
+.question-container {
+    display: none;
+}
+
+.question-container.active {
+    display: block;
+}
+
+.question-title {
+    color: var(--color-primary);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--space-16);
+}
+
+.question-text {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text);
+    margin-bottom: var(--space-24);
+    line-height: var(--line-height-relaxed);
+}
+
+.quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+    margin-bottom: var(--space-32);
+}
+
+.quiz-option {
+    display: flex;
+    align-items: flex-start;
+    padding: var(--space-16);
+    background: var(--color-surface);
+    border: 2px solid var(--color-card-border);
+    border-radius: var(--radius-base);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    gap: var(--space-12);
+}
+
+.quiz-option:hover {
+    border-color: var(--color-primary);
+    background: var(--color-bg-2);
+}
+
+.quiz-option input[type="radio"] {
+    margin: 0;
+    width: 18px;
+    height: 18px;
+    accent-color: var(--color-primary);
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.option-text {
+    font-size: var(--font-size-base);
+    color: var(--color-text);
+    cursor: pointer;
+    line-height: var(--line-height-relaxed);
+}
+
+.quiz-option:has(input:checked) {
+    border-color: var(--color-primary);
+    background: rgba(var(--color-teal-500-rgb), 0.1);
+}
+
+.quiz-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: var(--space-24);
+    border-top: 1px solid var(--color-card-border-inner);
+}
+
+.quiz-btn {
+    background: var(--color-primary);
+    color: var(--color-btn-primary-text);
+    border: none;
+    padding: var(--space-12) var(--space-24);
+    border-radius: var(--radius-base);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.quiz-btn:hover:not(:disabled) {
+    background: var(--color-primary-hover);
+    transform: translateY(-1px);
+}
+
+.quiz-btn:disabled {
+    background: var(--color-gray-300);
+    cursor: not-allowed;
+    transform: none;
+}
+
+.quiz-submit {
+    background: var(--color-success);
+}
+
+.quiz-submit:hover:not(:disabled) {
+    background: var(--color-primary-hover);
+}
+
+.quiz-retry {
+    background: var(--color-secondary);
+    color: var(--color-text);
+}
+
+.quiz-retry:hover {
+    background: var(--color-secondary-hover);
+}
+
+.question-indicator {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+}
+
+.current-question {
+    color: var(--color-primary);
+    font-weight: var(--font-weight-semibold);
+}
+
+.quiz-results {
+    text-align: center;
+    padding: var(--space-32);
+    background: var(--color-bg-3);
+    border-radius: var(--radius-base);
+    margin-top: var(--space-24);
+}
+
+.quiz-results h4 {
+    color: var(--color-success);
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--space-16);
+}
+
+.results-summary p {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--space-16);
+}
+
+.score-feedback {
+    font-size: var(--font-size-base);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-24);
+    font-style: italic;
+}
+
+/* Responsive quiz styles */
+@media (max-width: 768px) {
+    .quiz-navigation {
+        flex-direction: column;
+        gap: var(--space-16);
+    }
+    
+    .quiz-option {
+        padding: var(--space-12);
+    }
+    
+    .question-text {
+        font-size: var(--font-size-base);
+    }
+}
