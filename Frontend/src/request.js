@@ -175,25 +175,25 @@ async function sendSms(recipientNumbers, message) {
 
 // --- Campaign Dispatcher ---
 async function sendCampaign(attackType, scenario) {
-    if (attackType === 'phishing' && scenario === 'amazon') {
+    if (attackType === 'phishing' && scenario === 'Amazon Special Offer') {
         const emails = await getWorkerEmails();
         if (emails.length === 0) throw new Error('No worker emails found. Please add workers first.');
         await sendEmail(emails, 'Amazon Special Offer', buildAmazonEmailHtml());
         return 'Phishing email (Amazon) queued successfully.';
     }
-    if (attackType === 'phishing' && scenario === 'college') {
+    if (attackType === 'phishing' && scenario === 'College Placement Registration') {
         const emails = await getWorkerEmails();
         if (emails.length === 0) throw new Error('No worker emails found. Please add workers first.');
         await sendEmail(emails, 'Register on VIIT TPO Portal for Placement Access', buildCollegeEmailHtml());
         return 'Phishing email (College) queued successfully.';
     }
-    if (attackType === 'smishing' && scenario === 'amazon') {
+    if (attackType === 'smishing' && scenario === 'Amazon Special Offer') {
         const phones = await getWorkerPhones();
         if (phones.length === 0) throw new Error('No worker phone numbers found. Please add workers first.');
         await sendSms(phones, buildAmazonSmsText());
         return 'Smishing SMS (Amazon) queued successfully.';
     }
-    if (attackType === 'smishing' && scenario === 'bank') {
+    if (attackType === 'smishing' && scenario === 'Credit Card Verification') {
         const phones = await getWorkerPhones();
         if (phones.length === 0) throw new Error('No worker phone numbers found. Please add workers first.');
         await sendSms(phones, buildBankSmsText());
