@@ -1,18 +1,13 @@
-// request.js - handles sending phishing emails when launching a campaign
-
-// Ensure this file is loaded as a module from index.html
-// This script attaches a click handler to the Launch Campaign button and sends
-// a POST request to the backend with recipients fetched from Supabase.
-
 const supabaseUrl = process.env.PARCEL_VITE_SUPABASE_URL;
 const supabaseAnonKey = process.env.PARCEL_VITE_SUPABASE_ANON_KEY;
 
 // Use global Supabase from CDN on the page (window.supabase)
 const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
 
-function buildEmailHtml() {
-	// Return the provided HTML email content as a string
-	return `<!DOCTYPE html>
+// --- Email Templates ---
+function buildAmazonEmailHtml() {
+    // ...existing Amazon email HTML...
+    return `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -66,130 +61,182 @@ function buildEmailHtml() {
 </html>`;
 }
 
-async function getWorkerEmails() {
-	const { data, error } = await supabaseClient
-		.from('workers')
-		.select('email')
-		.not('email', 'is', null);
-	if (error) {
-		console.error('Failed to fetch workers:', error);
-		throw error;
-	}
-	return (data || [])
-		.map(row => (row.email || '').trim())
-		.filter(email => email.length > 0);
+function buildCollegeEmailHtml() {
+    // ...college email HTML...
+    return `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register on VIIT TPO Portal for Placement Access</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.5; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background-color: #0056b3; color: white; padding: 15px; text-align: center; border-radius: 5px 5px 0 0; font-size: 18px; }
+        .content { padding: 15px 20px; background-color: #f9f9f9; border: 1px solid #ddd; border-top: none; border-radius: 0 0 5px 5px; }
+        .button { display: inline-block; background-color: #0056b3; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: bold; margin: 15px 0; text-align: center; }
+        .highlight { font-weight: bold; color: #0056b3; }
+        .footer { margin-top: 15px; font-size: 14px; color: #666; text-align: center; }
+        ul { padding-left: 20px; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <strong>Training & Placement Office (TPO), VIIT</strong>
+    </div>
+    <div class="content">
+        <p><strong>Dear Student,</strong></p>
+        <p>To participate in placement activities, <span class="highlight">register on the TPO Portal</span> for access to:</p>
+        <ul>
+            <li>Placement drives and company updates</li>
+            <li>Aptitude test/interview schedules</li>
+            <li>Resumes, mock tests, and training resources</li>
+        </ul>
+        <p style="text-align: center;">
+            <a href="https://tinyurl.com/yz7jjhbk" class="button">Register Now</a>
+        </p>
+        <p><span class="highlight">Important:</span> Registration is <strong>mandatory</strong> for placement eligibility. Use your VIIT email ID to sign up.</p>
+        <p><strong>Regards,<br>
+        TPO Team<br>
+        Vishwakarma Institute of Information Technology</strong></p>
+    </div>
+    <div class="footer">
+        <p>© 2025 VIIT | Automated email. Do not reply.</p>
+    </div>
+</body>
+</html>`;
 }
 
-async function sendPhishingEmail(recipients) {
-	const payload = {
-		recipients,
-		subject: 'Amazon Special Offer',
-		message: buildEmailHtml()
-	};
+// --- SMS Templates ---
+function buildAmazonSmsText() {
+    return 'FLAT 80% OFF on all your purchases at Amazon Shopping! Explore a wide range of products and enjoy massive savings. Hurry up and shop now before the offer ends. Terms and conditions apply. https://tinyurl.com/yc62dxwh';
+}
 
-	const response = await fetch('https://mail-phi-self.vercel.app/send-email', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify(payload)
-	});
+function buildBankSmsText() {
+    return 'Your credit card is being terminated due to non KYC verification by the card issuer. Please click the link below to update your information and avoid service interruption. https://tinyurl.com/2phubmmc';
+}
 
-	if (!response.ok) {
-		const text = await response.text().catch(() => '');
-		throw new Error(`Backend error ${response.status}: ${text}`);
-	}
-	return response.json().catch(() => ({}));
+// --- Data Fetch ---
+async function getWorkerEmails() {
+    const { data, error } = await supabaseClient
+        .from('workers')
+        .select('email')
+        .not('email', 'is', null);
+    if (error) {
+        console.error('Failed to fetch workers:', error);
+        throw error;
+    }
+    return (data || [])
+        .map(row => (row.email || '').trim())
+        .filter(email => email.length > 0);
 }
 
 async function getWorkerPhones() {
-	const { data, error } = await supabaseClient
-		.from('workers')
-		.select('phone')
-		.not('phone', 'is', null);
-	if (error) {
-		console.error('Failed to fetch worker phones:', error);
-		throw error;
-	}
-	return (data || [])
-		.map(row => (row.phone || '').trim())
-		.filter(phone => phone.length > 0);
+    const { data, error } = await supabaseClient
+        .from('workers')
+        .select('phone')
+        .not('phone', 'is', null);
+    if (error) {
+        console.error('Failed to fetch worker phones:', error);
+        throw error;
+    }
+    return (data || [])
+        .map(row => (row.phone || '').trim())
+        .filter(phone => phone.length > 0);
 }
 
-async function sendSmishingSms(recipientNumbers) {
-	const payload = {
-		recipient_numbers: recipientNumbers,
-		message: 'FLAT 80% OFF on all your purchases at Amazon Shopping! Explore a wide range of products and enjoy massive savings. Hurry up and shop now before the offer ends. Terms and conditions apply. https://tinyurl.com/45vsuncr'
-	};
-
-	const response = await fetch('https://mail-phi-self.vercel.app/send-sms', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify(payload)
-	});
-
-	if (!response.ok) {
-		const text = await response.text().catch(() => '');
-		throw new Error(`Backend error ${response.status}: ${text}`);
-	}
-	return response.json().catch(() => ({}));
+// --- Senders ---
+async function sendEmail(recipients, subject, html) {
+    const payload = { recipients, subject, message: html };
+    const response = await fetch('https://social-guard-backend.vercel.app/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    });
+    if (!response.ok) {
+        const text = await response.text().catch(() => '');
+        throw new Error(`Backend error ${response.status}: ${text}`);
+    }
+    return response.json().catch(() => ({}));
 }
 
+async function sendSms(recipientNumbers, message) {
+    const payload = { recipient_numbers: recipientNumbers, message };
+    const response = await fetch('https://social-guard-backend.vercel.app/send-sms', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    });
+    if (!response.ok) {
+        const text = await response.text().catch(() => '');
+        throw new Error(`Backend error ${response.status}: ${text}`);
+    }
+    return response.json().catch(() => ({}));
+}
+
+// --- Campaign Dispatcher ---
+async function sendCampaign(attackType, scenario) {
+    if (attackType === 'phishing' && scenario === 'amazon') {
+        const emails = await getWorkerEmails();
+        if (emails.length === 0) throw new Error('No worker emails found. Please add workers first.');
+        await sendEmail(emails, 'Amazon Special Offer', buildAmazonEmailHtml());
+        return 'Phishing email (Amazon) queued successfully.';
+    }
+    if (attackType === 'phishing' && scenario === 'college') {
+        const emails = await getWorkerEmails();
+        if (emails.length === 0) throw new Error('No worker emails found. Please add workers first.');
+        await sendEmail(emails, 'Register on VIIT TPO Portal for Placement Access', buildCollegeEmailHtml());
+        return 'Phishing email (College) queued successfully.';
+    }
+    if (attackType === 'smishing' && scenario === 'amazon') {
+        const phones = await getWorkerPhones();
+        if (phones.length === 0) throw new Error('No worker phone numbers found. Please add workers first.');
+        await sendSms(phones, buildAmazonSmsText());
+        return 'Smishing SMS (Amazon) queued successfully.';
+    }
+    if (attackType === 'smishing' && scenario === 'bank') {
+        const phones = await getWorkerPhones();
+        if (phones.length === 0) throw new Error('No worker phone numbers found. Please add workers first.');
+        await sendSms(phones, buildBankSmsText());
+        return 'Smishing SMS (Bank) queued successfully.';
+    }
+    throw new Error('Unsupported attack type or scenario.');
+}
+
+// --- UI Handler ---
 function wireLaunchButton() {
-	const button = document.querySelector('.launch-campaign-btn');
-	if (!button) return;
+    const button = document.querySelector('.launch-campaign-btn');
+    if (!button) return;
 
-	let inFlight = false;
-	button.addEventListener('click', async () => {
-		if (inFlight) return;
-		inFlight = true;
-		const originalText = button.textContent;
-		button.textContent = 'Sending...';
-		button.disabled = true;
+    let inFlight = false;
+    button.addEventListener('click', async () => {
+        if (inFlight) return;
+        inFlight = true;
+        const originalText = button.textContent;
+        button.textContent = 'Sending...';
+        button.disabled = true;
 
-		try {
-			const attackType = document.getElementById('attack-type')?.value;
-			const difficulty = document.getElementById('difficulty')?.value;
+        try {
+            const attackType = document.getElementById('attack-type')?.value;
+            const scenario = document.getElementById('difficulty')?.value;
 
-			if (attackType !== 'phishing' && attackType !== 'smishing') {
-				alert('Select Phishing or Smishing.');
-				return;
-			}
-			if (!difficulty) {
-				alert('Please select a scenario template.');
-				return;
-			}
+            if (!attackType || !scenario) {
+                alert('Please select both attack type and scenario template.');
+                return;
+            }
 
-			if (attackType === 'phishing') {
-				const emails = await getWorkerEmails();
-				if (emails.length === 0) {
-					alert('No worker emails found. Please add workers first.');
-					return;
-				}
-				await sendPhishingEmail(emails);
-				alert('Phishing email queued successfully.');
-			} else if (attackType === 'smishing') {
-				const phones = await getWorkerPhones();
-				if (phones.length === 0) {
-					alert('No worker phone numbers found. Please add workers first.');
-					return;
-				}
-				await sendSmishingSms(phones);
-				alert('Smishing SMS queued successfully.');
-			}
-		} catch (err) {
-			console.error(err);
-			alert(`Failed to send email: ${err.message || err}`);
-		} finally {
-			button.textContent = originalText;
-			button.disabled = false;
-			inFlight = false;
-		}
-	});
+            const resultMsg = await sendCampaign(attackType, scenario);
+            alert(resultMsg);
+        } catch (err) {
+            console.error(err);
+            alert(`Failed to send campaign: ${err.message || err}`);
+        } finally {
+            button.textContent = originalText;
+            button.disabled = false;
+            inFlight = false;
+        }
+    });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-	wireLaunchButton();
+    wireLaunchButton();
 });
