@@ -1209,7 +1209,7 @@ select.form-control {
 
 .metrics-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(3, minmax(200px, 1fr));
   gap: var(--space-20);
   margin-bottom: var(--space-32);
 }

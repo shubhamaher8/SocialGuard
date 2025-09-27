@@ -671,7 +671,53 @@ class SocialEngSimulator {
             if (linksCount > 0) {
                 linksElement.classList.add('warning');
             }
-            
+
+            // --- ADD THIS BLOCK FOR CTR ---
+            const ctrElement = document.querySelector('.metric-card:nth-child(4) .metric-value');
+            if (ctrElement) {
+                let ctr = 0;
+                if (trainedCount && trainedCount > 0) {
+                    ctr = (linksCount / trainedCount) * 100;
+                }
+                ctrElement.textContent = `${ctr.toFixed(1)}%`;
+            }
+            // --- END CTR BLOCK ---
+
+            // --- ADD THIS BLOCK FOR SUBMISSION RATE ---
+            const submissionRateElement = document.querySelector('.metric-card:nth-child(5) .metric-value');
+            if (submissionRateElement) {
+                let submissionRate = 0;
+                if (linksCount && linksCount > 0) {
+                    submissionRate = (credentialsCount / linksCount) * 100;
+                }
+                submissionRateElement.textContent = `${submissionRate.toFixed(1)}%`;
+            }
+            // --- END SUBMISSION RATE BLOCK ---
+
+            // --- Major ISP Calculation ---
+            const majorIspElement = document.querySelector('.metric-card:nth-child(6) .metric-value');
+            if (majorIspElement) {
+                // Fetch all ISPs from visitor_logs
+                const { data: visitorLogs, error } = await this.supabase
+                    .from('visitor_logs')
+                    .select('isp');
+
+                if (error || !visitorLogs || visitorLogs.length === 0) {
+                    majorIspElement.textContent = 'N/A';
+                } else {
+                    // Count frequency of each ISP
+                    const ispCounts = {};
+                    visitorLogs.forEach(log => {
+                        const isp = log.isp || 'Unknown';
+                        ispCounts[isp] = (ispCounts[isp] || 0) + 1;
+                    });
+                    // Find the ISP with the highest count
+                    const majorIsp = Object.entries(ispCounts).sort((a, b) => b[1] - a[1])[0][0];
+                    majorIspElement.textContent = majorIsp;
+                }
+            }
+            // --- End Major ISP Calculation ---
+
             // Also fetch campaigns data for the table
             await this.fetchCampaignsData();
             await this.fetchLoginsData();
