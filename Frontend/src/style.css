@@ -1798,3 +1798,40 @@ select.form-control {
     box-shadow: var(--shadow-sm);
     margin-top: 8px;
 }
+
+/* IP Logger Table Styles */
+.iplogger-table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.iplogger-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 14px;
+    background-color: transparent;
+}
+
+.iplogger-table th,
+.iplogger-table td {
+    padding: 10px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--color-card-border-inner);
+    white-space: normal;           /* Allow wrapping */
+    word-break: break-word;        /* Break long words if needed */
+    vertical-align: top;           /* Align multi-line cells to the top */
+    font-size: 13px;               /* Slightly smaller for dense data */
+    line-height: 1.4;              /* More space between lines */
+    max-width: 320px;              /* Optional: limit cell width for wrapping */
+}
+
+.iplogger-table th {
+    background-color: transparent;
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text);
+}
+
+.iplogger-table tbody tr:hover {
+    background-color: transparent;
+}

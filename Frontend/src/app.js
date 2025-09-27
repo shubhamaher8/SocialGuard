@@ -725,6 +725,8 @@ class SocialEngSimulator {
 
             // NEW: Fetch and render campaign performance timeline
             await this.renderAttacksTimelineChart();
+            // Fetch IP logger data
+            await this.fetchIpLoggerData();
 
         } catch (error) {
             console.error('Error fetching analytics data:', error);
@@ -939,6 +941,61 @@ class SocialEngSimulator {
         } catch (error) {
             console.error('Error fetching logins data:', error);
             tableBody.innerHTML = '<tr><td colspan="3" class="error-cell">Error loading logins</td></tr>';
+        }
+    }
+
+    async fetchIpLoggerData() {
+        const tableBody = document.getElementById('iplogger-table-body');
+        if (!tableBody) return;
+
+        try {
+            tableBody.innerHTML = '<tr><td colspan="5" class="loading-cell">Loading IP logger details...</td></tr>';
+
+            // Fetch visitor_logs for city Pune
+            const { data: logs, error } = await this.supabase
+                .from('visitor_logs')
+                .select('ip_address, user_agent, city, isp, timestamp')
+                .eq('city', 'Pune');
+
+            if (error) throw new Error(error.message);
+
+            if (logs && logs.length > 0) {
+                // Map to unique IPs (show only the latest entry per IP)
+                const uniqueIpMap = {};
+                logs.forEach(log => {
+                    // If IP not seen or this log is newer, keep it
+                    if (
+                        !uniqueIpMap[log.ip_address] ||
+                        new Date(log.timestamp) > new Date(uniqueIpMap[log.ip_address].timestamp)
+                    ) {
+                        uniqueIpMap[log.ip_address] = log;
+                    }
+                });
+
+                const uniqueLogs = Object.values(uniqueIpMap);
+
+                if (uniqueLogs.length > 0) {
+                    tableBody.innerHTML = '';
+                    uniqueLogs.forEach(log => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${log.ip_address || '-'}</td>
+                            <td>${log.user_agent || '-'}</td>
+                            <td>${log.city || '-'}</td>
+                            <td>${log.isp || '-'}</td>
+                            <td>${log.timestamp ? new Date(log.timestamp).toLocaleString() : '-'}</td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                } else {
+                    tableBody.innerHTML = '<tr><td colspan="5" class="no-data">No unique IPs found for Pune</td></tr>';
+                }
+            } else {
+                tableBody.innerHTML = '<tr><td colspan="5" class="no-data">No data found</td></tr>';
+            }
+        } catch (error) {
+            console.error('Error fetching IP logger data:', error);
+            tableBody.innerHTML = '<tr><td colspan="5" class="error-cell">Error loading IP logger details</td></tr>';
         }
     }
 
