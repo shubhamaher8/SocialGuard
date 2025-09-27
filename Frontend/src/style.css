@@ -1317,65 +1317,6 @@ select.form-control {
   text-align: right;
 }
 
-/* Reports Styles */
-.reports-section {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-32);
-}
-
-.report-generator, .recent-reports {
-  background: var(--color-surface);
-  padding: var(--space-24);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--color-card-border);
-  box-shadow: var(--shadow-sm);
-}
-
-.report-generator h3, .recent-reports h3 {
-  margin-bottom: var(--space-20);
-  border-bottom: 1px solid var(--color-border);
-  padding-bottom: var(--space-8);
-}
-
-.report-options {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-16);
-}
-
-.report-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-16);
-}
-
-.report-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: var(--space-16);
-  background: var(--color-bg-6);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-card-border-inner);
-}
-
-.report-info h4 {
-  margin-bottom: var(--space-4);
-  font-size: var(--font-size-base);
-}
-
-.report-date, .report-type {
-  font-size: var(--font-size-xs);
-  color: var(--color-text-secondary);
-  margin-right: var(--space-8);
-}
-
-.report-actions {
-  display: flex;
-  gap: var(--space-8);
-}
-
 /* Modal Styles */
 .modal {
   position: fixed;
@@ -1535,20 +1476,6 @@ select.form-control {
 
   .chart-row {
     grid-template-columns: 1fr;
-  }
-
-  .reports-section {
-    grid-template-columns: 1fr;
-  }
-
-  .report-item {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-12);
-  }
-
-  .report-actions {
-    align-self: flex-end;
   }
 }
 

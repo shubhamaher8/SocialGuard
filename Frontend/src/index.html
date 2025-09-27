@@ -30,7 +30,6 @@
                     <button class="nav-btn admin-only" data-tab="builder">Simulation Builder</button>
                     <button class="nav-btn" data-tab="training">Training</button>
                     <button class="nav-btn admin-only" data-tab="analytics">Analytics</button>
-                    <button class="nav-btn admin-only" data-tab="reports">Reports</button>
                     <button class="nav-btn" data-tab="logout">Logout</button>
                 </nav>
             </div>
@@ -287,77 +286,6 @@
                             <h3>Attacks Timeline</h3>
                             <div class="trend-chart" style="position: relative; height: 300px;">
                                 <canvas id="attacksTimelineChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Reports Tab -->
-            <section id="reports" class="tab-content">
-                <h2>Reporting System</h2>
-                <p>Generate comprehensive reports for management and compliance tracking.</p>
-                
-                <div class="reports-section">
-                    <div class="report-generator">
-                        <h3>Generate New Report</h3>
-                        <div class="report-options">
-                            <div class="form-group">
-                                <label class="form-label">Report Type</label>
-                                <select class="form-control">
-                                    <option value="executive">Detailed Summary</option>
-                                    <option value="detailed">Smishing Report</option>
-                                    <option value="compliance">Phishing Report</option>
-                                    <option value="training">Training Report</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Time Period</label>
-                                <select class="form-control">
-                                    <option value="last30">Last 30 Days</option>
-                                    <option value="last90">Last 3 Months</option>
-                                    <option value="last12">Last 12 Months</option>
-                                </select>
-                            </div>
-                            <button class="btn btn--primary generate-report-btn">Generate Report</button>
-                        </div>
-                    </div>
-
-                    <div class="recent-reports">
-                        <h3>Recent Reports</h3>
-                        <div class="report-list">
-                            <div class="report-item">
-                                <div class="report-info">
-                                    <h4>Detailed Summary</h4>
-                                    <span class="report-date">Generated: Aug 5, 2025</span>
-                                    <span class="report-type">Detailed Summary</span>
-                                </div>
-                                <div class="report-actions">
-                                    <button class="btn btn--secondary btn--sm">View</button>
-                                    <button class="btn btn--outline btn--sm">Download PDF</button>
-                                </div>
-                            </div>
-                            <div class="report-item">
-                                <div class="report-info">
-                                    <h4>Monthly Training Report</h4>
-                                    <span class="report-date">Generated: Aug 1, 2025</span>
-                                    <span class="report-type">Training Report</span>
-                                </div>
-                                <div class="report-actions">
-                                    <button class="btn btn--secondary btn--sm">View</button>
-                                    <button class="btn btn--outline btn--sm">Download PDF</button>
-                                </div>
-                            </div>
-                            <div class="report-item">
-                                <div class="report-info">
-                                    <h4>Phishing Report</h4>
-                                    <span class="report-date">Generated: Jul 28, 2025</span>
-                                    <span class="report-type">Phishing Report</span>
-                                </div>
-                                <div class="report-actions">
-                                    <button class="btn btn--secondary btn--sm">View</button>
-                                    <button class="btn btn--outline btn--sm">Download PDF</button>
-                                </div>
                             </div>
                         </div>
                     </div>

@@ -112,7 +112,7 @@ class SocialEngSimulator {
     protectRoutes() {
         // Hide all admin-only tab content for regular users
         const regularUserTabs = ['dashboard', 'training', 'logout'];
-        const adminOnlyTabs = ['scenarios', 'builder', 'analytics', 'reports'];
+        const adminOnlyTabs = ['scenarios', 'builder', 'analytics'];
         
         if (!this.isAdmin) {
             // Hide admin-only tab content
@@ -542,59 +542,6 @@ class SocialEngSimulator {
         const form = document.querySelector('.simulation-form');
         if (form) {
             form.reset();
-        }
-    }
-
-    generateReport() {
-        // Simulate report generation
-        const reportSelect = document.querySelector('.reports-section select');
-        const reportType = reportSelect ? reportSelect.value : 'executive';
-        
-        // Add a new report to the list
-        const reportList = document.querySelector('.report-list');
-        if (!reportList) return;
-
-        const newReport = document.createElement('div');
-        newReport.className = 'report-item';
-        
-        const currentDate = new Date().toLocaleDateString('en-US', { 
-            year: 'numeric', 
-            month: 'short', 
-            day: 'numeric' 
-        });
-
-        const reportNames = {
-            'executive': 'Executive Summary',
-            'detailed': 'Detailed Analysis',
-            'compliance': 'Compliance Report',
-            'training': 'Training Effectiveness'
-        };
-
-        newReport.innerHTML = `
-            <div class="report-info">
-                <h4>${reportNames[reportType] || 'Generated Report'}</h4>
-                <span class="report-date">Generated: ${currentDate}</span>
-                <span class="report-type">${reportType.charAt(0).toUpperCase() + reportType.slice(1)}</span>
-            </div>
-            <div class="report-actions">
-                <button class="btn btn--secondary btn--sm">View</button>
-                <button class="btn btn--outline btn--sm">Download PDF</button>
-            </div>
-        `;
-
-        reportList.insertBefore(newReport, reportList.firstChild);
-
-        // Show success feedback
-        const button = document.querySelector('.generate-report-btn');
-        if (button) {
-            const originalText = button.textContent;
-            button.textContent = 'Report Generated ✓';
-            button.disabled = true;
-            
-            setTimeout(() => {
-                button.textContent = originalText;
-                button.disabled = false;
-            }, 2000);
         }
     }
 
