@@ -216,29 +216,47 @@
                 <div class="analytics-dashboard">
                     <div class="metrics-row">
                         <div class="metric-card">
-                            <h3>Overall Success Rate</h3>
-                            <div class="metric-value success">87%</div>
-                            <div class="metric-change positive">↑ 12% from last month</div>
+                            <h3>Credentials Submitted</h3>
+                            <div class="metric-value success">get from supabase</div>
+                            <div class="metric-change positive">Login Details Submitted</div>
                         </div>
                         <div class="metric-card">
-                            <h3>Risk Score</h3>
-                            <div class="metric-value warning">Medium</div>
-                            <div class="metric-change neutral">↔ No change</div>
+                            <h3>Links Clicked</h3>
+                            <div class="metric-value warning">get from supabase</div>
+                            <div class="metric-change positive">Phishing Links Clicked</div>
                         </div>
                         <div class="metric-card">
                             <h3>Employees Trained</h3>
-                            <div class="metric-value">2,847</div>
-                            <div class="metric-change positive">↑ 234 this month</div>
+                            <div class="metric-value">get from supabase</div>
+                            <div class="metric-change positive">Total Employees Trained</div>
                         </div>
                     </div>
 
                     <div class="chart-row">
                         <div class="department-performance">
-                            <h3>Performance</h3>
+                            <h3>Past Campaigns</h3>
+                            <div class="campaigns-table-container">
+                                <table class="campaigns-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Attack Type</th>
+                                            <th>Scenario Template</th>
+                                            <th>Created At</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="campaigns-table-body">
+                                        <!-- Campaigns will be loaded here via JavaScript -->
+                                        <tr>
+                                            <td colspan="4" class="loading-cell">Loading campaigns...</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
 
                         <div class="improvement-trends">
-                            <h3>Improvement Trends</h3>
+                            <h3>Attack Detail Graphics</h3>
                             <div class="trend-chart" style="position: relative; height: 300px;">
                                 <canvas id="improvementChart"></canvas>
                             </div>

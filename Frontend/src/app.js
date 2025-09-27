@@ -298,6 +298,8 @@ class SocialEngSimulator {
 
         // Initialize charts if switching to analytics
         if (tabName === 'analytics') {
+            // Fetch analytics data when switching to the analytics tab
+            this.fetchAnalyticsData();
             setTimeout(() => this.setupCharts(), 100);
         }
     }
@@ -602,57 +604,46 @@ class SocialEngSimulator {
         if (!canvas || !canvas.offsetParent) return;
 
         const ctx = canvas.getContext('2d');
-        
+
+        // Get the latest values from the analytics cards
+        const credentials = parseInt(document.querySelector('.metric-card:nth-child(1) .metric-value')?.textContent) || 0;
+        const links = parseInt(document.querySelector('.metric-card:nth-child(2) .metric-value')?.textContent) || 0;
+
         // Destroy existing chart if it exists
         if (this.improvementChart) {
             this.improvementChart.destroy();
         }
 
         this.improvementChart = new Chart(ctx, {
-            type: 'line',
+            type: 'bar',
             data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
+                labels: ['Links Clicked', 'Credentials Submitted'],
                 datasets: [{
-                    label: 'Success Rate',
-                    data: [65, 70, 75, 78, 82, 85, 87, 89],
-                    borderColor: '#1FB8CD',
-                    backgroundColor: 'rgba(31, 184, 205, 0.1)',
-                    borderWidth: 3,
-                    fill: true,
-                    tension: 0.4
-                }, {
-                    label: 'Reporting Rate',
-                    data: [20, 25, 35, 42, 48, 55, 58, 62],
-                    borderColor: '#FFC185',
-                    backgroundColor: 'rgba(255, 193, 133, 0.1)',
-                    borderWidth: 3,
-                    fill: true,
-                    tension: 0.4
+                    label: 'Count',
+                    data: [links, credentials],
+                    backgroundColor: [
+                        'rgba(255, 193, 133, 0.8)', // orange for links
+                        'rgba(31, 184, 205, 0.8)'   // teal for credentials
+                    ],
+                    borderColor: [
+                        'rgba(255, 193, 133, 1)',
+                        'rgba(31, 184, 205, 1)'
+                    ],
+                    borderWidth: 2
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    legend: {
-                        position: 'top',
-                    }
+                    legend: { display: false }
                 },
                 scales: {
                     y: {
                         beginAtZero: true,
-                        max: 100,
                         ticks: {
-                            callback: function(value) {
-                                return value + '%';
-                            }
+                            precision: 0
                         }
-                    }
-                },
-                elements: {
-                    point: {
-                        radius: 4,
-                        hoverRadius: 6
                     }
                 }
             }
@@ -668,8 +659,130 @@ class SocialEngSimulator {
             startDateInput.value = today;
         }
 
+        // Fetch analytics data from database
+        this.fetchAnalyticsData();
+
         // Simulate some dynamic updates
         this.updateDashboardMetrics();
+    }
+
+    async fetchAnalyticsData() {
+        // Get the metric value elements
+        const credentialsElement = document.querySelector('.metric-card:nth-child(1) .metric-value');
+        const linksElement = document.querySelector('.metric-card:nth-child(2) .metric-value');
+        const trainedElement = document.querySelector('.metric-card:nth-child(3) .metric-value');
+        
+        // Exit if elements don't exist (not on analytics page)
+        if (!credentialsElement || !linksElement || !trainedElement) return;
+        
+        try {
+            // Set loading state
+            credentialsElement.textContent = 'Loading...';
+            linksElement.textContent = 'Loading...';
+            trainedElement.textContent = 'Loading...';
+            
+            // 1. Get credentials submitted count (logins table)
+            const { count: credentialsCount, error: credentialsError } = await this.supabase
+                .from('logins')
+                .select('*', { count: 'exact', head: true });
+            
+            if (credentialsError) throw new Error(credentialsError.message);
+            
+            // 2. Get links clicked count (visitor_logs table with city pune and unique IP)
+            const { data: visitorData, error: visitorError } = await this.supabase
+                .from('visitor_logs')
+                .select('ip_address')
+                .eq('city', 'Pune');
+            
+            if (visitorError) throw new Error(visitorError.message);
+            
+            // Count unique IP addresses
+            const uniqueIPs = new Set();
+            if (visitorData) {
+                visitorData.forEach(log => uniqueIPs.add(log.ip_address));
+            }
+            const linksCount = uniqueIPs.size;
+            
+            // 3. Get employees trained count (workers table)
+            const { count: trainedCount, error: trainedError } = await this.supabase
+                .from('workers')
+                .select('*', { count: 'exact', head: true });
+            
+            if (trainedError) throw new Error(trainedError.message);
+            
+            // Update the UI with fetched data
+            credentialsElement.textContent = credentialsCount || '0';
+            linksElement.textContent = linksCount || '0';
+            trainedElement.textContent = trainedCount || '0';
+            
+            // Add visual indicator classes if needed
+            if (credentialsCount > 0) {
+                credentialsElement.classList.add('warning');
+            }
+            
+            if (linksCount > 0) {
+                linksElement.classList.add('warning');
+            }
+            
+            // Also fetch campaigns data for the table
+            await this.fetchCampaignsData();
+
+            // <-- Add this line to update the chart after metrics are set
+            this.setupCharts();
+
+        } catch (error) {
+            console.error('Error fetching analytics data:', error);
+            
+            // Show error state
+            credentialsElement.textContent = 'Error';
+            linksElement.textContent = 'Error';
+            trainedElement.textContent = 'Error';
+        }
+    }
+
+    async fetchCampaignsData() {
+        const tableBody = document.getElementById('campaigns-table-body');
+        if (!tableBody) return;
+        
+        try {
+            tableBody.innerHTML = '<tr><td colspan="4" class="loading-cell">Loading campaigns...</td></tr>';
+            
+            // Fetch campaigns from the database
+            const { data: campaigns, error } = await this.supabase
+                .from('campaign')
+                .select('*')
+                .order('created_at', { ascending: false });
+            
+            if (error) throw new Error(error.message);
+            
+            if (campaigns && campaigns.length > 0) {
+                // Clear loading message
+                tableBody.innerHTML = '';
+                
+                // Add each campaign to the table
+                campaigns.forEach(campaign => {
+                    const row = document.createElement('tr');
+                    
+                    // Format the date
+                    const createdAt = new Date(campaign.created_at);
+                    const formattedDate = `${createdAt.getFullYear()}-${String(createdAt.getMonth() + 1).padStart(2, '0')}-${String(createdAt.getDate()).padStart(2, '0')} ${String(createdAt.getHours()).padStart(2, '0')}:${String(createdAt.getMinutes()).padStart(2, '0')}:${String(createdAt.getSeconds()).padStart(2, '0')}+00`;
+                    
+                    row.innerHTML = `
+                        <td>${campaign.name || '-'}</td>
+                        <td>${campaign.attack_type || '-'}</td>
+                        <td>${campaign.scenario_template || '-'}</td>
+                        <td>${formattedDate}</td>
+                    `;
+                    
+                    tableBody.appendChild(row);
+                });
+            } else {
+                tableBody.innerHTML = '<tr><td colspan="4" class="no-data">No campaigns found</td></tr>';
+            }
+        } catch (error) {
+            console.error('Error fetching campaigns data:', error);
+            tableBody.innerHTML = '<tr><td colspan="4" class="error-cell">Error loading campaigns</td></tr>';
+        }
     }
 
     updateDashboardMetrics() {

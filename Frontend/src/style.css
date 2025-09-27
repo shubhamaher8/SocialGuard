@@ -1775,3 +1775,58 @@ select.form-control {
         font-size: var(--font-size-base);
     }
 }
+
+/* Campaigns Table Styles */
+.campaigns-table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.campaigns-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 14px;
+    background-color: transparent;
+}
+
+.campaigns-table th, 
+.campaigns-table td {
+    padding: 10px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--color-card-border-inner);
+}
+
+.campaigns-table th {
+    white-space: nowrap;
+    background-color: transparent;
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text);
+    position: relative;
+    cursor: pointer;
+}
+
+.campaigns-table th:hover {
+    background-color: transparent;
+}
+
+.sort-icon {
+    position: absolute;
+    right: 8px;
+    opacity: 0.5;
+    color: var(--color-text-secondary);
+}
+
+.campaigns-table tbody tr:hover {
+    background-color: transparent;
+}
+
+.loading-cell, .error-cell, .no-data {
+    text-align: center;
+    padding: 20px !important;
+    color: var(--color-text-secondary);
+}
+
+.error-cell {
+    color: var(--color-error);
+}
