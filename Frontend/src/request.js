@@ -175,25 +175,28 @@ async function sendSms(recipientNumbers, message) {
 
 // --- Campaign Dispatcher ---
 async function sendCampaign(attackType, scenario) {
-    if (attackType === 'phishing' && scenario === 'Amazon Special Offer') {
+    // Normalize scenario for matching
+    const normalized = scenario.trim().toLowerCase();
+
+    if (attackType === 'phishing' && (normalized === 'amazon offer claim' || normalized === 'amazon special offer')) {
         const emails = await getWorkerEmails();
         if (emails.length === 0) throw new Error('No worker emails found. Please add workers first.');
         await sendEmail(emails, 'Amazon Special Offer', buildAmazonEmailHtml());
         return 'Phishing email (Amazon) queued successfully.';
     }
-    if (attackType === 'phishing' && scenario === 'College Placement Registration') {
+    if (attackType === 'phishing' && normalized === 'college placement registration') {
         const emails = await getWorkerEmails();
         if (emails.length === 0) throw new Error('No worker emails found. Please add workers first.');
         await sendEmail(emails, 'Register on VIIT TPO Portal for Placement Access', buildCollegeEmailHtml());
         return 'Phishing email (College) queued successfully.';
     }
-    if (attackType === 'smishing' && scenario === 'Amazon Special Offer') {
+    if (attackType === 'smishing' && (normalized === 'amazon offer claim' || normalized === 'amazon special offer')) {
         const phones = await getWorkerPhones();
         if (phones.length === 0) throw new Error('No worker phone numbers found. Please add workers first.');
         await sendSms(phones, buildAmazonSmsText());
         return 'Smishing SMS (Amazon) queued successfully.';
     }
-    if (attackType === 'smishing' && scenario === 'Credit Card Verification') {
+    if (attackType === 'smishing' && normalized === 'credit card verification') {
         const phones = await getWorkerPhones();
         if (phones.length === 0) throw new Error('No worker phone numbers found. Please add workers first.');
         await sendSms(phones, buildBankSmsText());
