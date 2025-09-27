@@ -895,7 +895,7 @@ class SocialEngSimulator {
                         <td>${campaign.name || '-'}</td>
                         <td>${campaign.attack_type || '-'}</td>
                         <td>${campaign.scenario_template || '-'}</td>
-                        <td>${formattedDate}</td>
+                        <td>${campaign.created_at ? new Date(campaign.created_at).toLocaleString() : '-'}</td>
                     `;
                     
                     tableBody.appendChild(row);

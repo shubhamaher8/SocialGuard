@@ -1711,7 +1711,8 @@ select.form-control {
 
 .campaigns-table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;      /* Change from collapse to separate */
+    border-spacing: 0 8px;         /* Adds vertical space between rows */
     margin-top: 10px;
     font-size: 14px;
     background-color: transparent;
@@ -1719,7 +1720,7 @@ select.form-control {
 
 .campaigns-table th, 
 .campaigns-table td {
-    padding: 10px 15px;
+    padding: 10px 18px;             /* Increase vertical and horizontal padding */
     text-align: left;
     border-bottom: 1px solid var(--color-card-border-inner);
 }
@@ -1766,7 +1767,8 @@ select.form-control {
 
 .logins-table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;      /* Change from collapse to separate */
+    border-spacing: 0 8px;         /* Adds vertical space between rows */
     margin-top: 10px;
     font-size: 14px;
     background-color: transparent;
@@ -1774,7 +1776,7 @@ select.form-control {
 
 .logins-table th,
 .logins-table td {
-    padding: 10px 15px;
+    padding: 12px 18px;             /* Increase vertical and horizontal padding */
     text-align: left;
     border-bottom: 1px solid var(--color-card-border-inner);
     white-space: nowrap;
