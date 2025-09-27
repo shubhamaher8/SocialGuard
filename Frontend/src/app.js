@@ -10,6 +10,7 @@ class SocialEngSimulator {
         this.supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
         this.user = null;
         this.improvementChart = null;
+        this.attacksTimelineChart = null; // Add this for the new chart
         // Resolve asset URLs through the bundler so they work in dev and build
         this.emailPreviewImgUrl = new URL('../public/email.png', import.meta.url).href;
         this.smsPreviewImgUrl = new URL('../public/sms.jpg', import.meta.url).href;
@@ -676,6 +677,9 @@ class SocialEngSimulator {
             await this.fetchLoginsData();
             this.setupCharts();
 
+            // NEW: Fetch and render campaign performance timeline
+            await this.renderAttacksTimelineChart();
+
         } catch (error) {
             console.error('Error fetching analytics data:', error);
             
@@ -684,6 +688,132 @@ class SocialEngSimulator {
             linksElement.textContent = 'Error';
             trainedElement.textContent = 'Error';
         }
+    }
+
+    async renderAttacksTimelineChart() {
+        const canvas = document.getElementById('attacksTimelineChart');
+        if (!canvas) return;
+
+        // Fetch visitor_logs for city Pune
+        const { data: logs, error } = await this.supabase
+            .from('visitor_logs')
+            .select('ip_address, timestamp, city')
+            .eq('city', 'Pune');
+
+        // Fetch logins (assuming table name is 'logins' and has 'login_time' column)
+        const { data: logins, error: loginsError } = await this.supabase
+            .from('logins')
+            .select('login_time');
+
+        if (error || !logs || loginsError || !logins) {
+            if (this.attacksTimelineChart) this.attacksTimelineChart.destroy();
+            return;
+        }
+
+        // Group visitor_logs by day (YYYY-MM-DD)
+        const dayMap = {};
+        logs.forEach(log => {
+            if (!log.timestamp) return;
+            const date = new Date(log.timestamp);
+            const dayKey = `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+            if (!dayMap[dayKey]) dayMap[dayKey] = new Set();
+            dayMap[dayKey].add(log.ip_address);
+        });
+
+        // Group logins by day (YYYY-MM-DD)
+        const loginDayMap = {};
+        logins.forEach(login => {
+            if (!login.login_time) return;
+            const date = new Date(login.login_time);
+            const dayKey = `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+            if (!loginDayMap[dayKey]) loginDayMap[dayKey] = 0;
+            loginDayMap[dayKey]++;
+        });
+
+        // Merge all days from both datasets
+        const allDayKeys = Array.from(new Set([
+            ...Object.keys(dayMap),
+            ...Object.keys(loginDayMap)
+        ])).sort();
+
+        // Format for x-axis: "25 Sept", "8 Oct", etc.
+        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
+        const formattedLabels = allDayKeys.map(dayKey => {
+            const [year, month, day] = dayKey.split('-');
+            const monthName = monthNames[parseInt(month, 10) - 1];
+            const dayNum = parseInt(day, 10);
+            return `${dayNum} ${monthName}`;
+        });
+
+        const uniqueIpCounts = allDayKeys.map(day => dayMap[day] ? dayMap[day].size : 0);
+        const loginCounts = allDayKeys.map(day => loginDayMap[day] ? loginDayMap[day] : 0);
+
+        // Destroy previous chart if exists
+        if (this.attacksTimelineChart) {
+            this.attacksTimelineChart.destroy();
+        }
+
+        // Draw Chart.js line chart with two datasets
+        const ctx = canvas.getContext('2d');
+        this.attacksTimelineChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: formattedLabels,
+                datasets: [
+                    {
+                        label: 'Clicks',
+                        data: uniqueIpCounts,
+                        fill: true,
+                        borderColor: 'rgba(33, 128, 141, 1)',
+                        backgroundColor: 'rgba(33, 128, 141, 0.18)',
+                        tension: 0.3,
+                        pointRadius: 5,
+                        pointBackgroundColor: 'rgba(33, 128, 141, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverRadius: 7,
+                        yAxisID: 'y',
+                    },
+                    {
+                        label: 'Logins',
+                        data: loginCounts,
+                        fill: true,
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.18)',
+                        tension: 0.3,
+                        pointRadius: 5,
+                        pointBackgroundColor: 'rgba(255, 99, 132, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverRadius: 7,
+                        yAxisID: 'y',
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: true }
+                },
+                scales: {
+                    x: {
+                        title: { display: true, text: 'Date' },
+                        ticks: { color: '#666', autoSkip: true, maxTicksLimit: 12 }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Count' },
+                        ticks: {
+                            precision: 0,
+                            color: '#666',
+                            callback: function(value) {
+                                // Hide the 0 label on y-axis
+                                return value === 0 ? '' : value;
+                            }
+                        }
+                    }
+                }
+            }
+        });
     }
 
     async fetchCampaignsData() {

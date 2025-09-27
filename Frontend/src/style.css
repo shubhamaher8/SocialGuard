@@ -1789,3 +1789,12 @@ select.form-control {
 .logins-table tbody tr:hover {
     background-color: transparent;
 }
+
+#attacksTimelineChart {
+    width: 100% !important;
+    height: 300px !important;
+    background: transparent;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    margin-top: 8px;
+}
