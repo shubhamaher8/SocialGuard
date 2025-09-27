@@ -1830,3 +1830,35 @@ select.form-control {
 .error-cell {
     color: var(--color-error);
 }
+
+/* Logins Table Styles */
+.logins-table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.logins-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 14px;
+    background-color: transparent;
+}
+
+.logins-table th,
+.logins-table td {
+    padding: 10px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--color-card-border-inner);
+    white-space: nowrap;
+}
+
+.logins-table th {
+    background-color: transparent;
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text);
+}
+
+.logins-table tbody tr:hover {
+    background-color: transparent;
+}

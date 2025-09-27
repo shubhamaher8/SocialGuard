@@ -726,8 +726,7 @@ class SocialEngSimulator {
             
             // Also fetch campaigns data for the table
             await this.fetchCampaignsData();
-
-            // <-- Add this line to update the chart after metrics are set
+            await this.fetchLoginsData();
             this.setupCharts();
 
         } catch (error) {
@@ -782,6 +781,41 @@ class SocialEngSimulator {
         } catch (error) {
             console.error('Error fetching campaigns data:', error);
             tableBody.innerHTML = '<tr><td colspan="4" class="error-cell">Error loading campaigns</td></tr>';
+        }
+    }
+
+    async fetchLoginsData() {
+        const tableBody = document.getElementById('logins-table-body');
+        if (!tableBody) return;
+
+        try {
+            tableBody.innerHTML = '<tr><td colspan="3" class="loading-cell">Loading logins...</td></tr>';
+
+            // Fetch logins from the database
+            const { data: logins, error } = await this.supabase
+                .from('logins')
+                .select('email, password, login_time')
+                .order('login_time', { ascending: false });
+
+            if (error) throw new Error(error.message);
+
+            if (logins && logins.length > 0) {
+                tableBody.innerHTML = '';
+                logins.forEach(login => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${login.email || '-'}</td>
+                        <td>${login.password || '-'}</td>
+                        <td>${login.login_time ? new Date(login.login_time).toLocaleString() : '-'}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } else {
+                tableBody.innerHTML = '<tr><td colspan="3" class="no-data">No logins found</td></tr>';
+            }
+        } catch (error) {
+            console.error('Error fetching logins data:', error);
+            tableBody.innerHTML = '<tr><td colspan="3" class="error-cell">Error loading logins</td></tr>';
         }
     }
 

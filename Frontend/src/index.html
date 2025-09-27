@@ -262,6 +262,34 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="chart-row">
+                        <div class="department-performance">
+                            <h3>Login Details Acquired</h3>
+                            <div class="logins-table-container">
+                                <table class="logins-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Email</th>
+                                            <th>Password</th>
+                                            <th>Login Time</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="logins-table-body">
+                                        <tr>
+                                            <td colspan="3" class="loading-cell">Loading logins...</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="improvement-trends">
+                            <h3>Attacks Timeline</h3>
+                            <div class="trend-chart" style="position: relative; height: 300px;">
+                                <canvas id="attacksTimelineChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
 
