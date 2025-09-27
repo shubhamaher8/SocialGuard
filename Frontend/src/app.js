@@ -931,19 +931,7 @@ class QuizManager {
     }
     
     retryQuiz() {
-        // Reset quiz state
-        this.currentQuestion = 1;
-        this.answers = {};
-        
-        // Clear all radio buttons
-        this.container.querySelectorAll('input[type="radio"]').forEach(input => {
-            input.checked = false;
-        });
-        
-        // Hide results and show first question
-        this.container.querySelector('.quiz-results').style.display = 'none';
-        this.container.querySelector('.quiz-navigation').style.display = 'flex';
-        
-        this.showQuestion(1);
+        // Simply reload the page to reset everything
+        window.location.reload();
     }
 }
