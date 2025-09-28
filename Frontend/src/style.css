@@ -1837,3 +1837,121 @@ select.form-control {
 .iplogger-table tbody tr:hover {
     background-color: transparent;
 }
+
+/* Responsive: Past Campaigns card/table */
+@media (max-width: 768px) {
+  .department-performance {
+    padding: var(--space-12);
+    min-width: 0;
+    box-sizing: border-box;
+  }
+  .campaigns-table-container {
+    overflow-x: unset; /* Remove horizontal scrolling */
+    -webkit-overflow-scrolling: unset;
+    width: 100%;
+  }
+  .campaigns-table {
+    min-width: 0;
+    font-size: 13px;
+  }
+  .campaigns-table th,
+  .campaigns-table td {
+    padding: 8px 10px;
+    font-size: 13px;
+    white-space: normal;      /* Allow content to wrap to new lines */
+    word-break: break-word;   /* Break long words if needed */
+    max-width: 160px;         /* Limit cell width for better wrapping */
+  }
+}
+
+@media (max-width: 480px) {
+  .department-performance {
+    padding: var(--space-6);
+  }
+  .campaigns-table {
+    min-width: 0;
+    font-size: 12px;
+  }
+  .campaigns-table th,
+  .campaigns-table td {
+    padding: 6px 6px;
+    font-size: 12px;
+    white-space: normal;      /* Allow content to wrap to new lines */
+    word-break: break-word;   /* Break long words if needed */
+    max-width: 100px;         /* Further limit cell width on very small screens */
+  }
+}
+
+/* Responsive: IP Logger Details card/table - allow wrapping for long content */
+@media (max-width: 768px) {
+  .iplogger-table-container {
+    width: 100%;
+    /* Remove horizontal scrolling */
+    overflow-x: unset;
+    -webkit-overflow-scrolling: unset;
+  }
+  .iplogger-table {
+    min-width: 0;
+    font-size: 13px;
+  }
+  .iplogger-table th,
+  .iplogger-table td {
+    padding: 8px 10px;
+    font-size: 13px;
+    white-space: normal;      /* Allow content to wrap to new lines */
+    word-break: break-word;   /* Break long words if needed */
+    max-width: 160px;         /* Limit cell width for better wrapping */
+  }
+}
+
+@media (max-width: 480px) {
+  .iplogger-table {
+    min-width: 0;
+    font-size: 12px;
+  }
+  .iplogger-table th,
+  .iplogger-table td {
+    padding: 6px 6px;
+    font-size: 12px;
+    white-space: normal;      /* Allow content to wrap to new lines */
+    word-break: break-word;   /* Break long words if needed */
+    max-width: 100px;         /* Further limit cell width on very small screens */
+  }
+}
+
+/* Responsive: Login Details Acquired card/table - allow wrapping for long content */
+@media (max-width: 768px) {
+  .logins-table-container {
+    width: 100%;
+    /* Remove horizontal scrolling */
+    overflow-x: unset;
+    -webkit-overflow-scrolling: unset;
+  }
+  .logins-table {
+    min-width: 0;
+    font-size: 13px;
+  }
+  .logins-table th,
+  .logins-table td {
+    padding: 8px 10px;
+    font-size: 13px;
+    white-space: normal;      /* Allow content to wrap to new lines */
+    word-break: break-word;   /* Break long words if needed */
+    max-width: 160px;         /* Limit cell width for better wrapping */
+  }
+}
+
+@media (max-width: 480px) {
+  .logins-table {
+    min-width: 0;
+    font-size: 12px;
+  }
+  .logins-table th,
+  .logins-table td {
+    padding: 6px 6px;
+    font-size: 12px;
+    white-space: normal;      /* Allow content to wrap to new lines */
+    word-break: break-word;   /* Break long words if needed */
+    max-width: 100px;         /* Further limit cell width on very small screens */
+  }
+}
