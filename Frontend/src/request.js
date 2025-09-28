@@ -146,7 +146,9 @@ async function getWorkerPhones() {
 
 // --- Senders ---
 async function sendEmail(recipients, subject, html) {
-    const payload = { recipients, subject, message: html };
+    // Convert recipients (array of strings) to array of objects with "email" key
+    const formattedRecipients = recipients.map(email => ({ email }));
+    const payload = { recipients: formattedRecipients, subject, message: html };
     const response = await fetch('https://social-guard-backend.vercel.app/send-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
