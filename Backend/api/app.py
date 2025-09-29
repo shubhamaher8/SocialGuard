@@ -4,9 +4,11 @@ from flask import Flask, jsonify, request, render_template, redirect, url_for
 from flask_cors import CORS
 from dotenv import load_dotenv
 from supabase import create_client, Client
-import brevo_python as brevo
 from twilio.rest import Client as TwilioClient
 from datetime import datetime
+# --- Import SendGrid ---
+import sendgrid
+from sendgrid.helpers.mail import Mail
 
 # --- Load Environment Variables ---
 load_dotenv()
@@ -26,15 +28,14 @@ if not all([SUPABASE_URL, SUPABASE_KEY]):
 else:
     supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
-# Brevo (Email) Setup
-BREVO_API_KEY = os.getenv('BREVO_API_KEY')
-if not BREVO_API_KEY:
-    print("⚠️ Warning: Brevo API key not set. Email functionality will not work.")
-    brevo_api_instance = None
+# --- SendGrid (Email) Setup ---
+SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
+if not SENDGRID_API_KEY:
+    print("⚠️ Warning: SendGrid API key not set. Email functionality will not work.")
+    sendgrid_client = None
 else:
-    brevo_configuration = brevo.Configuration()
-    brevo_configuration.api_key['api-key'] = BREVO_API_KEY
-    brevo_api_instance = brevo.TransactionalEmailsApi(brevo.ApiClient(brevo_configuration))
+    sendgrid_client = sendgrid.SendGridAPIClient(SENDGRID_API_KEY)
+
 
 # Twilio (SMS) Setup
 TWILIO_ACCOUNT_SID = os.getenv("TWILIO_ACCOUNT_SID")
@@ -84,24 +85,30 @@ def log_visitor_to_supabase(ip, user_agent):
 
 
 def send_email(recipients, subject, html_content):
-    """Sends email using Brevo API."""
-    if not brevo_api_instance:
-        raise ConnectionError("Brevo client is not configured.")
+    """Sends email using SendGrid API."""
+    if not sendgrid_client:
+        raise ConnectionError("SendGrid client is not configured.")
+    
     results = []
-    sender_email = "dchitale07@gmail.com" # Replace with your sender email if needed
-    sender_name = "Test Sender" # Replace with your sender name if needed
+    sender_email = "shubhamaher758@gmail.com"  # This email must be a verified sender in your SendGrid account
+
     for r in recipients:
+        message = Mail(
+            from_email=sender_email,
+            to_emails=r["email"],
+            subject=subject,
+            html_content=html_content
+        )
         try:
-            send_smtp_email = brevo.SendSmtpEmail(
-                sender={"name": sender_name, "email": sender_email},
-                to=[{"email": r["email"], "name": r.get("name", "")}],
-                subject=subject,
-                html_content=html_content
-            )
-            brevo_api_instance.send_transac_email(send_smtp_email)
-            results.append({"email": r["email"], "status": "sent"})
+            response = sendgrid_client.send(message)
+            # Check for a successful status code (2xx)
+            if 200 <= response.status_code < 300:
+                results.append({"email": r["email"], "status": "sent"})
+            else:
+                results.append({"email": r["email"], "status": "failed", "error": response.body})
         except Exception as e:
             results.append({"email": r["email"], "status": "failed", "error": str(e)})
+            
     return results
 
 def send_sms(recipient_numbers, message):

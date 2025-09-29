@@ -3,6 +3,6 @@ Flask-Cors
 python-dotenv
 requests
 supabase
-brevo-python
+sendgrid
 twilio
 gunicorn
