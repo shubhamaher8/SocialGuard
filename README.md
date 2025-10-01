@@ -102,7 +102,7 @@ SocialGuard is a comprehensive platform designed to help organizations defend ag
 
 ### Deployment
 
-The application is configured for deployment on Vercel:
+The application is configured for deployment on Vercel and Render:
 
 - Frontend: Deployed via Vercel's automatic build process using Parcel
 - Backend: Deployed on render free instance
