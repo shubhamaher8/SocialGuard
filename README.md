@@ -1,10 +1,14 @@
 # SocialGuard - Social Engineering Attack Simulator
 
+&nbsp;
+
+## 🚀 Deployment
+
 [![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://social-guard-rouge.vercel.app/)
 
 [![Live Project](https://img.shields.io/badge/Live%20Project-social--guard--rouge.vercel.app-green?style=for-the-badge&logo=vercel)](https://social-guard-rouge.vercel.app/)
 
-## Prototype Screenshots
+## 🖼️ Prototype Screenshots
 
 <table>
   <tr>
@@ -21,11 +25,11 @@
   </tr>
 </table>
 
-## Overview
+## ⚡ Overview
 
 SocialGuard is a comprehensive platform designed to help organizations defend against social engineering attacks through simulation, training, and analytics. The platform enables you to create realistic attack scenarios, train employees, and measure effectiveness through detailed reporting. With pre-built phishing templates, advanced tracking capabilities, and educational modules, SocialGuard provides a complete solution for social engineering defense.
 
-## Features
+## ✨ Features
 
 - 🎯 **Attack Library** - Pre-configured social engineering attack scenarios
 - 👥 **Employee Management** - Add and manage employees for targeted simulations
@@ -33,7 +37,7 @@ SocialGuard is a comprehensive platform designed to help organizations defend ag
 - 📚 **Training Modules** - Educational resources to help employees identify and respond to attacks
 - 📊 **Analytics Dashboard** - Track simulation results and  with detailed metrics
 
-## Getting Started
+## 📋 Getting Started
 
 ### Prerequisites
 
@@ -103,7 +107,7 @@ The application is configured for deployment on Vercel:
 - Frontend: Deployed via Vercel's automatic build process using Parcel
 - Backend: Deployed on render free instance
 
-## Project Structure
+## 📊 Project Structure
 
 ```
 SocialGuard/
@@ -131,7 +135,7 @@ SocialGuard/
 └── README.md                    # Project documentation
 ```
 
-## Tech Stack
+## 🛠️ Tech Stack
 
 ### Frontend
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
@@ -151,7 +155,7 @@ SocialGuard/
 ![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
 ![Render](https://img.shields.io/badge/Render-000000?style=for-the-badge&logo=render&logoColor=white)
 
-## Training Modules
+## 📝 Training Modules
 
 SocialGuard includes comprehensive training modules to educate employees about various aspects of social engineering:
 
@@ -160,13 +164,13 @@ SocialGuard includes comprehensive training modules to educate employees about v
 3. **Phone & Text Message Security** - Defend against vishing and smishing attempts
 4. **Physical Security Awareness** - Prevent tailgating and other in-person social engineering
 
-## Security Features
+## 🔒 Security Features
 
 - Secure authentication via Supabase
 - Realistic attack simulations without compromising actual security
 - Detailed analytics to identify vulnerable areas in your organization
 
-## Use Cases
+## ☑️ Use Cases
 
 ### For Security Teams
 - Run realistic phishing campaigns to test employee awareness
@@ -183,7 +187,7 @@ SocialGuard includes comprehensive training modules to educate employees about v
 - Demonstrate compliance with security training requirements
 - Create a culture of security awareness
 
-## Contributing
+## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
@@ -193,7 +197,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## License
+## 📜 License
 
 This project is licensed under the MIT License
 
