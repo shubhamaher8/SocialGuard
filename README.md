@@ -1,32 +1,50 @@
-# 🛡️ SocialGuard
+# SocialGuard - Social Engineering Attack Simulator
 
-<div align="center">
-  <img src="Frontend/public/socialguard.png" alt="SocialGuard Logo" width="200"/>
-  <h3>Social Engineering Attack Simulator</h3>
-  <p>Test and improve your organization's resilience against social engineering attacks</p>
-</div>
+[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://social-guard-rouge.vercel.app/)
 
-## 📋 Overview
+[![Live Project](https://img.shields.io/badge/Live%20Project-social--guard--rouge.vercel.app-green?style=for-the-badge&logo=vercel)](https://social-guard-rouge.vercel.app/)
 
-SocialGuard is a comprehensive platform designed to help organizations defend against social engineering attacks through simulation, training, and analytics. The platform enables you to create realistic attack scenarios, train employees, and measure effectiveness through detailed reporting.
+## Prototype Screenshots
 
-## ✨ Features
+<table>
+  <tr>
+    <td align="center">
+      <img src="Frontend/public/dashboard.png" alt="Homepage Screenshot" width="420"/>
+      <br/>
+      <b>Homepage View</b>
+    </td>
+    <td align="center">
+      <img src="Frontend/public/analytics.png" alt="Analytics Screenshot" width="420"/>
+      <br/>
+      <b>Analytics View</b>
+    </td>
+  </tr>
+</table>
+
+## Overview
+
+SocialGuard is a comprehensive platform designed to help organizations defend against social engineering attacks through simulation, training, and analytics. The platform enables you to create realistic attack scenarios, train employees, and measure effectiveness through detailed reporting. With pre-built phishing templates, advanced tracking capabilities, and educational modules, SocialGuard provides a complete solution for social engineering defense.
+
+## Features
 
 - 🎯 **Attack Library** - Pre-configured social engineering attack scenarios
-- 👥 **Employee Management** - Add and manage employee information for targeted simulations
-- 🔧 **Simulation Builder** - Create custom attack scenarios tailored to your organization
+- 👥 **Employee Management** - Add and manage employees for targeted simulations
+- 🔧 **Simulation Builder** - Create attack scenarios tailored to your organization with customizable templates
 - 📚 **Training Modules** - Educational resources to help employees identify and respond to attacks
-- 📊 **Analytics Dashboard** - Track simulation results and training effectiveness
-- 📝 **Detailed Reporting** - Generate comprehensive reports on organizational security posture
+- 📊 **Analytics Dashboard** - Track simulation results and  with detailed metrics
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
-- Node.js (v14 or higher)
+- Node.js (v16 or higher)
+- Python (v3.8 or higher)
 - npm or yarn
+- Supabase account
+- SendGrid account (for email functionality)
+- Twilio account (for SMS functionality)
 
-### Installation
+### Frontend Installation
 
 1. Clone the repository:
    ```bash
@@ -34,50 +52,106 @@ SocialGuard is a comprehensive platform designed to help organizations defend ag
    cd SocialGuard
    ```
 
-2. Install dependencies:
+2. Install frontend dependencies:
    ```bash
+   cd Frontend
    npm install
    ```
 
-3. Set up environment variables:
-   Create a `.env` file in the root directory with the following variables:
+3. Set up frontend environment variables:
+   Create a `.env` file in the `Frontend` directory:
    ```
    PARCEL_VITE_SUPABASE_URL=your_supabase_url
    PARCEL_VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
    ```
 
-4. Start the development server:
+4. Start the frontend development server:
    ```bash
    npm run dev
    ```
 
 5. Open your browser and navigate to `http://localhost:1234`
 
-## 🏗️ Project Structure
+### Backend Installation
+
+1. Install backend dependencies:
+   ```bash
+   cd ../Backend
+   pip install -r requirements.txt
+   ```
+
+2. Set up backend environment variables:
+   Create a `.env` file in the `Backend` directory:
+   ```
+   SUPABASE_URL=your_supabase_url
+   SUPABASE_KEY=your_supabase_service_key
+   SENDGRID_API_KEY=your_sendgrid_api_key
+   TWILIO_ACCOUNT_SID=your_twilio_account_sid
+   TWILIO_AUTH_TOKEN=your_twilio_auth_token
+   TWILIO_PHONE_NUMBER=your_twilio_phone_number
+   ```
+
+3. Start the backend server:
+   ```bash
+   python -m api.app
+   ```
+
+### Deployment
+
+The application is configured for deployment on Vercel:
+
+- Frontend: Deployed via Vercel's automatic build process using Parcel
+- Backend: Deployed on render free instance
+
+## Project Structure
 
 ```
 SocialGuard/
-├── public/            # Static assets
-│   └── socialguard.png
-├── src/               # Source files
-│   ├── app.js         # Main application logic
-│   ├── index.html     # Main dashboard page
-│   ├── login.html     # Authentication page
-│   ├── register.html  # User registration page
-│   ├── add_workers.html # Employee management page
-│   ├── style.css      # Global styles
-│   └── training_*.html # Training module pages
-└── package.json       # Project dependencies and scripts
+├── Backend/                 
+│   ├─- api            
+│   │   ├── static               #images
+│   │   ├── templates            #attack pages
+│   │   └── app.py               #server
+│   ├── .env
+│   └── requirements.txt  
+├── Frontend/               
+│   ├── node_modules          
+│   ├── public/            
+│   ├── src/               
+│   │   ├── app.js               # Main application logic
+│   │   ├── request.js           # API request handling
+│   │   ├── index.html           # Dashboard page
+│   │   ├── login.html           # Authentication pages
+│   │   ├── register.html  
+│   │   ├── add_workers.html     # Employee management
+│   │   ├── style.css            # Global styles
+│   │   └── training_*.html      # Training module pages
+│   ├── .env                     # Environment variables for frontend
+│   └── package.json             # Node.js dependencies
+└── README.md                    # Project documentation
 ```
 
-## 💻 Technologies Used
+## Tech Stack
 
-- **Frontend**: HTML, CSS, JavaScript
-- **Build Tool**: Parcel
-- **Authentication & Database**: Supabase
-- **Data Visualization**: Chart.js
+### Frontend
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![Parcel](https://img.shields.io/badge/Parcel-FFC0CB?style=for-the-badge&logo=parcel&logoColor=black)
+![Chart.js](https://img.shields.io/badge/Chart.js-FF6384?style=for-the-badge&logo=chart.js&logoColor=white)
 
-## 📈 Training Modules
+### Backend
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+![Flask](https://img.shields.io/badge/flask-%23000.svg?style=for-the-badge&logo=flask&logoColor=white)
+![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)
+![SendGrid](https://img.shields.io/badge/SendGrid-1A82E2?style=for-the-badge&logo=sendgrid&logoColor=white)
+![Twilio](https://img.shields.io/badge/Twilio-F22F46?style=for-the-badge&logo=twilio&logoColor=white)
+
+### Deployment
+![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
+![Render](https://img.shields.io/badge/Render-000000?style=for-the-badge&logo=render&logoColor=white)
+
+## Training Modules
 
 SocialGuard includes comprehensive training modules to educate employees about various aspects of social engineering:
 
@@ -86,20 +160,30 @@ SocialGuard includes comprehensive training modules to educate employees about v
 3. **Phone & Text Message Security** - Defend against vishing and smishing attempts
 4. **Physical Security Awareness** - Prevent tailgating and other in-person social engineering
 
-## 🔒 Security Features
+## Security Features
 
 - Secure authentication via Supabase
 - Realistic attack simulations without compromising actual security
 - Detailed analytics to identify vulnerable areas in your organization
 
-## 📱 Screenshots
+## Use Cases
 
-<div align="center">
-  <p><i>Dashboard view of the SocialGuard platform</i></p>
-  <img src="https://via.placeholder.com/800x450.png?text=SocialGuard+Dashboard" alt="Dashboard Screenshot" width="80%"/>
-</div>
+### For Security Teams
+- Run realistic phishing campaigns to test employee awareness
+- Generate detailed reports on security vulnerabilities
+- Train employees based on targeted weaknesses
 
-## 🤝 Contributing
+### For Employees
+- Learn to identify social engineering attempts through interactive training
+- Practice responding to phishing attempts in a safe environment
+- Track personal improvement over time
+
+### For Organizations
+- Reduce vulnerability to costly social engineering attacks
+- Demonstrate compliance with security training requirements
+- Create a culture of security awareness
+
+## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
@@ -109,12 +193,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## 📄 License
+## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License
 
-## 📞 Contact
-
-Shubham Aher - [shubhamaher8](https://github.com/shubhamaher8)
-
-Project Link: [https://github.com/shubhamaher8/SocialGuard](https://github.com/shubhamaher8/SocialGuard)
