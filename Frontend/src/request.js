@@ -30,7 +30,7 @@ function buildAmazonEmailHtml() {
                 </p>
                 <p style="text-align: center; font-size: 18px; margin: 20px 0;">
                     <span style="font-weight: bold;">Go to the below link to claim your offer:</span><br>
-                    <a href="https://tinyurl.com/yc62dxwh" style="font-weight: bold; color: #0066c0;" target="_blank">https://tinyurl.com/yc62dxwh</a>
+                    <span style="font-weight: bold; color: #0066c0;">https://tinyurl.com/yc62dxwh</span>
                 </p>
                 <p style="font-size: 16px; color: #333333; line-height: 1.5; margin: 20px 0;">
                     This offer is valid for a limited time. Don't miss out!
@@ -132,7 +132,7 @@ function buildCollegeEmailHtml() {
 
         <p style="text-align: center; font-size: 18px; margin-top: 20px;">
             <span style="font-weight: bold;">Go to the below link for registration:</span><br>
-            <a href="https://tinyurl.com/yz7jjhbk" style="font-weight: bold; color: #0066c0;" target="_blank">https://tinyurl.com/yz7jjhbk</a>
+            <span style="font-weight: bold; color: #0066c0;">https://tinyurl.com/yz7jjhbk</span>
         </p>
 
         <p><span class="highlight">Important:</span> Registration is <strong>mandatory</strong> for placement eligibility. Use your VIIT email ID to sign up.</p>
