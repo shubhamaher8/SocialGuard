@@ -6,7 +6,7 @@ const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseAnonKey
 
 // --- Email Templates ---
 function buildAmazonEmailHtml() {
-    // ...existing Amazon email HTML...
+    // Updated Amazon email HTML
     return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,9 +17,7 @@ function buildAmazonEmailHtml() {
 <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4;">
     <table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="border-collapse: collapse; margin-top: 20px; background-color: #ffffff;">
         <tr>
-            <td align="center" style="background-color: #ffffff; padding: 20px 0;">
-                <img src="https://www.prideindustries.com/wp-content/uploads/2021/06/Customer-logo_Amazon-1-768x384.png" alt="Amazon Logo" width="120" style="display: block;" />
-            </td>
+            <td style="background-color: #ebeb33; height: 40px;"></td>
         </tr>
         <tr>
             <td style="padding: 40px 30px;">
@@ -29,13 +27,11 @@ function buildAmazonEmailHtml() {
                 </p>
                 <p style="font-size: 16px; color: #333333; line-height: 1.5; margin: 20px 0;">
                     Avail a special <strong style="color: #000000;">80% discount on Amazon Shopping.</strong> Don't miss this limited-time opportunity to shop your favorite products at unbeatable prices.
-                <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                    <tr>
-                        <td align="center" style="padding: 20px 0;">
-                            <a href="https://socialguard-backend.onrender.com" target="_blank" style="background-color: #ebeb33; color: #111111; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 16px;">Click Here</a>
-                        </td>
-                    </tr>
-                </table>
+                </p>
+                <p style="text-align: center; font-size: 18px; margin: 20px 0;">
+                    <span style="font-weight: bold;">Go to the below link to claim your offer:</span><br>
+                    <a href="https://tinyurl.com/yc62dxwh" style="font-weight: bold; color: #0066c0;" target="_blank">https://tinyurl.com/yc62dxwh</a>
+                </p>
                 <p style="font-size: 16px; color: #333333; line-height: 1.5; margin: 20px 0;">
                     This offer is valid for a limited time. Don't miss out!
                 </p>
@@ -62,7 +58,7 @@ function buildAmazonEmailHtml() {
 }
 
 function buildCollegeEmailHtml() {
-    // ...college email HTML...
+    // Updated college email HTML
     return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -70,13 +66,54 @@ function buildCollegeEmailHtml() {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register on VIIT TPO Portal for Placement Access</title>
     <style>
-        body { font-family: Arial, sans-serif; line-height: 1.5; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }
-        .header { background-color: #0056b3; color: white; padding: 15px; text-align: center; border-radius: 5px 5px 0 0; font-size: 18px; }
-        .content { padding: 15px 20px; background-color: #f9f9f9; border: 1px solid #ddd; border-top: none; border-radius: 0 0 5px 5px; }
-        .button { display: inline-block; background-color: #0056b3; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: bold; margin: 15px 0; text-align: center; }
-        .highlight { font-weight: bold; color: #0056b3; }
-        .footer { margin-top: 15px; font-size: 14px; color: #666; text-align: center; }
-        ul { padding-left: 20px; margin-bottom: 10px; }
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.5;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background-color: #0056b3;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            border-radius: 5px 5px 0 0;
+            font-size: 18px;
+        }
+        .content {
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-top: none;
+            border-radius: 0 0 5px 5px;
+        }
+        .button {
+            display: inline-block;
+            background-color: #0056b3;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            margin: 15px 0;
+            text-align: center;
+        }
+        .highlight {
+            font-weight: bold;
+            color: #0056b3;
+        }
+        .footer {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #666;
+            text-align: center;
+        }
+        ul {
+            padding-left: 20px;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -85,16 +122,21 @@ function buildCollegeEmailHtml() {
     </div>
     <div class="content">
         <p><strong>Dear Student,</strong></p>
+
         <p>To participate in placement activities, <span class="highlight">register on the TPO Portal</span> for access to:</p>
         <ul>
             <li>Placement drives and company updates</li>
             <li>Aptitude test/interview schedules</li>
             <li>Resumes, mock tests, and training resources</li>
         </ul>
-        <p style="text-align: center;">
-            <a href="https://tinyurl.com/yz7jjhbk" class="button">Register Now</a>
+
+        <p style="text-align: center; font-size: 18px; margin-top: 20px;">
+            <span style="font-weight: bold;">Go to the below link for registration:</span><br>
+            <a href="https://tinyurl.com/yz7jjhbk" style="font-weight: bold; color: #0066c0;" target="_blank">https://tinyurl.com/yz7jjhbk</a>
         </p>
+
         <p><span class="highlight">Important:</span> Registration is <strong>mandatory</strong> for placement eligibility. Use your VIIT email ID to sign up.</p>
+
         <p><strong>Regards,<br>
         TPO Team<br>
         Vishwakarma Institute of Information Technology</strong></p>
