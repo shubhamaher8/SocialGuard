@@ -4,9 +4,9 @@
 
 ## 🚀 Deployment
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://social-guard-rouge.vercel.app/)
+[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://social-guard-one.vercel.app/)
 
-[![Live Project](https://img.shields.io/badge/Live%20Project-social--guard--rouge.vercel.app-green?style=for-the-badge&logo=vercel)](https://social-guard-rouge.vercel.app/)
+[![Live Project](https://img.shields.io/badge/Live%20Project-social--guard--one.vercel.app-green?style=for-the-badge&logo=vercel)](https://social-guard-one.vercel.app/)
 
 ## 🖼️ Prototype Screenshots
 
