@@ -30,7 +30,7 @@ function buildAmazonEmailHtml() {
                 </p>
                 <p style="text-align: center; font-size: 18px; margin: 20px 0;">
                     <span style="font-weight: bold;">Go to the below link to claim your offer:</span><br>
-                    <span style="font-weight: bold; color: #0066c0;">https://tinyurl.com/yc62dxwh</span>
+                    <span style="font-weight: bold; color: #0066c0;">https://tinyurl.com/3fyvfp24</span>
                 </p>
                 <p style="font-size: 16px; color: #333333; line-height: 1.5; margin: 20px 0;">
                     This offer is valid for a limited time. Don't miss out!
@@ -150,7 +150,7 @@ function buildCollegeEmailHtml() {
 
 // --- SMS Templates ---
 function buildAmazonSmsText() {
-    return 'FLAT 80% OFF on all your purchases at Amazon Shopping! Explore a wide range of products and enjoy massive savings. Hurry up and shop now before the offer ends. Terms and conditions apply. https://tinyurl.com/yc62dxwh';
+    return 'FLAT 80% OFF on all your purchases at Amazon Shopping! Explore a wide range of products and enjoy massive savings. Hurry up and shop now before the offer ends. Terms and conditions apply. https://tinyurl.com/3fyvfp24';
 }
 
 function buildBankSmsText() {
