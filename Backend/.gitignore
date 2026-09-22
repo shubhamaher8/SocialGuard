@@ -1,0 +1,31 @@
+# --- Secrets / local config (never commit) ---
+.env
+.env.*
+*.env
+src/main/resources/application-local.properties
+src/main/resources/application-*.properties
+!src/main/resources/application.properties
+
+# --- Maven build output ---
+target/
+*.class
+*.jar
+*.war
+
+# --- Logs ---
+*.log
+logs/
+
+# --- IDE ---
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+.settings/
+.classpath
+.project
+
+# --- OS ---
+.DS_Store
+Thumbs.db
