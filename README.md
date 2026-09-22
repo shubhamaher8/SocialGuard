@@ -121,6 +121,7 @@ The application is configured for deployment on Vercel and Render:
 SocialGuard/
 ├── Backend/                              # Spring Boot 3.2 (Java 17) API server
 │   ├── pom.xml                           # Maven dependencies & build config
+│   ├── Dockerfile                        # Docker container build
 │   ├── src/main/java/com/socialguard/
 │   │   ├── SocialGuardApplication.java   # Spring Boot entry point
 │   │   ├── config/
@@ -178,6 +179,7 @@ SocialGuard/
 ![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)
 ![SendGrid](https://img.shields.io/badge/SendGrid-1A82E2?style=for-the-badge&logo=sendgrid&logoColor=white)
 ![Twilio](https://img.shields.io/badge/Twilio-F22F46?style=for-the-badge&logo=twilio&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 
 ### Deployment
 ![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
