@@ -154,7 +154,7 @@ function buildAmazonSmsText() {
 }
 
 function buildBankSmsText() {
-    return 'Your credit card is being terminated due to non KYC verification by the card issuer. Please click the link below to update your information and avoid service interruption. https://tinyurl.com/2phubmmc';
+    return 'Your credit card is being terminated due to non KYC verification by the card issuer. Please click the link below to update your information and avoid service interruption. https://tinyurl.com/2y57rp3p';
 }
 
 // --- Data Fetch ---
