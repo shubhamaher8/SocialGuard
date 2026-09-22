@@ -84,8 +84,7 @@ SocialGuard is a comprehensive platform designed to help organizations defend ag
    cd ../Backend
    ```
 
-2. Set up backend environment variables:
-   Create a `.env` file in the `Backend` directory:
+2. Set these 7 environment variables before running:
    ```
    SUPABASE_URL=your_supabase_url
    SUPABASE_KEY=your_supabase_service_key
