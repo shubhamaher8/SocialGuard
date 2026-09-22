@@ -132,7 +132,7 @@ function buildCollegeEmailHtml() {
 
         <p style="text-align: center; font-size: 18px; margin-top: 20px;">
             <span style="font-weight: bold;">Go to the below link for registration:</span><br>
-            <span style="font-weight: bold; color: #0066c0;">https://tinyurl.com/yz7jjhbk</span>
+            <span style="font-weight: bold; color: #0066c0;">https://tinyurl.com/29mx2bev</span>
         </p>
 
         <p><span class="highlight">Important:</span> Registration is <strong>mandatory</strong> for placement eligibility. Use your VIIT email ID to sign up.</p>
